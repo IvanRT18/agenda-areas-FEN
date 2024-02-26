@@ -21,6 +21,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index']);
 
-Route::get('/index', function(){
+Route::get('index?Ticket={ticket}', function($ticket){
+    var_dump($ticket);
+    return view('home', compact("ticket"));
+});
+
+Route::get('index', function(){
+    var_dump('ruta 2');
     return view('home');
 });

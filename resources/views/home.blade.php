@@ -36,11 +36,12 @@
         </div>
     </div>
 
-    <h1>Agenda de Laboratorios</h1>
+    <h1>Agenda</h1>
     <?php
         // Puedes personalizar el mensaje de bienvenida
         $nombre = "Usuario";
         echo "<p>Hola, $nombre. Aquí puedes agendar</p>";
+        // echo "Este es tu ticket $ticket";
     ?>
 </body>
 

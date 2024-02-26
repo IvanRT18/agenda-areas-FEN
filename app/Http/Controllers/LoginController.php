@@ -24,7 +24,7 @@ class LoginController extends Controller
             $cliente_login = new LoginClass($LoginParams['serviceUrl'], $LoginParams['serviceLoginFormUrl'], $LoginParams['serviceClientId'], $LoginParams['serviceReturnURL']);
             // var_dump($cliente_login);
 			$cliente_login->autentificar();
-            var_dump('Despues de identificarse');
+            // var_dump('Despues de identificarse');
 			echo($cliente_login->mensaje);
 		}
 		//Si existe la Sesión de Usuario.
@@ -35,5 +35,10 @@ class LoginController extends Controller
 			header('Location: '."http://localhost/agendaLabPrueba/resources/views/inicio.php?user=".$_GET['usuario']."&type=".$_GET['tipo']);
             // exit;
 		}
+    }
+
+    public function home()
+    {
+        
     }
 }

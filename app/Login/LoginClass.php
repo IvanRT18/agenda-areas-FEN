@@ -140,9 +140,12 @@ class LoginClass
 		//if(isset($_GET["ReturnUrl"]))
 		{		
 			$parametros = array ('idAplicacion' => $this->_svc_id, 'ReturnUrl' => $this->_svc_return);
+			// var_dump($parametros);
 			$Respuesta = $this->_svc_instance->NuevaSesionConUrlRetorno($parametros);
+			// var_dump('Esta es la respuesta');
 			// var_dump($Respuesta);	
 			$xmlObject = simplexml_load_string($Respuesta->NuevaSesionConUrlRetornoResult);
+			// var_dump('Esta es el objeto XML\n');
 			// var_dump($xmlObject);	
 		}
 //		else
@@ -162,7 +165,7 @@ class LoginClass
 		// var_dump('Este es sesionId');
 		// var_dump($sesionId);
 		// //Se crea la cookie de autentificación.
-		// setcookie("SC",$sesionId,time()+600);
+		setcookie("SC",$sesionId,time()+600);
 		// //Se redirige a pantalla de Login institucional
 		// var_dump('Esta es la form_url');
 		// var_dump($this->_svc_form_url);
