@@ -24,3 +24,8 @@ Route::get('/', [LoginController::class, 'index']);
 Route::get('/index', function(){
     return view('home');
 });
+
+Route::get('index', function(){
+    var_dump('ruta 2');
+    return view('home');
+});
