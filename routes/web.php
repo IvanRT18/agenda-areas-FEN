@@ -30,3 +30,8 @@ Route::get('index', function(){
     // var_dump('ruta 2');
     return view('home');
 });
+
+Route::get('index', function(){
+    var_dump('ruta 2');
+    return view('home');
+});
