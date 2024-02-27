@@ -1,0 +1,41 @@
+.flex{
+    display: flex;
+}
+
+.flex-col{
+    flex-direction: column;
+}
+
+.mx-auto{
+    margin: 0 auto;
+}
+
+.col-6{
+    width: 50%;
+}
+
+.col-12{
+    width: 100%;
+}
+
+.col-4{
+    width: 33%;
+}
+
+.contenido{
+    margin-top: 5rem;
+}
+
+.checkbox-container{
+    display: flex;
+    flex-direction: column;
+    font-size: 1.85rem;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 1rem;
+}
+
+.gap{
+    gap: 2rem;
+}

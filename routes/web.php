@@ -27,6 +27,6 @@ Route::get('index?Ticket={ticket}', function($ticket){
 });
 
 Route::get('index', function(){
-    var_dump('ruta 2');
+    // var_dump('ruta 2');
     return view('home');
 });

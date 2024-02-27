@@ -32,7 +32,7 @@ class LoginController extends Controller
 		{
             var_dump('Sesión sí existente');
             var_dump($_GET);
-			header('Location: '."http://localhost/agendaLabPrueba/resources/views/inicio.php?user=".$_GET['usuario']."&type=".$_GET['tipo']);
+			header('Location: '."http://localhost:8000/inicio.php?user=".$_GET['usuario']."&type=".$_GET['tipo']);
             // exit;
 		}
     }
