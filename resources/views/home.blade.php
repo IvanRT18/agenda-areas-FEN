@@ -17,8 +17,8 @@
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
 </head>
 
-<body class="container">
-    <div>
+<body>
+    <div class="container">
         <div class="Encabezado">
             <div class="escudos">
                 <div class="escudo escudoUASLP">
@@ -44,15 +44,12 @@
             <div class="LemaAzul"><img src={{asset('img/amarillo_azul.png')}}></div>
             <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
         </div>
-    </div>
-
     
-        
-            <div>
-                <h1>Agenda de áreas comúnes</h1>
-                <h1>{{$_GET["user"]}}</h1>
-            </div>
-       
+        <div>
+            <h1>Agenda de áreas comúnes</h1>
+            <h1>{{$_GET["user"]}}</h1>
+        </div>
+
         {{-- Checkboxes de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
         <h1>Área para reservar:</h1>
@@ -64,7 +61,7 @@
        </div>
 
        {{-- Formulario --}}
-       <div class="formulario-container col-xs-6 ">
+       <div class="formulario-container col-xs-6 mb-4">
         <form action="" class="flex flex-col col-xs-12 gap">
             <div>
                 <label for="numEquipos">¿Cuantos equipos de cómputo usará?</label>
@@ -116,9 +113,17 @@
             <input type="submit" name="AgendarButton" value="Agendar" id="AgendarButton" class="btn btn-primary">
         </form>
        </div>
+
+    </div>
        
    
-    
+       <div id="Creditos">          
+        <h4>Universidad Autónoma de San Luis Potosí</h4>
+            Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
+        San Luis Potosí, S.L.P. México                <br>
+        Tel.  (444) 826 2300<br>
+        ©<span id="lbAño">2024</span> © Todos los derechos reservados.           
+   </div>
 </body>
 
 </html>
