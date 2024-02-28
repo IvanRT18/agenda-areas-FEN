@@ -24,7 +24,7 @@
     </p>
 
     <h3 style="color:navy"> Datos de Usuario </h3>
-    <p>clave: <?php echo $_GET["Ticket"]?></p>
+    <p>clave: <?php echo $_GET["user"]?></p>
     <p>tipo: <?php echo $_GET["type"]?></p>
 
 </body>

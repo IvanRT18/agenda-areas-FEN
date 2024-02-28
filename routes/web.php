@@ -28,8 +28,13 @@ Route::get('index?Ticket={ticket}', function($ticket){
 });
 
 // Route::get('index', function(){
-//     // var_dump('ruta 2');
+//     var_dump('ruta solo index');
 //     return view('home');
 // });
 
 Route::get('index', [LoginController::class, 'index']);
+
+Route::get('inicio', function(){
+    var_dump('dentro de la página inicio');
+    return view('inicio');
+});
