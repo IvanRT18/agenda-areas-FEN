@@ -7,67 +7,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />   
     <link rel="icon" href="favicon.ico">
 
-    @vite('resources/css/app.css')
+    {{-- @vite('resources/css/app.css') --}}
 
 
     <!-- Bootstrap -->
-    {{-- <link href={{asset('css/bootstrap.min.css')}} rel="stylesheet" />  --}}
+    <link href={{asset('css/bootstrap.min.css')}} rel="stylesheet" /> 
     <!-- UASLP -->
-    {{-- <link href={{asset('css/UASLP.css')}} rel="stylesheet" /> --}}
-    {{-- <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>  --}}
+    <link href={{asset('css/UASLP.css')}} rel="stylesheet" />
+    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
 </head>
 
-<body class="lg:container mx-auto">
-    {{-- Header --}}
-    <header class="bg-primary h-40 flex w-full">
-        {{-- Escudos --}}
-        <div class="flex w-1/2 items-center">
-            {{-- Escudo UASLP --}}
-            <div class="h-20 w-1/2 mx-4 ">
-                <img src="/img/UASLP.png" alt="Escudo UASLP" class="bg-center bg-cover h-full">
+<body class="container">
+    <div>
+        <div class="Encabezado">
+            <div class="escudos">
+                <div class="escudo escudoUASLP">
+                    <a href={{url('http://www.uaslp.mx')}}>
+                        <img id="UASLPLogo" src={{asset('img/UASLP.png')}} class="img-responsive">
+                        <img id="UASLPLogoMobile" src={{asset('img/UASLPVertical.png')}} class="img-responsive">
+                    </a>
+                </div>
+                <div class="lineaEscudo"></div>
+                <div class="titulo">
+                    <a href="/">
+                        <span id="Titulo">Agenda de áreas - Fac. Enfermería y Nutrición</span>
+                        <span id="TituloMobile">Agenda de áreas</span>
+                    </a>
+                </div>
             </div>
-            {{-- Linea Escudo --}}
-            <div class="border border-white h-20 mx-1">
-
-            </div>
-            
-            {{-- Titulo --}}
-            <div class="w-1/2">
-                <p class="text-white text-xl align-middle">Inicio de Sesión Institucional</p>
-            </div>
+            <div class="foto"></div>
         </div>
-        {{-- Foto edificio central --}}
-        <div class="flex w-1/2 h-full">
-                <img src="/img/edificio.jpg" alt="Edificio UASLP" class="h-full bg-center bg-cover">
-        </div>
-    </header>
 
-    <div class="">
+        <div class="Idioma" style="display:block"></div>
+
+        <div class="Lema">
+            <div class="LemaAzul"><img src={{asset('img/amarillo_azul.png')}}></div>
+            <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
+        </div>
+    </div>
+
+    
         
-            <h1>Agenda de áreas comúnes</h1>
-            <h1>{{$_GET["user"]}}</h1>
+            <div>
+                <h1>Agenda de áreas comúnes</h1>
+                <h1>{{$_GET["user"]}}</h1>
+            </div>
        
         {{-- Checkboxes de areas para reservar --}}
-       <div class="flex contenido">
+       <div class="flex flex-col contenido gap align-center">
+        <h1>Área para reservar:</h1>
         <div class="checkbox-container col-xs-6">
             <label for="checkboxAuditorio"><input type="checkbox" name="op1" id="checkboxAuditorio">Auditorio</label>
             <label for="checkboxAulaMagna"><input type="checkbox" name="op2" id="checkboxAulaMagna">Aula magna (propedéutico)</label>
             <label for="checkboxLabComp"><input type="checkbox" name="op3" id="checkboxLabComp">Laboratorio de cómputo</label>
             <label for="checkboxSalaVideo"><input type="checkbox" name="op4" id="checkboxSalaVideo">Sala de videoconferencia</label>
        </div>
+
        {{-- Formulario --}}
        <div class="formulario-container col-xs-6 ">
         <form action="" class="flex flex-col col-xs-12 gap">
             <div>
                 <label for="numEquipos">¿Cuantos equipos de cómputo usará?</label>
             <div class="flex flex-col">
-                <input id="numEquipos" type="number" name="numEquipos" min="1" max="40" class="col-xs-4" required/>
+                <input id="numEquipos" type="number" name="numEquipos" min="1" max="40" required/>
             </div>
             </div>
             
             <div class="flex flex-col">
                 <label for="start">Fecha para reservar:</label>
-            <input type="date" id="fecha" name="fecha" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+15 days')) }}" class="col-xs-4" required>
+            <input type="date" id="fecha" name="fecha" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+15 days')) }}" required>
             </div>
             
             <div>
@@ -80,26 +88,36 @@
             <textarea name="textareaOpcional" id="textareaOpcional" rows="5" style="resize: none"></textarea>
             </div>
             
-            <label for="RPEInput">RPE</label>
-            <input type="text" name="RPEInput" id="RPEInput">
+            <div class="flex flex-col">
+                <label for="RPEInput">RPE</label>
+                <input type="text" name="RPEInput" id="RPEInput">
+            </div>
 
-            <label for="NombreComInput">Nombre completo</label>
-            <input type="text" name="NombreComInput" id="NombreComInput">
+            <div class="flex flex-col">
+                <label for="NombreComInput">Nombre completo</label>
+                <input type="text" name="NombreComInput" id="NombreComInput">
+            </div>
 
-            <label for="MateriaInput">Materia</label>
-            <input type="text" name="MateriaInput" id="MateriaInput">
+            <div class="flex flex-col">
+                <label for="MateriaInput">Materia</label>
+                <input type="text" name="MateriaInput" id="MateriaInput">
+            </div>
 
-            <label for="ActividadInput">Actividad a realizar (clase/curso/examen/otro)</label>
-            <input type="text" name="ActividadInput" id="ActividadInput">
+            <div class="flex flex-col">
+                <label for="ActividadInput">Actividad a realizar (clase/curso/examen/otro)</label>
+                <input type="text" name="ActividadInput" id="ActividadInput">
+            </div>
 
-            <label for="NombreActInput">Nombre del curso a realizar</label>
-            <input type="text" name="NombreActInput" id="NombreActInput">
+            <div class="flex flex-col">
+                <label for="NombreActInput">Nombre del curso a realizar</label>
+                <input type="text" name="NombreActInput" id="NombreActInput">
+            </div>
 
-            <input type="submit" value="Save" />
+            <input type="submit" name="AgendarButton" value="Agendar" id="AgendarButton" class="btn btn-primary">
         </form>
        </div>
-       </div>
-    </main>
+       
+   
     
 </body>
 

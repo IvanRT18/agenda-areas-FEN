@@ -39,3 +39,11 @@
 .gap{
     gap: 2rem;
 }
+
+.formulario-container{
+    margin-top: 2rem;
+}
+
+.align-center{
+    align-items: center;
+}
