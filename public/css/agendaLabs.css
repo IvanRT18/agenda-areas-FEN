@@ -32,7 +32,11 @@
     font-size: 1.85rem;
 }
 
-.checkbox-container input[type="checkbox"] {
+.checkbox-container input[type="radio"] {
+    margin-right: 1rem;
+}
+
+#checkboxProyector{
     margin-right: 1rem;
 }
 
@@ -51,3 +55,20 @@
 .mb-4{
     margin-bottom: 4rem;
 }
+
+
+.w-100{
+    width: 100%;
+}
+
+input:invalid + span::after {
+    position: absolute;
+    content: "✖";
+    padding-left: 5px;
+  }
+  
+  input:valid + span::after {
+    position: absolute;
+    content: "✓";
+    padding-left: 5px;
+  }

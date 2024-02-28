@@ -53,16 +53,17 @@
         {{-- Checkboxes de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
         <h1>Área para reservar:</h1>
-        <div class="checkbox-container col-xs-6">
-            <label for="checkboxAuditorio"><input type="checkbox" name="op1" id="checkboxAuditorio">Auditorio</label>
-            <label for="checkboxAulaMagna"><input type="checkbox" name="op2" id="checkboxAulaMagna">Aula magna (propedéutico)</label>
-            <label for="checkboxLabComp"><input type="checkbox" name="op3" id="checkboxLabComp">Laboratorio de cómputo</label>
-            <label for="checkboxSalaVideo"><input type="checkbox" name="op4" id="checkboxSalaVideo">Sala de videoconferencia</label>
+        <div class="checkbox-container col-xs-6" id="checkboxContainer">
+            <label for="checkboxAuditorio"><input type="radio" name="chAreas" id="checkboxAuditorio">Auditorio</label>
+            <label for="checkboxAulaMagna"><input type="radio" name="chAreas" id="checkboxAulaMagna">Aula magna (propedéutico)</label>
+            <label for="checkboxLabComp"><input type="radio" name="chAreas" id="checkboxLabComp">Laboratorio de cómputo</label>
+            <label for="checkboxSalaVideo"><input type="radio" name="chAreas" id="checkboxSalaVideo">Sala de videoconferencia</label>
        </div>
 
        {{-- Formulario --}}
        <div class="formulario-container col-xs-6 mb-4">
         <form action="" class="flex flex-col col-xs-12 gap">
+            @csrf
             <div>
                 <label for="numEquipos">¿Cuantos equipos de cómputo usará?</label>
             <div class="flex flex-col">
@@ -77,7 +78,11 @@
 
             <div class="flex flex-col">
                 <label for="time">Hora para reservar:</label>
-                <input type="time" id="time" name="time" min="7:00" max="20:00" required>
+                <div class="col-12">
+                    <input type="time" id="time" name="time" min="07:00" max="20:00" class="w-100" required>
+                    <span class="validity"></span>
+                </div>
+               
             </div>
             
             <div>
@@ -122,7 +127,7 @@
     </div>
        
    
-       <div id="Creditos">          
+     <div id="Creditos">          
         <h4>Universidad Autónoma de San Luis Potosí</h4>
             Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
         San Luis Potosí, S.L.P. México                <br>
