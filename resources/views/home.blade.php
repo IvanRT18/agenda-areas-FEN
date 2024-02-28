@@ -7,44 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />   
     <link rel="icon" href="favicon.ico">
 
-    {{-- @vite('resources/css/app.css') --}}
+    @vite('resources/css/app.css')
 
 
     <!-- Bootstrap -->
-    <link href={{asset('css/bootstrap.min.css')}} rel="stylesheet" /> 
+    {{-- <link href={{asset('css/bootstrap.min.css')}} rel="stylesheet" />  --}}
     <!-- UASLP -->
-    <link href={{asset('css/UASLP.css')}} rel="stylesheet" />
-    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
+    {{-- <link href={{asset('css/UASLP.css')}} rel="stylesheet" /> --}}
+    {{-- <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>  --}}
 </head>
 
-<body class="container">
-    <div>
-        <div class="Encabezado">
-            <div class="escudos">
-                <div class="escudo escudoUASLP">
-                    <a href={{url('http://www.uaslp.mx')}}>
-                        <img id="UASLPLogo" src={{asset('img/UASLP.png')}} class="img-responsive">
-                        <img id="UASLPLogoMobile" src={{asset('img/UASLPVertical.png')}} class="img-responsive">
-                    </a>
-                </div>
-                <div class="lineaEscudo"></div>
-                <div class="titulo">
-                    <a href="/">
-                        <span id="Titulo">Agenda de áreas - Fac. Enfermería y Nutrición</span>
-                        <span id="TituloMobile">Agenda de áreas</span>
-                    </a>
-                </div>
+<body class="lg:container mx-auto">
+    {{-- Header --}}
+    <header class="bg-primary h-40 flex w-full">
+        {{-- Escudos --}}
+        <div class="flex w-1/2 items-center">
+            {{-- Escudo UASLP --}}
+            <div class="h-20 w-1/2 mx-4 ">
+                <img src="/img/UASLP.png" alt="Escudo UASLP" class="bg-center bg-cover h-full">
             </div>
-            <div class="foto"></div>
-        </div>
+            {{-- Linea Escudo --}}
+            <div class="border border-white h-20 mx-1">
 
-        <div class="Idioma" style="display:block"></div>
-
-        <div class="Lema">
-            <div class="LemaAzul"><img src={{asset('img/amarillo_azul.png')}}></div>
-            <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
+            </div>
+            
+            {{-- Titulo --}}
+            <div class="w-1/2">
+                <p class="text-white text-xl align-middle">Inicio de Sesión Institucional</p>
+            </div>
         </div>
-    </div>
+        {{-- Foto edificio central --}}
+        <div class="flex w-1/2 h-full">
+                <img src="/img/edificio.jpg" alt="Edificio UASLP" class="h-full bg-center bg-cover">
+        </div>
+    </header>
 
     <div class="">
         
