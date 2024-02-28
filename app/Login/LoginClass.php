@@ -94,6 +94,7 @@ class LoginClass
 		//-----------------------------------------------
 		// Preferible utilizar sesiones, Ej: if(!isset($_SESION['user']))..etc
 		header('Location: '.$this->_svc_return."?usuario=".$this->data['Usuario']."&tipo=".$this->data['Tipo']);
+		exit;
 	}
 	
 	public function autentificar()
@@ -118,6 +119,7 @@ class LoginClass
 				echo  "No se encontró cookie.";
 				//Se Redirecciona a página inicial para iniciar proceso de login.
 				header('Location: '.$this->_svc_return);
+				exit;
 			}	
 		}
 		//No existe tiket. Se crea nuevo y se envia a pantalla de login.
@@ -200,7 +202,8 @@ class LoginClass
 					 $this->mensaje = "ERROR: Inicio de Sesión no valido.";
 					 break; 
 				case 1: // Ok  Cookie Valida!                                
-						//Obtener Resultado                           
+						//Obtener Resultado
+						//Aquí se obtiene el usuario y el tipo de usuario                        
 						$Respuesta = $this->_svc_instance->EstadoUsuario($parametros);
 						$xmlObject = simplexml_load_string($Respuesta->EstadoUsuarioResult);
 						

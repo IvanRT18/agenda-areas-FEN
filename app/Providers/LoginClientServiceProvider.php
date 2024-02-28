@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+ob_start();
+
 
 $LoginParams = config('login_param');
 
@@ -62,6 +64,7 @@ class LoginClientServiceProvider extends ServiceProvider
 		//-----------------------------------------------
 		// Preferible utilizar sesiones, Ej: if(!isset($_SESION['user']))..etc
 		header('Location: '.$this->_svc_return."?usuario=".$this->data['Usuario']."&tipo=".$this->data['Tipo']);
+		exit;
 	}
 	
 	public function autentificar()
@@ -85,6 +88,7 @@ class LoginClientServiceProvider extends ServiceProvider
 				echo  "No se encontró cookie.";
 				//Se Redirecciona a página inicial para iniciar proceso de login.
 				header('Location: '.$this->_svc_return);
+				exit;
 			}	
 		}
 		//No existe tiket. Se crea nuevo y se envia a pantalla de login.
@@ -123,6 +127,7 @@ class LoginClientServiceProvider extends ServiceProvider
 		setcookie("SC",$sesionId,time()+600);
 		//Se redirige a pantalla de Login institucional
 		header('Location: '.$this->_svc_form_url.'?Ticket='.$ticket);
+		exit;
 	}
 
 	private function _verificarTicket()

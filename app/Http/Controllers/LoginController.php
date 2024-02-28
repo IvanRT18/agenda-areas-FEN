@@ -24,7 +24,10 @@ class LoginController extends Controller
             $cliente_login = new LoginClass($LoginParams['serviceUrl'], $LoginParams['serviceLoginFormUrl'], $LoginParams['serviceClientId'], $LoginParams['serviceReturnURL']);
             // var_dump($cliente_login);
 			$cliente_login->autentificar();
-            // var_dump('Despues de identificarse');
+
+            //Asignación de user y tipo user a $GET
+            
+
 			echo($cliente_login->mensaje);
 		}
 		//Si existe la Sesión de Usuario.
@@ -33,7 +36,7 @@ class LoginController extends Controller
             var_dump('Sesión sí existente');
             var_dump($_GET);
 			header('Location: '."http://localhost:8000/inicio.php?user=".$_GET['usuario']."&type=".$_GET['tipo']);
-            // exit;
+            exit;
 		}
     }
 
