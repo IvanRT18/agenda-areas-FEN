@@ -71,8 +71,13 @@
             </div>
             
             <div class="flex flex-col">
-                <label for="start">Fecha para reservar:</label>
-            <input type="date" id="fecha" name="fecha" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+15 days')) }}" required>
+                <label for="fecha">Fecha para reservar:</label>
+            <input type="date" id="fecha" name="fecha" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+            </div>
+
+            <div class="flex flex-col">
+                <label for="time">Hora para reservar:</label>
+                <input type="time" id="time" name="time" min="7:00" max="20:00" required>
             </div>
             
             <div>
@@ -125,5 +130,6 @@
         ©<span id="lbAño">2024</span> © Todos los derechos reservados.           
    </div>
 </body>
+<script src="js/index.js"></script>
 
 </html>
