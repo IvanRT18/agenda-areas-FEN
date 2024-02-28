@@ -203,7 +203,7 @@ class LoginClass
 					 break; 
 				case 1: // Ok  Cookie Valida!                                
 						//Obtener Resultado
-						//Aquí se obtiene el usuario y el tipo de usuario                        
+						//***** Aquí se obtiene el usuario y el tipo de usuario      ***                  
 						$Respuesta = $this->_svc_instance->EstadoUsuario($parametros);
 						$xmlObject = simplexml_load_string($Respuesta->EstadoUsuarioResult);
 						

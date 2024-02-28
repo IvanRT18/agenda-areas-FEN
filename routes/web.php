@@ -21,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index']);
 
-Route::get('index?Ticket={ticket}', function($ticket){
-    var_dump('ruta con ticket tomada');
-    var_dump($ticket);
-    return view('home', compact("ticket"));
-});
+// Route::get('index?Ticket={ticket}', function($ticket){
+//     var_dump('ruta con ticket tomada');
+//     var_dump($ticket);
+//     return view('home', compact("ticket"));
+// });
 
 // Route::get('index', function(){
 //     var_dump('ruta solo index');
@@ -35,6 +35,6 @@ Route::get('index?Ticket={ticket}', function($ticket){
 Route::get('index', [LoginController::class, 'index']);
 
 Route::get('inicio', function(){
-    var_dump('dentro de la página inicio');
-    return view('inicio');
+    // var_dump('dentro de la página inicio');
+    return view('home');
 });

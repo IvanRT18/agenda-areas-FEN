@@ -6,11 +6,15 @@
     <title>Agenda de laboratorios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />   
     <link rel="icon" href="favicon.ico">
+
+    {{-- @vite('resources/css/app.css') --}}
+
+
     <!-- Bootstrap -->
-    <link href={{asset('css/bootstrap.min.css')}} rel="stylesheet" />
+    <link href={{asset('css/bootstrap.min.css')}} rel="stylesheet" /> 
     <!-- UASLP -->
     <link href={{asset('css/UASLP.css')}} rel="stylesheet" />
-    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
+    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
 </head>
 
 <body class="container">
@@ -43,7 +47,10 @@
     </div>
 
     <div class="">
-        <h1>Agenda de áreas comúnes</h1>
+        
+            <h1>Agenda de áreas comúnes</h1>
+            <h1>{{$_GET["user"]}}</h1>
+       
         {{-- Checkboxes de areas para reservar --}}
        <div class="flex contenido">
         <div class="checkbox-container col-xs-6">
@@ -77,6 +84,20 @@
             <textarea name="textareaOpcional" id="textareaOpcional" rows="5" style="resize: none"></textarea>
             </div>
             
+            <label for="RPEInput">RPE</label>
+            <input type="text" name="RPEInput" id="RPEInput">
+
+            <label for="NombreComInput">Nombre completo</label>
+            <input type="text" name="NombreComInput" id="NombreComInput">
+
+            <label for="MateriaInput">Materia</label>
+            <input type="text" name="MateriaInput" id="MateriaInput">
+
+            <label for="ActividadInput">Actividad a realizar (clase/curso/examen/otro)</label>
+            <input type="text" name="ActividadInput" id="ActividadInput">
+
+            <label for="NombreActInput">Nombre del curso a realizar</label>
+            <input type="text" name="NombreActInput" id="NombreActInput">
 
             <input type="submit" value="Save" />
         </form>
