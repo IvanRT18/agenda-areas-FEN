@@ -48,6 +48,12 @@
         <div>
             <h1>Agenda de áreas comúnes</h1>
             <h1>{{$_GET["user"]}}</h1>
+
+            @if(session('status'))
+            <div>
+                {{ session('status') }}
+            </div>
+          @endif
         </div>
 
         {{-- Checkboxes de areas para reservar --}}

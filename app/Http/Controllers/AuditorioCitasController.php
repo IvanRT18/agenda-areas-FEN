@@ -7,14 +7,19 @@ use Illuminate\Http\Request;
 
 class AuditorioCitasController extends Controller
 {
-    
+    public function index()
+    {
+        return view('home');
+    }
+
+
     public function store(Request $request)
     {
         $auditorioCita = new AuditorioCita();
         $auditorioCita->numEquipos = $request->numEquipos;
         $auditorioCita->fechaReservada = $request->fechaReservada;
         $auditorioCita->horaReservada = $request->horaReservada;
-        if ($request->usaProyecto) //Si es 1 (osea si se selecciono)
+        if ($request->usaProyecto === 1) //Si es 1 (osea si se selecciono)
             $auditorioCita->usaProyector = true;
         else
             $auditorioCita->usaProyector = false;
@@ -27,5 +32,7 @@ class AuditorioCitasController extends Controller
         $auditorioCita->actividad = $request->actividad;
         $auditorioCita->nombreCurso = $request->nombreCurso;
         $auditorioCita->save();
+
+        return redirect('inicio')->with('status', 'Se ha reservado el área correctamente');
     }
 }
