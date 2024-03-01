@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditorioCitasController;
 use App\Http\Controllers\LoginController;
 use App\Login\login_client;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,4 @@ Route::get('inicio', function(){
     return view('home');
 });
 
-// Route::get('add-fo');
+Route::post('guarda-auditorio-cita', [AuditorioCitasController::class, 'store']);

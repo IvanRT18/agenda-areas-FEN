@@ -61,9 +61,9 @@
        </div>
 
        {{-- Formulario --}}
-       <div class="formulario-container col-xs-6 mb-4">
-        <form action="" class="flex flex-col col-xs-12 gap">
-            @csrf
+       <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}" >
+           @csrf
+        <div class="flex flex-col col-xs-12 gap">
             <div>
                 <label for="numEquipos">¿Cuantos equipos de cómputo usará?</label>
             <div class="flex flex-col">
@@ -72,57 +72,57 @@
             </div>
             
             <div class="flex flex-col">
-                <label for="fecha">Fecha para reservar:</label>
-            <input type="date" id="fecha" name="fecha" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+                <label for="fechaReservada">Fecha para reservar:</label>
+            <input type="date" id="fechaReservada" name="fechaReservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
             </div>
 
             <div class="flex flex-col">
-                <label for="time">Hora para reservar:</label>
+                <label for="horaReservada">Hora para reservar:</label>
                 <div class="col-12">
-                    <input type="time" id="time" name="time" min="07:00" max="20:00" class="w-100" required>
+                    <input type="time" id="horaReservada" name="horaReservada" min="07:00" max="20:00" class="w-100" required>
                     <span class="validity"></span>
                 </div>
                
             </div>
             
             <div>
-                <label for="checkboxProyector"><input type="checkbox" name="opProyetor" id="checkboxProyector">¿Usará el proyector del laboratorio? (Opcional)</label>
+                <label for="usaProyector"><input type="checkbox" name="usaProyector" id="usaProyector">¿Usará el proyector del laboratorio? (Opcional)</label>
             </div>
 
             <div class="flex flex-col">
                 <strong>Opcional:</strong>
-            <label for="textareaOpcional">¿Necesita de algo en particular? (Software, cañones, bocinas, étc)</label>
-            <textarea name="textareaOpcional" id="textareaOpcional" rows="5" style="resize: none"></textarea>
+            <label for="reqAdicionales">¿Necesita de algo en particular? (Software, cañones, bocinas, étc)</label>
+            <textarea name="reqAdicionales" id="reqAdicionales" rows="5" style="resize: none"></textarea>
             </div>
             
             <div class="flex flex-col">
-                <label for="RPEInput">RPE</label>
-                <input type="text" name="RPEInput" id="RPEInput">
+                <label for="Rpe">RPE</label>
+                <input type="text" name="Rpe" id="Rpe">
             </div>
 
             <div class="flex flex-col">
-                <label for="NombreComInput">Nombre completo</label>
-                <input type="text" name="NombreComInput" id="NombreComInput">
+                <label for="nombreCompleto">Nombre completo</label>
+                <input type="text" name="nombreCompleto" id="nombreCompleto">
             </div>
 
             <div class="flex flex-col">
-                <label for="MateriaInput">Materia</label>
-                <input type="text" name="MateriaInput" id="MateriaInput">
+                <label for="materia">Materia</label>
+                <input type="text" name="materia" id="materia">
             </div>
 
             <div class="flex flex-col">
-                <label for="ActividadInput">Actividad a realizar (clase/curso/examen/otro)</label>
-                <input type="text" name="ActividadInput" id="ActividadInput">
+                <label for="actividad">Actividad a realizar (clase/curso/examen/otro)</label>
+                <input type="text" name="actividad" id="actividad">
             </div>
 
             <div class="flex flex-col">
-                <label for="NombreActInput">Nombre del curso a realizar</label>
-                <input type="text" name="NombreActInput" id="NombreActInput">
+                <label for="nombreCurso">Nombre del curso a realizar</label>
+                <input type="text" name="nombreCurso" id="nombreCurso">
             </div>
 
             <input type="submit" name="AgendarButton" value="Agendar" id="AgendarButton" class="btn btn-primary">
-        </form>
-       </div>
+        </div>
+    </form>
 
     </div>
        
