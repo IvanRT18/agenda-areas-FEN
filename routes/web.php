@@ -38,3 +38,5 @@ Route::get('inicio', function(){
     // var_dump('dentro de la página inicio');
     return view('home');
 });
+
+// Route::get('add-fo');

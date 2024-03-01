@@ -26,13 +26,13 @@
     margin-top: 5rem;
 }
 
-.checkbox-container{
+.radio-container{
     display: flex;
     flex-direction: column;
     font-size: 1.85rem;
 }
 
-.checkbox-container input[type="radio"] {
+.radio-container input[type="radio"] {
     margin-right: 1rem;
 }
 

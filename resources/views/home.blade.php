@@ -53,7 +53,7 @@
         {{-- Checkboxes de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
         <h1>Área para reservar:</h1>
-        <div class="checkbox-container col-xs-6" id="checkboxContainer">
+        <div class="radio-container col-xs-6" id="radioContainer">
             <label for="checkboxAuditorio"><input type="radio" name="chAreas" id="checkboxAuditorio">Auditorio</label>
             <label for="checkboxAulaMagna"><input type="radio" name="chAreas" id="checkboxAulaMagna">Aula magna (propedéutico)</label>
             <label for="checkboxLabComp"><input type="radio" name="chAreas" id="checkboxLabComp">Laboratorio de cómputo</label>
@@ -86,7 +86,7 @@
             </div>
             
             <div>
-                <label for="checkboxProyector"><input type="checkbox" name="opProyetor" id="checkboxProyector">¿Usará el proyector del laboratorio?</label>
+                <label for="checkboxProyector"><input type="checkbox" name="opProyetor" id="checkboxProyector">¿Usará el proyector del laboratorio? (Opcional)</label>
             </div>
 
             <div class="flex flex-col">
