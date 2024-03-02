@@ -19,7 +19,7 @@ class AuditorioCitasController extends Controller
         $auditorioCita->numEquipos = $request->numEquipos;
         $auditorioCita->fechaReservada = $request->fechaReservada;
         $auditorioCita->horaReservada = $request->horaReservada;
-        if ($request->usaProyecto === 1) //Si es 1 (osea si se selecciono)
+        if ($request->usaProyector == 'true') //Si es 1 (osea si se selecciono)
             $auditorioCita->usaProyector = true;
         else
             $auditorioCita->usaProyector = false;

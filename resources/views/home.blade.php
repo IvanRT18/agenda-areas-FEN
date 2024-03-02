@@ -66,7 +66,7 @@
             <label for="checkboxSalaVideo"><input type="radio" name="chAreas" id="checkboxSalaVideo">Sala de videoconferencia</label>
        </div>
 
-       {{-- Formulario --}}
+       {{-- Formulario Laboratorio de cómputo--}}
        <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}" >
            @csrf
         <div class="flex flex-col col-xs-12 gap">
@@ -92,7 +92,7 @@
             </div>
             
             <div>
-                <label for="usaProyector"><input type="checkbox" name="usaProyector" id="usaProyector">¿Usará el proyector del laboratorio? (Opcional)</label>
+                <label for="usaProyector"><input type="checkbox" name="usaProyector" id="usaProyector" value="true">¿Usará el proyector del laboratorio? (Opcional)</label>
             </div>
 
             <div class="flex flex-col">
@@ -130,10 +130,42 @@
         </div>
     </form>
 
+    {{-- Formulario auditorio --}}
+    {{-- <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}">
+        <div>
+            <input type="checkbox" name="proyector" id="proyector">
+            <label for="proyector">¿Usará el proyector?</label>
+        </div>
+
+        <div class="flex flex-col">
+            <label for="microfonos">
+                ¿Cuantos microfonos usará?
+            </label>
+            <input type="number" name="microfonos" id="microfonos" min="0" max="2">
+        </div>
+
+        <div>
+            <input type="checkbox" name="computadora" id="computadora">
+            <label for="computadora">¿Usará la computadora?</label>
+        </div>
+
+        <div>
+            <input type="checkbox" name="audio" id="audio">
+            <label for="audio">
+                ¿Usará las bocinas? (multimedia, videos, étc)
+            </label>
+        </div>
+
+        <div>
+            <label for=""></label>
+        </div>
+
+    </form> --}}
+
     </div>
-       
-   
-     <div id="Creditos">          
+
+
+    <div id="Creditos">          
         <h4>Universidad Autónoma de San Luis Potosí</h4>
             Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
         San Luis Potosí, S.L.P. México                <br>

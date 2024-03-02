@@ -22,6 +22,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index']);
 
+Route::get('reservas-laboratorio', function(){
+    return 'Esta es la vista de reservas del laboratorio de enfermería y nutrición';
+});
+
 // Route::get('index?Ticket={ticket}', function($ticket){
 //     var_dump('ruta con ticket tomada');
 //     var_dump($ticket);
