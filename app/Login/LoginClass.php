@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Login;
+session_start();
 ob_start();
+
 /*
  *      /* 
  *      
@@ -93,14 +95,18 @@ class LoginClass
 		// NO DEBE USARSE EN ENTORNOS DE PRODUCCI�N.!!!!!
 		//-----------------------------------------------
 		// Preferible utilizar sesiones, Ej: if(!isset($_SESION['user']))..etc
-		header('Location: '.$this->_svc_return."?usuario=".$this->data['Usuario']."&tipo=".$this->data['Tipo']);
+		$_SESION['usuario'] = $this->data['Usuario'];
+		$_SESION['tipo'] = $this->data['Tipo'];
+		
+		header('Location: '.$this->_svc_return);
+
 		exit;
 	}
 	
 	public function autentificar()
 	{
 		//Verifica si existe un tiket 
-		if(isset($_GET["Ticket"]))
+		if(isset($_SESSION["Ticket"]))
 		{
 			// var_dump('Sí hay ticket');
 			//Verifica existencia de la cookie.
