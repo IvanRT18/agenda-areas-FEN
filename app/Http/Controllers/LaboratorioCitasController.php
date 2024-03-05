@@ -42,8 +42,7 @@ class LaboratorioCitasController extends Controller
     public function showAll(Request $request)
     {
         $reservaciones = LaboratorioCita::all();
-        var_dump($reservaciones);
 
-        return view('muestraReservaciones', ['reservaciones' => $reservaciones]);
+        return view('muestraReservaciones', compact('reservaciones'));
     }
 }

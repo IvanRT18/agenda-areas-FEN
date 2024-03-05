@@ -17,6 +17,8 @@
 </head>
 <body>
     <div class="container">
+
+        {{-- Header --}}
         <div class="Encabezado">
             <div class="escudos">
                 <div class="escudo escudoUASLP">
@@ -42,6 +44,46 @@
             <div class="LemaAzul"><img src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/amarillo_azul.png'></div>
             <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
         </div>
+
+
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Número de equipos</th>
+                    <th>Fecha Reservada</th>
+                    <th>Empieza</th>
+                    <th>Termina</th>
+                    <th>Usa Proyector</th>
+                    <th>Requerimientos adicionales</th>
+                    <th>RPE</th>
+                    <th>Nombre Completo</th>
+                    <th>Materia</th>
+                    <th>Actividad</th>
+                    <th>Nombre Curso</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($reservaciones as $reservacion)
+                    <tr>
+                        <td>{{$reservacion->id}}</td>
+                        <td>{{$reservacion->numEquipos}}</td>
+                        <td>{{$reservacion->fechaReservada}}</td>
+                        <td>{{$reservacion->horaReservaInicio}}</td>
+                        <td>{{$reservacion->horaReservaFinal}}</td>
+                        <td>{{$reservacion->usaProyector}}</td>
+                        <td>{{$reservacion->reqAdicionales}}</td>
+                        <td>{{$reservacion->Rpe}}</td>
+                        <td>{{$reservacion->nombreCompleto}}</td>
+                        <td>{{$reservacion->materia}}</td>
+                        <td>{{$reservacion->actividad}}</td>
+                        <td>{{$reservacion->nombreCurso}}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        {{-- Horarios reservados del laboratorio --}}
+        
     </div>
 
     
