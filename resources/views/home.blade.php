@@ -5,15 +5,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Agenda de laboratorios</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />   
-    <link rel="icon" href="favicon.ico">
+    <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
 
     {{-- @vite('resources/css/app.css') --}}
 
 
     <!-- Bootstrap -->
-    <link href={{asset('css/bootstrap.min.css')}} rel="stylesheet" /> 
+    <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" /> 
     <!-- UASLP -->
-    <link href={{asset('css/UASLP.css')}} rel="stylesheet" />
+    <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
 </head>
 
@@ -23,8 +23,8 @@
             <div class="escudos">
                 <div class="escudo escudoUASLP">
                     <a href={{url('http://www.uaslp.mx')}}>
-                        <img id="UASLPLogo" src={{asset('img/UASLP.png')}} class="img-responsive">
-                        <img id="UASLPLogoMobile" src={{asset('img/UASLPVertical.png')}} class="img-responsive">
+                        <img id="UASLPLogo" src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/UASLP.png' class="img-responsive">
+                        <img id="UASLPLogoMobile" src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/UASLPVertical.png' class="img-responsive">
                     </a>
                 </div>
                 <div class="lineaEscudo"></div>
@@ -41,7 +41,7 @@
         <div class="Idioma" style="display:block"></div>
 
         <div class="Lema">
-            <div class="LemaAzul"><img src={{asset('img/amarillo_azul.png')}}></div>
+            <div class="LemaAzul"><img src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/amarillo_azul.png'></div>
             <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
         </div>
     
@@ -67,7 +67,7 @@
        </div>
 
        {{-- Formulario Laboratorio de cómputo--}}
-       <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}" >
+       <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}" id="formularioLabComp">
            @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div>
@@ -83,12 +83,21 @@
             </div>
 
             <div class="flex flex-col">
-                <label for="horaReservada">Hora para reservar:</label>
+                <label for="horaReservaInicio">Hora para reservar:</label>
                 <div class="col-12">
-                    <input type="time" id="horaReservada" name="horaReservada" min="07:00" max="20:00" class="w-100" required>
-                    <span class="validity"></span>
+                    {{-- <input type="time" id="horaReservaInicio" name="horaReservaInicio" min="07:00" max="20:00" class="w-100" required> --}}
+                    <input type="text" id="horaReservaInicio" name="horaReservaInicio" class="w-100" required/>
+                    {{-- <span class="validity"></span> --}}
                 </div>
-               
+            </div>
+
+            <div class="flex flex-col">
+                <label for="horaReservaFinal">A</label>
+                <div class="col-12">
+                    {{-- <input type="time" id="horaReservaFinal" name="horaReservaFinal" min="07:00" max="20:00" class="w-100" required> --}}
+                    <input type="text" id="horaReservaFinal" name="horaReservaFinal" class="w-100" required/>
+                    {{-- <span class="validity"></span> --}}
+                </div>
             </div>
             
             <div>
@@ -103,32 +112,41 @@
             
             <div class="flex flex-col">
                 <label for="Rpe">RPE</label>
-                <input type="text" name="Rpe" id="Rpe">
+                <input type="text" name="Rpe" id="Rpe" required>
             </div>
 
             <div class="flex flex-col">
                 <label for="nombreCompleto">Nombre completo</label>
-                <input type="text" name="nombreCompleto" id="nombreCompleto">
+                <input type="text" name="nombreCompleto" id="nombreCompleto" required>
             </div>
 
             <div class="flex flex-col">
                 <label for="materia">Materia</label>
-                <input type="text" name="materia" id="materia">
+                <input type="text" name="materia" id="materia" required>
             </div>
 
             <div class="flex flex-col">
                 <label for="actividad">Actividad a realizar (clase/curso/examen/otro)</label>
-                <input type="text" name="actividad" id="actividad">
+                <input type="text" name="actividad" id="actividad" required>
             </div>
 
             <div class="flex flex-col">
                 <label for="nombreCurso">Nombre del curso a realizar</label>
-                <input type="text" name="nombreCurso" id="nombreCurso">
+                <input type="text" name="nombreCurso" id="nombreCurso" required>
             </div>
+
 
             <input type="submit" name="AgendarButton" value="Agendar" id="AgendarButton" class="btn btn-primary">
         </div>
     </form>
+    
+    
+    {{-- <p id="datepairExample">
+        <input type="text" class="date start" />
+        <input type="text" class="time start" /> to
+        <input type="text" class="time end" />
+        <input type="text" class="date end" />
+    </p> --}}
 
     {{-- Formulario auditorio --}}
     {{-- <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}">
@@ -164,6 +182,12 @@
 
     </div>
 
+    {{-- <input type="text" id="date"> --}}
+
+    {{-- <input type="text" id="container"> --}}
+
+    
+
 
     <div id="Creditos">          
         <h4>Universidad Autónoma de San Luis Potosí</h4>
@@ -173,6 +197,11 @@
         ©<span id="lbAño">2024</span> © Todos los derechos reservados.           
    </div>
 </body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{ asset('js/timepicker/jquery.timepicker.css') }}"></script>
+<script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="js/index.js"></script>
+{{-- <script src="{{ asset('js/datepair.js/dist/jquery.datepair.min.js') }}"></script> --}}
 
 </html>

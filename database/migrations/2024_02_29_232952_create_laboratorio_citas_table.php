@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('auditorio_citas', function (Blueprint $table) {
+        Schema::create('laboratorio_citas', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->integer('numEquipos');
             $table->string('fechaReservada');
-            $table->string('horaReservada');
+            $table->string('horaReservaInicio');
+            $table->string('horaReservaFinal');
             $table->boolean('usaProyector');
             $table->text('reqAdicionales');
             $table->integer('Rpe');
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('auditorio_citas');
+        Schema::dropIfExists('laboratorio_citas');
     }
 };

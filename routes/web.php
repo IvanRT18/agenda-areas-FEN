@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuditorioCitasController;
+use App\Http\Controllers\LaboratorioCitasController;
 use App\Http\Controllers\LoginController;
 use App\Login\login_client;
 use Illuminate\Support\Facades\Route;
@@ -23,19 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LoginController::class, 'index']);
 
 Route::get('reservas-laboratorio', function(){
-    return 'Esta es la vista de reservas del laboratorio de enfermería y nutrición';
+    return view('muestraReservaciones');
 });
-
-// Route::get('index?Ticket={ticket}', function($ticket){
-//     var_dump('ruta con ticket tomada');
-//     var_dump($ticket);
-//     return view('home', compact("ticket"));
-// });
-
-// Route::get('index', function(){
-//     var_dump('ruta solo index');
-//     return view('home');
-// });
 
 Route::get('index', [LoginController::class, 'index']);
 
@@ -44,4 +34,4 @@ Route::get('inicio', function(){
     return view('home');
 });
 
-Route::post('guarda-auditorio-cita', [AuditorioCitasController::class, 'store']);
+Route::post('guarda-auditorio-cita', [LaboratorioCitasController::class, 'store']);
