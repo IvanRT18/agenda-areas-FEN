@@ -47,7 +47,7 @@
     
         <div>
             <h1>Agenda de áreas comúnes</h1>
-            <h1>{{$_SESSION["user"]}}</h1>
+            {{-- <h1>{{$_GET["user"]}}</h1> --}}
 
             @if(session('status'))
             <div>
@@ -101,7 +101,7 @@
             </div>
             
             <div>
-                <label for="usaProyector"><input type="checkbox" name="usaProyector" id="usaProyector">¿Usará el proyector del laboratorio? (Opcional)</label>
+                <label for="usaProyector"><input type="checkbox" name="usaProyector" id="usaProyector" value="true">¿Usará el proyector del laboratorio? (Opcional)</label>
             </div>
 
             <div class="flex flex-col">
