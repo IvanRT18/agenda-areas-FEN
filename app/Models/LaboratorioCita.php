@@ -9,4 +9,19 @@ class LaboratorioCita extends Model
 {
     use HasFactory;
     
+    protected $table = 'laboratorio_citas';
+
+    protected $fillable = [
+        'numEquipos',
+        'fechaReservada',
+        'horaReservaInicio',
+        'horaReservaFinal',
+        'usaProyector',
+        'reqAdicionales',
+        'Rpe',
+        'nombreCompleto',
+        'materia',
+        'actividad',
+        'nombreCurso'
+    ];
 }

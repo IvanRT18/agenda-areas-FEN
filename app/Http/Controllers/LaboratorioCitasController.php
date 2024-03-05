@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AuditorioCita;
 use App\Models\LaboratorioCita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
 
 class LaboratorioCitasController extends Controller
 {
@@ -36,5 +37,13 @@ class LaboratorioCitasController extends Controller
         $LabCompCita->save();
 
         return redirect('inicio')->with('status', 'Se ha reservado el área correctamente');
+    }
+
+    public function showAll(Request $request)
+    {
+        $reservaciones = LaboratorioCita::all();
+        var_dump($reservaciones);
+
+        return view('muestraReservaciones', ['reservaciones' => $reservaciones]);
     }
 }

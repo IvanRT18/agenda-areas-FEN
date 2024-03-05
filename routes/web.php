@@ -23,9 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index']);
 
-Route::get('reservas-laboratorio', function(){
-    return view('muestraReservaciones');
-});
+Route::get('reservas-laboratorio', [LaboratorioCitasController::class, 'showAll']);
 
 Route::get('index', [LoginController::class, 'index']);
 
