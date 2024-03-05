@@ -18,7 +18,7 @@ class LoginController extends Controller
         // var_dump($LoginParams);
         //Si no existe sesi�n de Usuario
 
-		if(!isset($_GET['usuario']) && !isset($_GET['tipo']))
+		if(!isset($_SESSION['usuario']) && !isset($_SESSION['tipo']))
 		{
             // var_dump('Sesión no existente');
             $cliente_login = new LoginClass($LoginParams['serviceUrl'], $LoginParams['serviceLoginFormUrl'], $LoginParams['serviceClientId'], $LoginParams['serviceReturnURL']);
@@ -34,8 +34,8 @@ class LoginController extends Controller
 		else
 		{
             var_dump('Sesión sí existente');
-            var_dump($_GET);
-			header('Location: '."http://localhost:8000/inicio?user=".$_GET['usuario']."&type=".$_GET['tipo']);
+            var_dump($_SESSION);
+			header('Location: '."http://localhost:8000/inicio?user=".$_SESSION['usuario']."&type=".$_SESSION['tipo']);
             exit;
 		}
     }

@@ -70,7 +70,7 @@ class LoginClientServiceProvider extends ServiceProvider
 	public function autentificar()
 	{
 		//Verifica si existe un tiket 
-		if(isset($_GET["Ticket"]))
+		if(isset($_SESSION["Ticket"]))
 		{
 			//Verifica existencia de la cookie.
 			if(isset($_COOKIE["SC"]))

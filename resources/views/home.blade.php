@@ -47,7 +47,7 @@
     
         <div>
             <h1>Agenda de áreas comúnes</h1>
-            {{-- <h1>{{$_GET["user"]}}</h1> --}}
+            <h1>{{$_SESSION["user"]}}</h1>
 
             @if(session('status'))
             <div>
@@ -101,7 +101,7 @@
             </div>
             
             <div>
-                <label for="usaProyector"><input type="checkbox" name="usaProyector" id="usaProyector" value="true">¿Usará el proyector del laboratorio? (Opcional)</label>
+                <label for="usaProyector"><input type="checkbox" name="usaProyector" id="usaProyector">¿Usará el proyector del laboratorio? (Opcional)</label>
             </div>
 
             <div class="flex flex-col">
@@ -139,14 +139,6 @@
             <input type="submit" name="AgendarButton" value="Agendar" id="AgendarButton" class="btn btn-primary">
         </div>
     </form>
-    
-    
-    {{-- <p id="datepairExample">
-        <input type="text" class="date start" />
-        <input type="text" class="time start" /> to
-        <input type="text" class="time end" />
-        <input type="text" class="date end" />
-    </p> --}}
 
     {{-- Formulario auditorio --}}
     {{-- <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}">
@@ -181,12 +173,6 @@
     </form> --}}
 
     </div>
-
-    {{-- <input type="text" id="date"> --}}
-
-    {{-- <input type="text" id="container"> --}}
-
-    
 
 
     <div id="Creditos">          
