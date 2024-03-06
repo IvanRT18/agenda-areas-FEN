@@ -8,8 +8,8 @@ let disabledHoras = [];
 console.log(checkLabComp);
 
 $(function(){
-  $('#horaReservaInicio').disabled = true;
-  $('#horaReservaFinal').disabled = true;
+  $('#horaReservaInicio').prop('disabled', true);
+  $('#horaReservaFinal').prop('disabled', true);
 
   $('#horaReservaInicio').timepicker({
     'minTime': '7:00am',
@@ -58,11 +58,13 @@ diaReservar.on('change', function(){
     $('#horaReservaInicio').timepicker({
       'minTime': '7:00am',
       'maxTime': '9:01pm',
+      'step' : 60,
       'disableTimeRanges': disabledHoras //Estoy tratando de agregar estas horas dinamicamente
     }); 
     $('#horaReservaFinal').timepicker({
       'minTime': '7:00am',
       'maxTime': '9:01pm',
+      'step' : 60,
       'disableTimeRanges': disabledHoras
     }); 
 
@@ -74,6 +76,5 @@ diaReservar.on('change', function(){
     
     $('#horaReservaInicio').prop('disabled', false);
     $('#horaReservaFinal').prop('disabled', false);
-
   });
 });

@@ -14,7 +14,6 @@ class LaboratorioCitasController extends Controller
         return view('home');
     }
 
-
     public function store(Request $request)
     {
         $LabCompCita = new LaboratorioCita();
@@ -43,7 +42,13 @@ class LaboratorioCitasController extends Controller
     {
         $reservaciones = LaboratorioCita::all();
 
-        return view('muestraReservaciones', compact('reservaciones'));
+        return view('adminLaboratorioCitas', compact('reservaciones'));
+    }
+
+    public function showHorasDia(Request $request)
+    {
+        // $reservaciones = LaboratorioCita::where('fechaReservada', $fecha)->get();
+        return view('reservacionesLaboratorio');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día

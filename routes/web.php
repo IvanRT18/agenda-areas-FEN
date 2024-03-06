@@ -19,7 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LoginController::class, 'index']);
 
-Route::get('reservas-laboratorio', [LaboratorioCitasController::class, 'showAll']);
+Route::get('admin-reservas-laboratorio', [LaboratorioCitasController::class, 'showAll']);
+
+Route::get('reservas-laboratorio', [LaboratorioCitasController::class, 'showHorasDia']);
 
 Route::get('index', [LoginController::class, 'index']);
 

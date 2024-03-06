@@ -56,6 +56,10 @@
     margin-bottom: 4rem;
 }
 
+.mt-table{
+    margin-top: 220px;
+}
+
 
 .w-100{
     width: 100%;
@@ -79,4 +83,35 @@ input:invalid + span::after {
 
 .mostrar{
     display: block;
+}
+
+.text-center{
+    text-align: center;
+}
+
+
+#diaReservaLab{
+    font-size: 3.5rem;
+}
+
+.hora-container{
+    background-color: #129c3c;
+    margin-top: 2.5rem;
+    padding: 2rem;
+    border: 2px solid black;
+    border-radius: 20px;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.hora-reservada{
+    background-color: red;
+    margin-top: 2.5rem;
+    padding: 2rem;
+    border: 2px solid black;
+    border-radius: 20px;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
 }
