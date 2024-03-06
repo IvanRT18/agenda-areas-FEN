@@ -1,5 +1,9 @@
 const checkLabComp = $('#checkboxLabComp');
 const diaReservar = $('#fechaReservada');
+const horaReservaInicio = $('#horaReservaInicio');
+const horaReservaFinal = $('#horaReservaFinal');
+const horasReservadas  = [];
+const disabledHoras = [];
 
 console.log(checkLabComp);
 
@@ -27,6 +31,8 @@ diaReservar.on('change', function(){
   let fechaSeleccionada = $(this).val();
   console.log('Día seleccionado', fechaSeleccionada);
 
+  // Se deshabilita el input de la fecha para que el usuario no haga otra solicitud
+  // hasta que se termine la primera
   $(this).prop('disabled', true);
 
   //Muestra mensaje de que se estan cargando las horas reservadas
@@ -36,9 +42,19 @@ diaReservar.on('change', function(){
   $.get('/horas-agendadas/' + fechaSeleccionada, function(data){
     console.log('Horas agendadaas:', data);
 
+    data.map((hora) => {
+      const newParHoras = [];
+      newParHoras.push(hora.horaReservaInicio);
+      newParHoras.push(hora.horaReservaFinal);
+      horasReservadas.push(newParHoras);
+    });
+
+    console.log('horas reservadas ese día', horasReservadas);
+
     //Se quita el mensaje de carga
     $('#pantallaCarga').addClass('hidden');
     
+    //Se vuelve a habilitar el input de la fecha
     diaReservar.prop('disabled', false);
   });
 });
