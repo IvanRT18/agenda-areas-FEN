@@ -2,28 +2,13 @@ const checkLabComp = $('#checkboxLabComp');
 const diaReservar = $('#fechaReservada');
 const horaReservaInicio = $('#horaReservaInicio');
 const horaReservaFinal = $('#horaReservaFinal');
-const horasReservadas  = [];
-const disabledHoras = [];
+// const horasReservadas  = [];
+let disabledHoras = [];
 
 console.log(checkLabComp);
 
 $(function(){
-  $('#horaReservaInicio').timepicker({
-    'minTime': '7:00am',
-	  'maxTime': '9:01pm',
-    'disableTimeRanges': [
-      ['12am', '7am'],
-      ['9:01pm', '11:31pm']
-    ]
-  }); 
-  $('#horaReservaFinal').timepicker({
-    'minTime': '7:00am',
-	  'maxTime': '9:01pm',
-    'disableTimeRanges': [
-      ['12am', '7am'],
-      ['9:01pm', '11:31pm']
-    ]
-  }); 
+  
 });
 
 // Cuando el usuario elija un día para reservar
@@ -42,14 +27,39 @@ diaReservar.on('change', function(){
   $.get('/horas-agendadas/' + fechaSeleccionada, function(data){
     console.log('Horas agendadaas:', data);
 
-    data.map((hora) => {
-      const newParHoras = [];
-      newParHoras.push(hora.horaReservaInicio);
-      newParHoras.push(hora.horaReservaFinal);
-      horasReservadas.push(newParHoras);
+    disabledHoras = [];
+
+    data.forEach(hora => {
+      // Se agrega cada rango de hora reservada al arreglo
+      disabledHoras.push([hora.horaReservaInicio, hora.horaReservaFinal]);
     });
 
-    console.log('horas reservadas ese día', horasReservadas);
+    console.log('horas reservadas ese día', disabledHoras);
+
+
+    $('#horaReservaInicio').timepicker({
+      'minTime': '7:00am',
+      'maxTime': '9:01pm',
+      'disableTimeRanges': disabledHoras //Estoy tratando de agregar estas horas dinamicamente
+    }); 
+    $('#horaReservaFinal').timepicker({
+      'minTime': '7:00am',
+      'maxTime': '9:01pm',
+      'disableTimeRanges': disabledHoras
+    }); 
+
+    // $('#horaReservaInicio', '#horaReservaFinal').timepicker('option', 'disabledTimeRanges', disabledHoras);
+    
+    // console.log($('#horaReservaInicio'));
+
+    // console.log($('#horaReservaFinal'));
+
+// Imprime en la consola las opciones actuales del plugin TimePicker
+console.log($('#horaReservaInicio').timepicker('option'));
+
+// Imprime en la consola las opciones actuales del plugin TimePicker
+console.log($('#horaReservaFinal').timepicker('option'));
+
 
     //Se quita el mensaje de carga
     $('#pantallaCarga').addClass('hidden');
