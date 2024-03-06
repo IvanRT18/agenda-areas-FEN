@@ -83,7 +83,9 @@
             <div class="flex flex-col">
                 <label for="fechaReservada">Fecha para reservar:</label>
             <input type="date" id="fechaReservada" name="fechaReservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
-            <span id="pantallaCarga" class="hidden"> <p>Cargando...</p></span>
+
+            <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
+            
             </div>
 
             <div class="flex flex-col">

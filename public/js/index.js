@@ -27,12 +27,18 @@ diaReservar.on('change', function(){
   let fechaSeleccionada = $(this).val();
   console.log('Día seleccionado', fechaSeleccionada);
 
-  $('pantallaCarga').removeClass('hidden');
+  $(this).prop('disabled', true);
 
+  //Muestra mensaje de que se estan cargando las horas reservadas
+  $('#pantallaCarga').removeClass('hidden');
+
+  //Se hace la solicitud ajax para obtener las horas reservadas
   $.get('/horas-agendadas/' + fechaSeleccionada, function(data){
     console.log('Horas agendadaas:', data);
 
-    $('pantallaCarga').addClass('hidden');
-
+    //Se quita el mensaje de carga
+    $('#pantallaCarga').addClass('hidden');
+    
+    diaReservar.prop('disabled', false);
   });
 });
