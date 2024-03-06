@@ -76,3 +76,7 @@ input:invalid + span::after {
   .hidden{
     display: none;
 }
+
+.mostrar{
+    display: block;
+}

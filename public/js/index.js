@@ -1,70 +1,38 @@
-const horaInput = document.getElementById('horaReservada');
-const fechaInput = document.getElementById('fecha');
-const checkboxContainer = document.getElementById('checkboxContainer');
-const checkboxAuditorio = document.getElementById('checkboxAuditorio');
-const checkboxesAreas = document.querySelectorAll('.checkbox-container input[type="checkbox"] ');
-const checkboxProyector = document.getElementById('usaProyector');
-const formContainer = document.getElementById('formularioLabComp');
+const checkLabComp = $('#checkboxLabComp');
+const diaReservar = $('#fechaReservada');
 
-// fechaInput.addEventListener('input', function(e){
-//   var day = new Date(this.value).getUTCDay();
-//   console.log(day);
-//   if(day === 0){
-//     e.preventDefault();
-//     this.value = '';
-//     alert('Domingos no disponibles para agendar');
-//   }
-// });
-
-// for (const checkbox of checkboxesAreas) {
-//     checkbox.addEventListener('checked', function (e) {
-        
-//     })
-// }
-
-console.log(horaInput);
-// console.log(fechaInput);
-// console.log(checkboxContainer);
-// // console.log(checkboxesAreas);
-// console.dir(checkboxAuditorio);
-// console.dir(checkboxProyector);
-
-// // initialize input widgets first
-// $('#datepairExample .time').timepicker({
-//   'showDuration': true,
-//   'timeFormat': 'g:ia'
-// });
-
-// $('#datepairExample .date').datepicker({
-//   'format': 'yyyy-m-d',
-//   'autoclose': true
-// });
-
-// // initialize datepair
-// $('#datepairExample').datepair();
-
-
-// var container = document.getElementById('container')
-// var datepair = new Datepair(container, options);
-
-
-// $('#date').datepicker({
-//   'format': 'yyyy-m-d',
-//   'autoclose': true
-// });
-
-// $('#horaReservada').timepicker({
-// 	'disableTimeRanges': [
-// 		['1am', '7am'],
-// 		['9pm', '12pm']
-// 	]
-// });
+console.log(checkLabComp);
 
 $(function(){
-  $('#horaReservaInicio').timepicker(); 
-  $('#horaReservaFinal').timepicker(); 
+  $('#horaReservaInicio').timepicker({
+    'minTime': '7:00am',
+	  'maxTime': '9:01pm',
+    'disableTimeRanges': [
+      ['12am', '7am'],
+      ['9:01pm', '11:31pm']
+    ]
+  }); 
+  $('#horaReservaFinal').timepicker({
+    'minTime': '7:00am',
+	  'maxTime': '9:01pm',
+    'disableTimeRanges': [
+      ['12am', '7am'],
+      ['9:01pm', '11:31pm']
+    ]
+  }); 
 });
 
-// const horaInput = $('#horaReservada');
+// Cuando el usuario elija un día para reservar
+diaReservar.on('change', function(){
+  let fechaSeleccionada = $(this).val();
+  console.log('Día seleccionado', fechaSeleccionada);
 
-console.log(horaInput.value);
+  $('pantallaCarga').removeClass('hidden');
+
+  $.get('/horas-agendadas/' + fechaSeleccionada, function(data){
+    console.log('Horas agendadaas:', data);
+
+    $('pantallaCarga').addClass('hidden');
+
+  });
+});

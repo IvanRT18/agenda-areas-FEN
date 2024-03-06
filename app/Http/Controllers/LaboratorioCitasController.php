@@ -45,4 +45,12 @@ class LaboratorioCitasController extends Controller
 
         return view('muestraReservaciones', compact('reservaciones'));
     }
+
+    // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
+    public function horasAgendadas($fecha)
+    {
+        $horasAgendadas = LaboratorioCita::where('fechaReservada', $fecha)->get();
+
+        return response()->json($horasAgendadas);
+    }
 }

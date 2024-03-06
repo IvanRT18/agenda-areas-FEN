@@ -14,6 +14,9 @@
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" /> 
     <!-- UASLP -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
+    
+    {{-- Timepicker css --}}
+    <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
 </head>
 
@@ -80,6 +83,7 @@
             <div class="flex flex-col">
                 <label for="fechaReservada">Fecha para reservar:</label>
             <input type="date" id="fechaReservada" name="fechaReservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+            <span id="pantallaCarga" class="hidden"> <p>Cargando...</p></span>
             </div>
 
             <div class="flex flex-col">
@@ -185,7 +189,6 @@
 </body>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="{{ asset('js/timepicker/jquery.timepicker.css') }}"></script>
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="js/index.js"></script>
 {{-- <script src="{{ asset('js/datepair.js/dist/jquery.datepair.min.js') }}"></script> --}}

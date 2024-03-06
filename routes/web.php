@@ -17,10 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
 Route::get('/', [LoginController::class, 'index']);
 
 Route::get('reservas-laboratorio', [LaboratorioCitasController::class, 'showAll']);
@@ -33,3 +29,6 @@ Route::get('inicio', function(){
 });
 
 Route::post('guarda-auditorio-cita', [LaboratorioCitasController::class, 'store']);
+
+Route::get('/horas-agendadas/{fecha}', [LaboratorioCitasController::class, 'horasAgendadas']);
+
