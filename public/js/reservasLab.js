@@ -25,24 +25,29 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
     console.log('horas reservadas ese día', disabledHoras);
 
 
-    // Colorea las horas dependiendo de si están reservadas o no
-horasInicialesArray.forEach(hora => {
+// Colorea las horas dependiendo de si están reservadas o no
+horasInicialesArray.forEach((hora, index) => {
     let reservada = false;
+
     // Recorre el arreglo de horas reservadas y verifica si la hora actual está dentro de alguno de los rangos
     disabledHoras.forEach(rango => {
-        if (hora >= rango[0] && hora <= rango[1]) {
+        if (hora >= rango[0] && hora < rango[1]) {
             reservada = true;
         }
     });
 
-    // Si está en el arreglo de disabledHoras, se agrega la clase hora-reservada
-    if (reservada) {
-        $('#horasContainer').append(`<div class='hora-reservada'>${hora}</div>`);
+    // Agrega la clase hora-reservada si la hora está reservada, o la clase hora-container si no lo está
+    const claseHora = reservada ? 'hora-reservada' : 'hora-container';
+
+    // Si no es la última hora, agrega el div con la clase correspondiente
+    if (index < horasInicialesArray.length) {
+        $('#horasContainer').append(`<div class='${claseHora}'>${hora}</div>`);
     } else {
-        // Si no, entonces no se agrega esa clase
-        $('#horasContainer').append(`<div class='hora-container'>${hora}</div>`);
+        // Si es la última hora, solo agrega el div sin clase adicional
+        $('#horasContainer').append(`<div>${hora}</div>`);
     }
 });
+
 
 });
 
