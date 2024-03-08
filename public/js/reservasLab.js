@@ -1,12 +1,16 @@
 const diasArray = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 let disabledHoras = [];
-let horasInicialesArray = ['7:00am','8:00am','9:00am','10:00am','11:00am','12:00pm','1:00pm','2:00pm','3:00pm','4:00pm','5:00pm','6:00pm','7:00pm','8:00pm','9:00pm'];
+let horasInicialesArray = ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 
 
 //Se obtiene el dia de hoy
 const date = new Date();
 let fullDiaActual = date.toJSON().slice(0, 10);
 console.log(fullDiaActual); // "yyyy-mm-dd"
+
+// console.log(date.getDay());
+// console.log(date.getMonth());
+// console.log(date.getFullYear());
 
 const diaActual = diasArray[date.getDay()];
 $('#diaReservaLab').text(diaActual); //Titulo que indica el dia que se estan consultando los horarios reservados (en este ejemplo se usa el dia de hoy)
@@ -25,15 +29,19 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
     });
 
     console.log('horas reservadas ese día', disabledHoras);
-console.log(disabledHoras);
 
     // Colorea las horas dependiendo de si están reservadas o no
     horasInicialesArray.forEach((hora, index) => {
         let reservada = false;
 
+        const horaActual = stringToDate(hora);
+
         // Recorre el arreglo de horas reservadas y verifica si la hora actual está dentro de alguno de los rangos
         disabledHoras.forEach(rango => {
-            if (hora >= rango[0] && hora < rango[1]) { //Aquí esta el problema, cuando hora = '7:00pm' y compara rango = ['7:00am', '8:00am'] asigna reservada a true cuando eso es falso, ya que la hora que se reservo fue las 7:00 am, y no las 7:00pm
+            const inicioRango = stringToDate(rango[0]);
+            const finRango = stringToDate(rango[1]);
+    
+            if (horaActual >= inicioRango && horaActual < finRango) {
                 reservada = true;
             }
         });
@@ -46,6 +54,37 @@ console.log(disabledHoras);
 
     
 });
+
+
+// Función para convertir una cadena de hora en un objeto Date
+function stringToDate(hourString) {
+    const [hours, minutes] = hourString.split(':').map(Number);
+    return new Date(date.getFullYear(), date.getMonth(), date.getDay(), hours, minutes);
+}
+
+
+
+// _________________
+
+// let disabledHoras = [['07:00', '08:00'], ['14:00', '15:00'], ['17:00', '19:00'], ['08:00', '09:00']];
+// let activeHoras = ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+
+
+
+// activeHoras.forEach((hora, index) => {
+//     let reservada = false;
+
+//     disabledHoras.forEach(rango => {
+//         if (hora >= rango[0] && hora < rango[1]) {
+//             reservada = true;
+//         }
+//     });
+//     const claseHora = reservada ? 'hora-reservada' : 'hora-container';
+
+//     console.log(claseHora);
+// });
+
+ 
 
 
 
