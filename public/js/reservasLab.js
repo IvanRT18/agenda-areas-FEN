@@ -46,10 +46,10 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
             }
         });
 
-        // Agrega la clase hora-reservada si la hora está reservada, o la clase hora-container si no lo está
-        const claseHora = reservada ? 'hora-reservada' : 'hora-container';
+        // Agrega la clase hora-reservada si la hora está reservada, o la clase hora-libre si no lo está
+        const claseHora = reservada ? 'hora-reservada' : 'hora-libre';
 
-        $('#horasContainer').append(`<div class='${claseHora}'>${hora}</div>`);
+        $('#horasContainer').append(`<div class='${claseHora}'>${hora}hrs</div>`);
     });
 
     
@@ -79,7 +79,7 @@ function stringToDate(hourString) {
 //             reservada = true;
 //         }
 //     });
-//     const claseHora = reservada ? 'hora-reservada' : 'hora-container';
+//     const claseHora = reservada ? 'hora-reservada' : 'hora-libre';
 
 //     console.log(claseHora);
 // });

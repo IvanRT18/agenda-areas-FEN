@@ -94,7 +94,7 @@ input:invalid + span::after {
     font-size: 3.5rem;
 }
 
-.hora-container{
+.hora-libre{
     background-color: #129c3c;
     margin-top: 2.5rem;
     padding: 2rem;
