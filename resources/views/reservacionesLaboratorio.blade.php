@@ -9,11 +9,18 @@
     {{-- @vite('resources/css/app.css') --}}
 
 
-    <!-- Bootstrap -->
-    <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" /> 
+    <!-- old Bootstrap -->
+    {{-- <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" />  --}}
+
+    {{-- Nuevo bootstrap --}}
+    <link rel="stylesheet" href="https://www.uaslp.mx/Scripts/bootstrap.bundle.min.js">
+    <link rel="stylesheet" href="https://www.uaslp.mx/Content/bootstrap.min.css">
+
     <!-- UASLP -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
-    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
+
+    {{-- Estilos propios --}}
+    {{-- <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>  --}}
 </head>
 <body>
     <div class="container">
@@ -30,7 +37,7 @@
                 <div class="lineaEscudo"></div>
                 <div class="titulo">
                     <a href="/">
-                        <span id="Titulo">Agenda de áreas - Fac. Enfermería y Nutrición</span>
+                        <span id="Titulo">Horarios reservados</span>
                         <span id="TituloMobile">Agenda de áreas</span>
                     </a>
                 </div>
@@ -45,9 +52,14 @@
             <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
         </div>
 
-        {{-- Horarios reservados del laboratorio --}}
-        <h1 id="diaReservaLab" class="mt-table col-12 text-center"></h1>
+        {{-- Titulo --}}
+        <div class="container-fluid ">
+            <h1 id="diaReservaLab" class="text-center fs-1"></h1>
+            <p class="text-center fs-2">Laboratorio de cómputo</p>
+        </div>
 
+
+        {{-- Horarios reservados del laboratorio --}}
         <div id="horasContainer" class="flex flex-col">
         </div>
     </div>

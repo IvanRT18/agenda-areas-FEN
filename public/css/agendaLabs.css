@@ -95,10 +95,9 @@ input:invalid + span::after {
 }
 
 .hora-libre{
-    background-color: #129c3c;
-    margin-top: 2.5rem;
-    padding: 2rem;
-    border: 2px solid black;
+    background-color: #319750;
+    margin-top: 1.5rem;
+    padding: 1rem;
     border-radius: 20px;
     color: white;
     font-size: 2rem;
@@ -106,10 +105,9 @@ input:invalid + span::after {
 }
 
 .hora-reservada{
-    background-color: red;
-    margin-top: 2.5rem;
-    padding: 2rem;
-    border: 2px solid black;
+    background-color: #cd2727;
+    margin-top: 1.5rem;
+    padding: 1rem;
     border-radius: 20px;
     color: white;
     font-size: 2rem;
