@@ -49,7 +49,7 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
         // Agrega la clase hora-reservada si la hora está reservada, o la clase hora-libre si no lo está
         const claseHora = reservada ? 'bg-danger' : 'bg-success';
 
-        $('#horasContainer').append(`<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold'>${hora}hrs</div>`);
+        $('#horasContainer').append(`<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between'><div>${hora}hrs</div> <div>${data[0].actividad}</div>`);
     });
 
     
