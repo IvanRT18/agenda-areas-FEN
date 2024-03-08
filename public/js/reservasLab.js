@@ -15,6 +15,8 @@ $('#diaReservaLab').text(diaActual); //Titulo que indica el dia que se estan con
 $.get('/horas-agendadas/' + fullDiaActual, function(data){
     console.log('Horas agendadas:', data);
 
+    console.log(data);
+
     disabledHoras = [];
 
     data.forEach(hora => {
@@ -23,7 +25,7 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
     });
 
     console.log('horas reservadas ese día', disabledHoras);
-
+console.log(disabledHoras);
 
     // Colorea las horas dependiendo de si están reservadas o no
     horasInicialesArray.forEach((hora, index) => {
@@ -31,7 +33,7 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
 
         // Recorre el arreglo de horas reservadas y verifica si la hora actual está dentro de alguno de los rangos
         disabledHoras.forEach(rango => {
-            if (hora >= rango[0] && hora < rango[1]) {
+            if (hora >= rango[0] && hora < rango[1]) { //Aquí esta el problema, cuando hora = '7:00pm' y compara rango = ['7:00am', '8:00am'] asigna reservada a true cuando eso es falso, ya que la hora que se reservo fue las 7:00 am, y no las 7:00pm
                 reservada = true;
             }
         });
@@ -39,14 +41,10 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
         // Agrega la clase hora-reservada si la hora está reservada, o la clase hora-container si no lo está
         const claseHora = reservada ? 'hora-reservada' : 'hora-container';
 
-        // Si no es la última hora, agrega el div con la clase correspondiente
-        if (index < horasInicialesArray.length) {
-            $('#horasContainer').append(`<div class='${claseHora}'>${hora}</div>`);
-        } else {
-            // Si es la última hora, solo agrega el div sin clase adicional
-            $('#horasContainer').append(`<div>${hora}</div>`);
-        }
+        $('#horasContainer').append(`<div class='${claseHora}'>${hora}</div>`);
     });
+
+    
 });
 
 

@@ -14,11 +14,13 @@ $(function(){
   $('#horaReservaInicio').timepicker({
     'minTime': '7:00am',
     'maxTime': '9:01pm',
+    timeFormat: 'H:i',
     'disableTimeRanges': disabledHoras //Estoy tratando de agregar estas horas dinamicamente
   }); 
   $('#horaReservaFinal').timepicker({
     'minTime': '7:00am',
     'maxTime': '9:01pm',
+    timeFormat: 'H:i',
     'disableTimeRanges': disabledHoras
   }); 
 });
@@ -59,12 +61,15 @@ diaReservar.on('change', function(){
       'minTime': '7:00am',
       'maxTime': '9:01pm',
       'step' : 60,
+      timeFormat: 'H:i',
       'disableTimeRanges': disabledHoras //Estoy tratando de agregar estas horas dinamicamente
     }); 
     $('#horaReservaFinal').timepicker({
       'minTime': '7:00am',
       'maxTime': '9:01pm',
       'step' : 60,
+      timeFormat: 'H:i',
+      'showDuration': true,
       'disableTimeRanges': disabledHoras
     }); 
 
