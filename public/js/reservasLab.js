@@ -30,10 +30,10 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
 
     console.log('horas reservadas ese día', disabledHoras);
 
+    let actividadIndex = 0;
     // Colorea las horas dependiendo de si están reservadas o no
     horasInicialesArray.forEach((hora, index) => {
         let reservada = false;
-
         const horaActual = stringToDate(hora);
 
         // Recorre el arreglo de horas reservadas y verifica si la hora actual está dentro de alguno de los rangos
@@ -43,15 +43,25 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
     
             if (horaActual >= inicioRango && horaActual < finRango) {
                 reservada = true;
+                // let actividadHora = data.find((hora)=>{
+                //     if (hora.horaReservaInicio == rango[0]) {
+                //         return hora.actividad;
+                //     }
+                // });
+                // console.log(actividadHora);
             }
         });
 
         // Agrega la clase hora-reservada si la hora está reservada, o la clase hora-libre si no lo está
         const claseHora = reservada ? 'bg-danger' : 'bg-success';
 
-        $('#horasContainer').append(`<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between'><div>${hora}hrs</div> <div>${data[0].actividad}</div>`);
-    });
+        $('#horasContainer').append(`<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between' id='horaLab-${index}'><div>${hora} hrs</div>`);
 
+        // if (claseHora == 'bg-danger') {
+        //     $(`#horaLab-${index}`).append(`<div>${data[actividadIndex].actividad}</div>`);
+        //     actividadIndex++;
+        // }
+    });
     
 });
 
