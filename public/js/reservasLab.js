@@ -2,6 +2,10 @@ const diasArray = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes
 let disabledHoras = [];
 let horasInicialesArray = ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 
+let RangodisabledHoras = [];
+let rangoHorasReservadas = [];
+let horasInicialesDate = [];
+
 
 //Se obtiene el dia de hoy
 const date = new Date();
@@ -30,25 +34,39 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
 
     console.log('horas reservadas ese día', disabledHoras);
 
-    let actividadIndex = 0;
+
+    horasInicialesArray.forEach((hora) => {
+        horasInicialesDate.push(stringToDate(hora));
+    });
+
+    // Recorre el arreglo de horas reservadas y verifica si la hora actual está dentro de alguno de los rangos
+    disabledHoras.forEach(rango => {
+        const inicioRango = stringToDate(rango[0]);
+        const finRango = stringToDate(rango[1]);
+
+        horasInicialesDate.forEach((horaD) => {
+            if (horaD >= inicioRango && horaD <= finRango) {
+                reservada = true;
+                rangoHorasReservadas.push(horaD);
+            }
+        });
+    });
+
     // Colorea las horas dependiendo de si están reservadas o no
     horasInicialesArray.forEach((hora, index) => {
         let reservada = false;
         const horaActual = stringToDate(hora);
 
+        
+
+        // //Crea el rango de horas ocupadas
         // Recorre el arreglo de horas reservadas y verifica si la hora actual está dentro de alguno de los rangos
         disabledHoras.forEach(rango => {
             const inicioRango = stringToDate(rango[0]);
             const finRango = stringToDate(rango[1]);
     
-            if (horaActual >= inicioRango && horaActual < finRango) {
-                reservada = true;
-                // let actividadHora = data.find((hora)=>{
-                //     if (hora.horaReservaInicio == rango[0]) {
-                //         return hora.actividad;
-                //     }
-                // });
-                // console.log(actividadHora);
+            if (horaActual >= inicioRango && horaActual <= finRango) {
+                rangoHorasReservadas.push(horaActual);
             }
         });
 
