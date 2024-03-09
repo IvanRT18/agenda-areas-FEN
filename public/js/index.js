@@ -15,12 +15,14 @@ $(function(){
     'minTime': '7:00am',
     'maxTime': '9:01pm',
     timeFormat: 'H:i',
+    // 'scrollDefault': 'now',
     'disableTimeRanges': disabledHoras //Estoy tratando de agregar estas horas dinamicamente
   }); 
   $('#horaReservaFinal').timepicker({
     'minTime': '7:00am',
     'maxTime': '9:01pm',
     timeFormat: 'H:i',
+    // 'scrollDefault': 'now',
     'disableTimeRanges': disabledHoras
   }); 
 });
@@ -62,14 +64,6 @@ diaReservar.on('change', function(){
       'maxTime': '9:01pm',
       'step' : 60,
       timeFormat: 'H:i',
-      'disableTimeRanges': disabledHoras //Estoy tratando de agregar estas horas dinamicamente
-    }); 
-    $('#horaReservaFinal').timepicker({
-      'minTime': '7:00am',
-      'maxTime': '9:01pm',
-      'step' : 60,
-      timeFormat: 'H:i',
-      'showDuration': true,
       'disableTimeRanges': disabledHoras
     }); 
 
@@ -79,7 +73,28 @@ diaReservar.on('change', function(){
     //Se vuelve a habilitar el input de la fecha
     diaReservar.prop('disabled', false);
     
+    //Se habilita la hora de reserva inicial
     $('#horaReservaInicio').prop('disabled', false);
-    $('#horaReservaFinal').prop('disabled', false);
+
+    //Cuando el usuario selecciona una hora de reserva inicial
+    //Se activa el input de horaReservaFinal
+    $('#horaReservaInicio').on('change', function () {
+      $('#horaReservaFinal').timepicker({
+        'minTime': '7:00am',
+        'maxTime': '9:01pm',
+        'step' : 60,
+        timeFormat: 'H:i',
+        'showDuration': true,
+        'durationTime':  $('#horaReservaInicio').val(),
+        'scrollDefault': $('#horaReservaInicio').val(),
+        'disableTimeRanges': disabledHoras
+      }); 
+
+      if ($('#horaReservaInicio').val()) {
+        $('#horaReservaFinal').prop('disabled', false);
+      }
+    })
+    
+    
   });
 });
