@@ -3,7 +3,20 @@ const diaReservar = $('#fechaReservada');
 const horaReservaInicio = $('#horaReservaInicio');
 const horaReservaFinal = $('#horaReservaFinal');
 // const horasReservadas  = [];
+let horasInicialesArray = ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+
 let disabledHoras = [];
+let disabledHorasFinales = [];
+let horasInicialesDate = [];
+let horasFinalesSeleccionable = [];
+let rangoHorasReservadas = [];
+
+
+//Se obtiene el dia de hoy
+const date = new Date();
+let fullDiaActual = date.toJSON().slice(0, 10);
+console.log(fullDiaActual); // "yyyy-mm-dd"
+
 
 console.log(checkLabComp);
 
@@ -58,6 +71,31 @@ diaReservar.on('change', function(){
 
     console.log('horas reservadas ese día', disabledHoras);
 
+    horasInicialesArray.forEach((hora) => {
+      horasInicialesDate.push(stringToDate(hora));
+  });
+
+     // Obtiene las horas deshabilitadas para la hora final de reserva
+     disabledHoras.forEach(rango => {
+      const inicioRango = stringToDate(rango[0]);
+      const finRango = stringToDate(rango[1]);
+
+      horasInicialesDate.forEach((horaD) => {
+          if (horaD >= inicioRango && horaD <= finRango) {
+              reservada = true;
+              rangoHorasReservadas.push(horaD);
+          }
+      });
+
+      rangoHorasReservadas.shift()
+      horasFinalesSeleccionable.push(rangoHorasReservadas);
+      rangoHorasReservadas = [];
+  });
+
+  //Convierte las horas finales para reservar de tipo Date a string
+  dateToString(horasFinalesSeleccionable);
+
+
     //Se deshabilitan las horas ya agendadas para ese día
     $('#horaReservaInicio').timepicker({
       'minTime': '7:00am',
@@ -72,6 +110,8 @@ diaReservar.on('change', function(){
     
     //Se vuelve a habilitar el input de la fecha
     diaReservar.prop('disabled', false);
+
+    
     
     //Se habilita la hora de reserva inicial
     $('#horaReservaInicio').prop('disabled', false);
@@ -79,6 +119,9 @@ diaReservar.on('change', function(){
     //Cuando el usuario selecciona una hora de reserva inicial
     //Se activa el input de horaReservaFinal
     $('#horaReservaInicio').on('change', function () {
+      //Limpia la hora resrva final
+    $('#horaReservaFinal').val('');
+    
       $('#horaReservaFinal').timepicker({
         'minTime': '7:00am',
         'maxTime': '9:01pm',
@@ -98,3 +141,26 @@ diaReservar.on('change', function(){
     
   });
 });
+
+// Función para convertir una cadena de hora en un objeto Date
+function stringToDate(hourString) {
+  const [hours, minutes] = hourString.split(':').map(Number);
+  return new Date(date.getFullYear(), date.getMonth(), date.getDay(), hours, minutes);
+}
+
+function dateToString(hourDate) {
+  let tempArray = [];
+  console.log('DatetoString function');
+  
+  for (let i = 0; i < hourDate.length; i++) {
+      for (let j = 0; j < hourDate[i].length; j++) {
+          const element = hourDate[i][j];
+          let horaStringTemp = element.getHours();
+          horaStringTemp = horaStringTemp + ":00";
+          tempArray.push(horaStringTemp);
+      }
+      disabledHorasFinales.push(tempArray);
+      tempArray = [];
+  }
+
+}

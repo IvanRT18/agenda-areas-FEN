@@ -73,7 +73,7 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
             const inicioRango = stringToDate(rango[0]);
             const finRango = stringToDate(rango[1]);
     
-            if (horaActual >= inicioRango && horaActual <= finRango) {
+            if (horaActual >= inicioRango && horaActual < finRango) {
                 // rangoHorasReservadas.push(horaActual);
                 reservada = true;
             }
