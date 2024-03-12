@@ -131,7 +131,7 @@ diaReservar.on('change', function(){
         'showDuration': true,
         'durationTime':  $('#horaReservaInicio').val(),
         'scrollDefault': $('#horaReservaInicio').val(),
-        'disableTimeRanges': disabledHoras
+        'disableTimeRanges': disabledHorasFinales
       }); 
 
       if ($('#horaReservaInicio').val()) {

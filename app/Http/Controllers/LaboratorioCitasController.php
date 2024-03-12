@@ -81,6 +81,6 @@ class LaboratorioCitasController extends Controller
         $cita->actividad = $request->input('actividad');
         $cita->nombreCurso = $request->input('nombreCurso');
         $cita->update();
-        return redirect()->back()->with('status','Student Updated Successfully');
+        return redirect()->back()->with('status','Cita actualizada correctamente');
     }
 }
