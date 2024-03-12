@@ -5,7 +5,8 @@ let horasInicialesArray = ['7:00','8:00','9:00','10:00','11:00','12:00','13:00',
 let RangodisabledHoras = [];
 let rangoHorasReservadas = [];
 let horasInicialesDate = [];
-
+let horasFinalesSeleccionable = [];
+let disabledHorasFinales = [];
 
 //Se obtiene el dia de hoy
 const date = new Date();
@@ -50,7 +51,14 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
                 rangoHorasReservadas.push(horaD);
             }
         });
+
+        rangoHorasReservadas.shift()
+        horasFinalesSeleccionable.push(rangoHorasReservadas);
+        rangoHorasReservadas = [];
     });
+
+    //Convierte las horas finales para reservar de tipo Date a string
+    dateToString(horasFinalesSeleccionable);
 
     // Colorea las horas dependiendo de si están reservadas o no
     horasInicialesArray.forEach((hora, index) => {
@@ -66,7 +74,8 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
             const finRango = stringToDate(rango[1]);
     
             if (horaActual >= inicioRango && horaActual <= finRango) {
-                rangoHorasReservadas.push(horaActual);
+                // rangoHorasReservadas.push(horaActual);
+                reservada = true;
             }
         });
 
@@ -90,6 +99,22 @@ function stringToDate(hourString) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDay(), hours, minutes);
 }
 
+function dateToString(hourDate) {
+    let tempArray = [];
+    console.log('DatetoString function');
+    
+    for (let i = 0; i < hourDate.length; i++) {
+        for (let j = 0; j < hourDate[i].length; j++) {
+            const element = hourDate[i][j];
+            let horaStringTemp = element.getHours();
+            horaStringTemp = horaStringTemp + ":00";
+            tempArray.push(horaStringTemp);
+        }
+        disabledHorasFinales.push(tempArray);
+        tempArray = [];
+    }
+
+}
 
 
 // _________________

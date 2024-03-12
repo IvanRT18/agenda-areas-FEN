@@ -113,3 +113,7 @@ input:invalid + span::after {
     font-size: 2rem;
     font-weight: bold;
 }
+
+.container {
+    overflow-x: auto !important;
+}
