@@ -58,4 +58,29 @@ class LaboratorioCitasController extends Controller
 
         return response()->json($horasAgendadas);
     }
+
+    // Edita una cita
+    public function editaCita($idCita){
+        $cita = LaboratorioCita::find($idCita);
+        return view('editCitaLaboratorio', compact('cita'));
+    }
+
+    public function updateCita(Request $request, $id)
+    {
+        $cita = LaboratorioCita::find($id);
+        $cita->id = $request->input('id');
+        $cita->numEquipos = $request->input('numEquipos');
+        $cita->fechaReservada = $request->input('fechaReservada');
+        $cita->horaReservaInicio = $request->input('horaReservaInicio');
+        $cita->horaReservaFinal = $request->input('horaReservaFinal');
+        $cita->usaProyector = $request->input('usaProyector');
+        $cita->reqAdicionales = $request->input('reqAdicionales');
+        $cita->Rpe = $request->input('Rpe');
+        $cita->nombreCompleto = $request->input('nombreCompleto');
+        $cita->materia = $request->input('materia');
+        $cita->actividad = $request->input('actividad');
+        $cita->nombreCurso = $request->input('nombreCurso');
+        $cita->update();
+        return redirect()->back()->with('status','Student Updated Successfully');
+    }
 }

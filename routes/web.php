@@ -34,3 +34,7 @@ Route::post('guarda-auditorio-cita', [LaboratorioCitasController::class, 'store'
 
 Route::get('/horas-agendadas/{fecha}', [LaboratorioCitasController::class, 'horasAgendadas']);
 
+Route::get('/edita-cita-laboratorio/{id}', [LaboratorioCitasController::class, 'editaCita']);
+
+Route::put('/update-cita-laboratoria/{id}', [LaboratorioCitasController::class, 'updateCita']);
+

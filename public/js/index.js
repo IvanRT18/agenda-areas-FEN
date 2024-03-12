@@ -3,20 +3,24 @@ const diaReservar = $('#fechaReservada');
 const horaReservaInicio = $('#horaReservaInicio');
 const horaReservaFinal = $('#horaReservaFinal');
 // const horasReservadas  = [];
-let horasInicialesArray = ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+let horasAgendablesArray = ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 
-let disabledHoras = [];
-let disabledHorasFinales = [];
 let horasInicialesDate = [];
 let horasFinalesSeleccionable = [];
 let rangoHorasReservadas = [];
 
+let disabledHoras = []; //horas deshabilitadas para la hora de reserva inicial
+let disabledHorasFinales = []; //horas deshabilitadas para la hora de reserva final
 
 //Se obtiene el dia de hoy
 const date = new Date();
 let fullDiaActual = date.toJSON().slice(0, 10);
 console.log(fullDiaActual); // "yyyy-mm-dd"
 
+//Convierte el arreglo de horas (string) validas para agendar a horas tipo Date
+horasAgendablesArray.forEach((hora) => {
+  horasInicialesDate.push(stringToDate(hora));
+});
 
 console.log(checkLabComp);
 
@@ -64,16 +68,13 @@ diaReservar.on('change', function(){
 
     disabledHoras = [];
 
+    //Obtiene las horas deshabilitadas para el input 1 (hora reserva inicial)
     data.forEach(hora => {
       // Se agrega cada rango de hora reservada al arreglo
       disabledHoras.push([hora.horaReservaInicio, hora.horaReservaFinal]);
     });
 
     console.log('horas reservadas ese día', disabledHoras);
-
-    horasInicialesArray.forEach((hora) => {
-      horasInicialesDate.push(stringToDate(hora));
-  });
 
      // Obtiene las horas deshabilitadas para la hora final de reserva
      disabledHoras.forEach(rango => {
@@ -121,7 +122,7 @@ diaReservar.on('change', function(){
     $('#horaReservaInicio').on('change', function () {
       //Limpia la hora resrva final
     $('#horaReservaFinal').val('');
-    
+
       $('#horaReservaFinal').timepicker({
         'minTime': '7:00am',
         'maxTime': '9:01pm',
