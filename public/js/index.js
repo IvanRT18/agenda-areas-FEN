@@ -118,9 +118,21 @@ diaReservar.on('change', function(){
     //Limpia la hora reserva final
     $('#horaReservaFinal').val('');
 
-    //Deshabilita las horas ya pasadas de la hora de inicio de reserva
+    let horaSelDate = stringToDate($('#horaReservaInicio').val());
+
+    let postDisabledHours = '';
+    let tempDisHours = '';
+    //Deshabilita las horas posteriores a una cita ya reservada
+    disabledHorasString.forEach((rango)=> {
+      if (stringToDate(rango[0]) > horaSelDate) {
+        postDisabledHours = firstAndLast(datesObjectsToString(disablePostHoursString(rango[0])));
+      }
+    });
+
+
+    //Deshabilita las horas ya pasadas de la hora de inicio seleccionada
     pastHours = disablePastHoursString($('#horaReservaInicio').val()); //Regresa un array de string de las horas pasadas a la seleccionada
-    pastHours.push(stringToDate($('#horaReservaInicio').val())); // Agrega la hora seleccionada como hora pasada
+    pastHours.push(horaSelDate); // Agrega la hora seleccionada como hora pasada
     let pastHours2 = datesObjectsToString(pastHours); //Convierte ese array de strings a un array de tipo Date para hacer comparaciones de tiempo
     let indiceHora = obtenerIndiceHora($('#horaReservaInicio').val(), horasAgendablesArray); //Obtiene el indice de la siguiente hora
     pastHours2.push(siguienteHora(indiceHora)); //Agrega la siguiente hora de la hora seleccionada para deshabilitarla
@@ -128,6 +140,7 @@ diaReservar.on('change', function(){
 
     let finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene las horas pasadas en un arreglo de cadenas
 
+    finalDisablesHours.push(postDisabledHours);
     finalDisablesHours.push(horasDisables2) //Se unen las horas agendadas con las horas deshabiliadas
 
     //Se configura el input y las horas en las que el usuario puede terminar su reservación
@@ -201,6 +214,18 @@ function disablePastHoursString($horaInicial) {
   let horaI = stringToDate($horaInicial);
   for (let i = 0; i < horasInicialesDate.length; i++) {
     if (horasInicialesDate[i] < horaI) {
+      tempArray.push(horasInicialesDate[i]);
+    }
+  }
+  return tempArray;
+}
+
+//Deshabilita las horas posteriores de una hora
+function disablePostHoursString($horaInicial) {
+  let tempArray = []
+  let horaI = stringToDate($horaInicial);
+  for (let i = 0; i < horasInicialesDate.length; i++) {
+    if (horasInicialesDate[i] > horaI) {
       tempArray.push(horasInicialesDate[i]);
     }
   }
@@ -285,9 +310,11 @@ function obtenRangosDeshabilitados(){
   });
   console.log(rangosDeshabiliadosTemp);
   rangosDeshabiliadosTemp.forEach(rango => {
+    //Si se quiere reservar solo 1 hora => ['09:00', '10:00']
     if (rango.length == 2) {
       rangosHelper.push([rango[1], siguienteHora(horasAgendablesArray.indexOf(rango[1]))]);
     }
+    //Si se quiere reservar más de 1 hora => ['09:00', '10:00', '11:00', '12:00']
     if (rango.length > 2) {
       rangoTemp = [...rango];
       rangoTemp.shift();
