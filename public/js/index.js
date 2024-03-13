@@ -120,14 +120,15 @@ diaReservar.on('change', function(){
 
     //Deshabilita las horas ya pasadas de la hora de inicio de reserva
     pastHours = disablePastHoursString($('#horaReservaInicio').val()); //Regresa un array de string de las horas pasadas a la seleccionada
+    pastHours.push(stringToDate($('#horaReservaInicio').val())); // Agrega la hora seleccionada como hora pasada
     let pastHours2 = datesObjectsToString(pastHours); //Convierte ese array de strings a un array de tipo Date para hacer comparaciones de tiempo
-    let horasDisables2 = firstAndLast(pastHours2);
+    let indiceHora = obtenerIndiceHora($('#horaReservaInicio').val(), horasAgendablesArray); //Obtiene el indice de la siguiente hora
+    pastHours2.push(siguienteHora(indiceHora)); //Agrega la siguiente hora de la hora seleccionada para deshabilitarla
+    let horasDisables2 = firstAndLast(pastHours2); //Regresa el rango con las horas deshabilitadas pasadas
 
-    let indiceHora = obtenerIndiceHora($('#horaReservaInicio').val(), horasAgendablesArray);
+    let finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene las horas pasadas en un arreglo de cadenas
 
-    console.log('siguiente hora' + siguienteHora(indiceHora));
-
-    let finalDisablesHours = obtenRangosDeshabilitados();
+    finalDisablesHours.push(horasDisables2) //Se unen las horas agendadas con las horas deshabiliadas
 
     //Se configura el input y las horas en las que el usuario puede terminar su reservación
     $('#horaReservaFinal').timepicker({
@@ -243,6 +244,19 @@ function siguienteHora(indiceHora){
   }
 }
 
+// Regresa la hora anterior en tipo String
+function anteriorHora(indiceHora){
+  //Dentro del rango de horas válidas
+  if (indiceHora - 1 > 0) {
+    console.log('La siguiente hora es:' + horasAgendablesArray[indiceHora+1]);
+    return horasAgendablesArray[indiceHora+1];
+  }
+  else{
+    //Si es la ultima hora
+    console.log('la hora anterior a esta es ultima hora de las horas válidas');
+    return horasAgendablesArray[horasAgendablesArray.length-1];
+  }
+}
 
 //Regresa la siguiente hora en Tipo Date
 function siguienteHoraDate(indiceHora){
@@ -275,9 +289,9 @@ function obtenRangosDeshabilitados(){
       rangosHelper.push([rango[1], siguienteHora(horasAgendablesArray.indexOf(rango[1]))]);
     }
     if (rango.length > 2) {
-      rangoTemp = rango;
+      rangoTemp = [...rango];
       rangoTemp.shift();
-      rangosHelper.push(rangoTemp);
+      rangosHelper.push(firstAndLast(rangoTemp));
     }
   });
 
@@ -304,4 +318,23 @@ function obtenerRangoHoras(horaInicial, horaFinal, arregloHoras) {
   let rangoHoras = arregloHoras.slice(indiceInicial, indiceFinal + 1);
 
   return rangoHoras;
+}
+
+// Deshabilita la hora que el usuario ha seleccionado (hardcoded en la primera y ultima hora)
+function deshabilitaHoraSeleccionada(horaSeleccionada){
+  let horaSeleccDisabled;
+  //Se es la primera hora
+  if (horaSeleccionada === horasAgendablesArray[0]) {
+    horaSeleccDisabled = ['06:00', '07:00'];
+  }
+  //Si es la última hora
+  else if (horaSeleccionada === horasAgendablesArray[horasAgendablesArray.length-1]) {
+    horaSeleccDisabled = ['21:00', '22:00'];
+  }
+  //Si otra hora válida
+  else{
+    horaSeleccDisabled = [anteriorHora(horasAgendablesArray.indexOf(horaSeleccionada)),horaSeleccDisabled]
+  }
+
+  return horaSeleccDisabled;
 }
