@@ -50,6 +50,10 @@
         </div>
 
 
+        @if (session('status'))
+            <h6 class="alert alert-success">{{ session('status') }}</h6>
+        @endif
+
         <table class="table table-bordered table-striped mt-table">
             <thead>
                 <tr>
@@ -85,7 +89,7 @@
                         <td>{{$reservacion->nombreCurso}}</td>
                         <td>
                             <a href="{{ url('/edita-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
-                            <button type="button" class="btn btn-danger btn-sm">Eliminar</button>
+                            <a href="{{ url('borra-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>
                 @endforeach

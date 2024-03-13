@@ -38,3 +38,5 @@ Route::get('/edita-cita-laboratorio/{id}', [LaboratorioCitasController::class, '
 
 Route::put('/update-cita-laboratoria/{id}', [LaboratorioCitasController::class, 'updateCita']);
 
+Route::get('borra-cita-laboratorio/{id}', [LaboratorioCitasController::class, 'borrarCita']);
+

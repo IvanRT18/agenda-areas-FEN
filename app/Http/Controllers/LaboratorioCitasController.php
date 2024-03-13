@@ -83,4 +83,11 @@ class LaboratorioCitasController extends Controller
         $cita->update();
         return redirect()->back()->with('status','Cita actualizada correctamente');
     }
+
+    public function borrarCita($idCita)
+    {
+        $citaLab = LaboratorioCita::find($idCita);
+        $citaLab->delete();
+        return redirect()->back()->with('status', 'Cita borrada correctamente');
+    }
 }

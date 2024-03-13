@@ -11,6 +11,7 @@ let rangoHorasReservadas = [];
 
 let disabledHoras = []; //horas deshabilitadas para la hora de reserva inicial
 let disabledHorasFinales = []; //horas deshabilitadas para la hora de reserva final
+let pastHours = [] //Horas pasadas de la hora inicial de reserva que selecciono el usuario
 
 //Se obtiene el dia de hoy
 const date = new Date();
@@ -94,7 +95,7 @@ diaReservar.on('change', function(){
   });
 
   //Convierte las horas finales para reservar de tipo Date a string
-  dateToString(horasFinalesSeleccionable);
+  datesToString(horasFinalesSeleccionable);
 
 
     //Se deshabilitan las horas ya agendadas para ese día
@@ -120,8 +121,14 @@ diaReservar.on('change', function(){
     //Cuando el usuario selecciona una hora de reserva inicial
     //Se activa el input de horaReservaFinal
     $('#horaReservaInicio').on('change', function () {
-      //Limpia la hora resrva final
+    //Limpia la hora reserva final
     $('#horaReservaFinal').val('');
+
+    // console.log($('#horaReservaInicio').val());
+    //Deshabilita las horas ya pasadas de la hora de inicio de reserva
+    pastHours = disablePastHours($('#horaReservaInicio').val());
+    let pastHours2 = datesObjectsToString(pastHours);
+    console.log(pastHours2);
 
       $('#horaReservaFinal').timepicker({
         'minTime': '7:00am',
@@ -131,12 +138,15 @@ diaReservar.on('change', function(){
         'showDuration': true,
         'durationTime':  $('#horaReservaInicio').val(),
         'scrollDefault': $('#horaReservaInicio').val(),
-        'disableTimeRanges': disabledHorasFinales
+        'disableTimeRanges': [pastHours2]
       }); 
 
+      //Activa la hora de reserva final
       if ($('#horaReservaInicio').val()) {
         $('#horaReservaFinal').prop('disabled', false);
       }
+
+      
     })
     
     
@@ -149,7 +159,16 @@ function stringToDate(hourString) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDay(), hours, minutes);
 }
 
-function dateToString(hourDate) {
+function datesObjectsToString(dates) {
+  let tempArray = [];
+  for (let i = 0; i < dates.length; i++) {
+    const hora = dates[i];
+    tempArray.push(singleDateToString(hora));
+  }
+  return tempArray;
+}
+
+function datesToString(hourDate) {
   let tempArray = [];
   console.log('DatetoString function');
   
@@ -163,5 +182,22 @@ function dateToString(hourDate) {
       disabledHorasFinales.push(tempArray);
       tempArray = [];
   }
+}
 
+function singleDateToString(hourDate) {
+  let horaStringTemp = hourDate.getHours();
+  horaStringTemp = horaStringTemp + ":00";
+  return horaStringTemp;
+}
+
+//Deshabilita las horas pasadas de la hora inicial que el usuario selecciono
+function disablePastHours($horaInicial) {
+  let tempArray = []
+  let horaI = stringToDate($horaInicial);
+  for (let i = 0; i < horasInicialesDate.length; i++) {
+    if (horasInicialesDate[i] < horaI) {
+      tempArray.push(horasInicialesDate[i]);
+    }
+  }
+  return tempArray;
 }
