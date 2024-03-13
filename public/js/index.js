@@ -2,14 +2,15 @@ const checkLabComp = $('#checkboxLabComp');
 const diaReservar = $('#fechaReservada');
 const horaReservaInicio = $('#horaReservaInicio');
 const horaReservaFinal = $('#horaReservaFinal');
-// const horasReservadas  = [];
-let horasAgendablesArray = ['7:00','8:00','9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
+//En horasAgendablesArray van todas las horas en las que el usuario podrá reservar su cita
+let horasAgendablesArray = ['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 
 let horasInicialesDate = [];
 let horasFinalesSeleccionable = [];
 let rangoHorasReservadas = [];
 
 let disabledHoras = []; //horas deshabilitadas para la hora de reserva inicial
+let disabledHorasString = [];
 let disabledHorasFinales = []; //horas deshabilitadas para la hora de reserva final
 let pastHours = [] //Horas pasadas de la hora inicial de reserva que selecciono el usuario
 
@@ -18,38 +19,28 @@ const date = new Date();
 let fullDiaActual = date.toJSON().slice(0, 10);
 console.log(fullDiaActual); // "yyyy-mm-dd"
 
-//Convierte el arreglo de horas (string) validas para agendar a horas tipo Date
+//Convierte el arreglo de horas (string) validas para agendar a horas tipo Date para hacer comparaciones de tiempo
 horasAgendablesArray.forEach((hora) => {
   horasInicialesDate.push(stringToDate(hora));
 });
 
-$(function(){
-  //Inicialmente se deshabilitan los inputs de seleccionar hora hasta que el usuario escoja un día para hacer la reservación
-  $('#horaReservaInicio').prop('disabled', true);
-  $('#horaReservaFinal').prop('disabled', true);
+//Inicialmente se deshabilitan los inputs de seleccionar hora hasta que el usuario escoja un día para hacer la reservación
+$('#horaReservaInicio').prop('disabled', true);
+$('#horaReservaFinal').prop('disabled', true);
 
-  $('#horaReservaInicio').timepicker({
-    'minTime': '7:00am',
-    'maxTime': '9:01pm',
-    timeFormat: 'H:i',
-    // 'scrollDefault': 'now',
-    'disableTimeRanges': disabledHoras 
-  }); 
-  $('#horaReservaFinal').timepicker({
-    'minTime': '7:00am',
-    'maxTime': '9:01pm',
-    timeFormat: 'H:i',
-    // 'scrollDefault': 'now',
-    'disableTimeRanges': disabledHoras
-  }); 
-});
 
 // Cuando el usuario elija un día para reservar
 diaReservar.on('change', function(){
-  let fechaSeleccionada = $(this).val();
-  console.log('Día seleccionado', fechaSeleccionada);
+  let fechaSeleccionada = $(this).val(); //Fecha seleccionada por el usuario en el calendario
+  
+  // if (fechaSeleccionada === fullDiaActual) {
+  //   console.log('error: No se puede agendar para el mismo día, seleccione otra fecha');
+  // }
+  // else{
+  //   //Resto del código
+  // }
 
-  // Se deshabilita el input de la fecha y hora para que el usuario no haga otra solicitud
+  // Se deshabilita el input de la fecha y horas para que el usuario no haga otra solicitud
   // hasta que se termine la primera
   $(this).prop('disabled', true);
   $('#horaReservaInicio').prop('disabled', true);
@@ -78,6 +69,8 @@ diaReservar.on('change', function(){
 
      // Obtiene las horas deshabilitadas para la hora final de reserva
      disabledHoras.forEach(rango => {
+      disabledHorasString.push([rango[0], rango[1]]);
+
       const inicioRango = stringToDate(rango[0]);
       const finRango = stringToDate(rango[1]);
 
@@ -97,63 +90,74 @@ diaReservar.on('change', function(){
   datesToString(horasFinalesSeleccionable);
 
 
-    //Se deshabilitan las horas ya agendadas para ese día
-    $('#horaReservaInicio').timepicker({
+  //Se deshabilitan las horas ya agendadas para ese día en el input de hora inicial
+  $('#horaReservaInicio').timepicker({
+    'minTime': '7:00am',
+    'maxTime': '9:01pm',
+    'step' : 60,
+    timeFormat: 'H:i',
+    'disableTimeRanges': disabledHoras
+  }); 
+
+  //Se quita el mensaje de carga
+  $('#pantallaCarga').addClass('hidden');
+
+
+
+  //Se vuelve a habilitar el input de la fecha
+  diaReservar.prop('disabled', false);
+
+  //Se habilita la hora de reserva inicial
+  $('#horaReservaInicio').prop('disabled', false);
+
+
+
+  //Cuando el usuario selecciona una hora de reserva inicial
+  //Se activa el input de horaReservaFinal
+  $('#horaReservaInicio').on('change', function () {
+    //Limpia la hora reserva final
+    $('#horaReservaFinal').val('');
+
+    //Deshabilita las horas ya pasadas de la hora de inicio de reserva
+    pastHours = disablePastHoursString($('#horaReservaInicio').val()); //Regresa un array de string de las horas pasadas a la seleccionada
+    let pastHours2 = datesObjectsToString(pastHours); //Convierte ese array de strings a un array de tipo Date para hacer comparaciones de tiempo
+    let horasDisables2 = firstAndLast(pastHours2);
+
+    let indiceHora = obtenerIndiceHora($('#horaReservaInicio').val(), horasAgendablesArray);
+
+    console.log('siguiente hora' + siguienteHora(indiceHora));
+
+    let finalDisablesHours = obtenRangosDeshabilitados();
+
+    //Se configura el input y las horas en las que el usuario puede terminar su reservación
+    $('#horaReservaFinal').timepicker({
       'minTime': '7:00am',
       'maxTime': '9:01pm',
       'step' : 60,
       timeFormat: 'H:i',
-      'disableTimeRanges': disabledHoras
+      'showDuration': true,
+      'durationTime':  $('#horaReservaInicio').val(),
+      'scrollDefault': $('#horaReservaInicio').val(),
+      'disableTimeRanges': finalDisablesHours
     }); 
 
-    //Se quita el mensaje de carga
-    $('#pantallaCarga').addClass('hidden');
-    
-    //Se vuelve a habilitar el input de la fecha
-    diaReservar.prop('disabled', false);
+    //Se meustra el input de horas 2
+    if ($('#horaReservaInicio').val()) {
+      $('#horaReservaFinal').prop('disabled', false);
+    }
 
-    
-    
-    //Se habilita la hora de reserva inicial
-    $('#horaReservaInicio').prop('disabled', false);
-
-    //Cuando el usuario selecciona una hora de reserva inicial
-    //Se activa el input de horaReservaFinal
-    $('#horaReservaInicio').on('change', function () {
-    //Limpia la hora reserva final
-    $('#horaReservaFinal').val('');
-
-    // console.log($('#horaReservaInicio').val());
-    //Deshabilita las horas ya pasadas de la hora de inicio de reserva
-    pastHours = disablePastHours($('#horaReservaInicio').val());
-    let pastHours2 = datesObjectsToString(pastHours);
-    console.log(pastHours2);
-
-      $('#horaReservaFinal').timepicker({
-        'minTime': '7:00am',
-        'maxTime': '9:01pm',
-        'step' : 60,
-        timeFormat: 'H:i',
-        'showDuration': true,
-        'durationTime':  $('#horaReservaInicio').val(),
-        'scrollDefault': $('#horaReservaInicio').val(),
-        'disableTimeRanges': [pastHours2]
-      }); 
-
-      //Activa la hora de reserva final
-      if ($('#horaReservaInicio').val()) {
-        $('#horaReservaFinal').prop('disabled', false);
-      }
-
-      
-    })
+    }
+  );
     
     
   });
 });
 
-// Función para convertir una cadena de hora en un objeto Date
+
+
+// Función para convertir una cadena (string) hora a un objeto de tipo Date
 function stringToDate(hourString) {
+  //Se obtiene el día de hoy por default para hacer las comparaciones de la hora *** (quiza cambiar por dia seleccionado)
   const [hours, minutes] = hourString.split(':').map(Number);
   return new Date(date.getFullYear(), date.getMonth(), date.getDay(), hours, minutes);
 }
@@ -167,9 +171,9 @@ function datesObjectsToString(dates) {
   return tempArray;
 }
 
+// Convierte un arreglo de horas tipo Date a uno de tipo String
 function datesToString(hourDate) {
   let tempArray = [];
-  console.log('DatetoString function');
   
   for (let i = 0; i < hourDate.length; i++) {
       for (let j = 0; j < hourDate[i].length; j++) {
@@ -183,6 +187,7 @@ function datesToString(hourDate) {
   }
 }
 
+// Convierte una hora de tipo Date a uno de tipo String
 function singleDateToString(hourDate) {
   let horaStringTemp = hourDate.getHours();
   horaStringTemp = horaStringTemp + ":00";
@@ -190,7 +195,7 @@ function singleDateToString(hourDate) {
 }
 
 //Deshabilita las horas pasadas de la hora inicial que el usuario selecciono
-function disablePastHours($horaInicial) {
+function disablePastHoursString($horaInicial) {
   let tempArray = []
   let horaI = stringToDate($horaInicial);
   for (let i = 0; i < horasInicialesDate.length; i++) {
@@ -199,4 +204,104 @@ function disablePastHours($horaInicial) {
     }
   }
   return tempArray;
+}
+
+//Devuelve el primer y último elemento de un arreglo en otro arreglo
+function firstAndLast(array){
+  let tempArr = [];
+  for (let i = 0; i < array.length; i++) {
+    if (i === 0 || i === array.length-1) {
+      tempArr.push(array[i]);
+    }
+  }
+  return tempArr;
+}
+
+function obtenerIndiceHora(hora, horasAgendablesArray) {
+  // Iterar sobre el arreglo de horas agendables
+  for (let i = 0; i < horasAgendablesArray.length; i++) {
+      // Si la hora actual coincide con la hora buscada, devuelve el índice
+      if (horasAgendablesArray[i] === hora) {
+          return i;
+      }
+  }
+  // Si la hora no se encuentra en el arreglo, devolver -1
+  return -1;
+}
+
+// Regresa la siguiente hora en tipo String
+function siguienteHora(indiceHora){
+  //Dentro del rango de horas válidas
+  if (indiceHora + 1 < horasAgendablesArray.length) {
+    console.log('La siguiente hora es:' + horasAgendablesArray[indiceHora+1]);
+    return horasAgendablesArray[indiceHora+1];
+  }
+  else{
+    //Si es la ultima hora
+    console.log('la siguiente hora es la primera hora de las horas válidas');
+    return horasAgendablesArray[0]
+  }
+}
+
+
+//Regresa la siguiente hora en Tipo Date
+function siguienteHoraDate(indiceHora){
+  //Dentro del rango de horas válidas
+  if (indiceHora + 1 < horasAgendablesArray.length) {
+    console.log('La siguiente hora es:' + horasAgendablesArray[indiceHora+1]);
+    let horaDate = stringToDate(horasAgendablesArray[indiceHora+1]);
+    console.log(horaDate);
+    return horasAgendablesArray[indiceHora+1];
+  }
+  else{
+    //Si es la ultima hora
+    console.log('la siguiente hora es la primera hora de las horas válidas');
+    return horasAgendablesArray[0]
+  }
+}
+
+// Obtiene los rangos deshabilitados para el input 2
+function obtenRangosDeshabilitados(){
+  let rangosDeshabiliadosTemp = [];
+  let rangosHelper = [];
+  let rangoTemp = [];
+  // Obtiene el rango de horas deshabilitadas
+  disabledHorasString.forEach(rango => {
+    rangosDeshabiliadosTemp.push(obtenerRangoHoras(rango[0], rango[1], horasAgendablesArray));
+  });
+  console.log(rangosDeshabiliadosTemp);
+  rangosDeshabiliadosTemp.forEach(rango => {
+    if (rango.length == 2) {
+      rangosHelper.push([rango[1], siguienteHora(horasAgendablesArray.indexOf(rango[1]))]);
+    }
+    if (rango.length > 2) {
+      rangoTemp = rango;
+      rangoTemp.shift();
+      rangosHelper.push(rangoTemp);
+    }
+  });
+
+  console.log('resultados: ' + rangosHelper + rangoTemp);
+  return rangosHelper;
+}
+
+function obtenerRangoHoras(horaInicial, horaFinal, arregloHoras) {
+  // Obtenemos los índices de la hora inicial y final
+  let indiceInicial = arregloHoras.indexOf(horaInicial);
+  let indiceFinal = arregloHoras.indexOf(horaFinal);
+
+  // Verificamos si ambas horas están en el arreglo
+  if (indiceInicial === -1 || indiceFinal === -1) {
+      return [];
+  }
+
+  // Si la hora inicial es mayor que la hora final, intercambiamos los índices
+  if (indiceInicial > indiceFinal) {
+      [indiceInicial, indiceFinal] = [indiceFinal, indiceInicial];
+  }
+
+  // Creamos un subarreglo con las horas en el rango
+  let rangoHoras = arregloHoras.slice(indiceInicial, indiceFinal + 1);
+
+  return rangoHoras;
 }
