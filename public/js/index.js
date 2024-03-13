@@ -58,6 +58,7 @@ diaReservar.on('change', function(){
     console.log('Horas agendadas:', data);
 
     disabledHoras = [];
+    disabledHorasString = [];
 
     //Obtiene las horas deshabilitadas para el input 1 (hora reserva inicial)
     data.forEach(hora => {
@@ -120,8 +121,15 @@ diaReservar.on('change', function(){
 
     let horaSelDate = stringToDate($('#horaReservaInicio').val());
 
+    //Limpieza de variables para cuando se seleccionen otras fechas
     let postDisabledHours = '';
     let tempDisHours = '';
+    let pastHours = '';
+    let pastHours2 = '';
+    let indiceHora = '';
+    let horasDisables2 = '';
+    let finalDisablesHours = '';
+
     //Deshabilita las horas posteriores a una cita ya reservada
     disabledHorasString.forEach((rango)=> {
       if (stringToDate(rango[0]) > horaSelDate) {
@@ -135,12 +143,12 @@ diaReservar.on('change', function(){
     //Deshabilita las horas ya pasadas de la hora de inicio seleccionada
     pastHours = disablePastHoursString($('#horaReservaInicio').val()); //Regresa un array de string de las horas pasadas a la seleccionada
     pastHours.push(horaSelDate); // Agrega la hora seleccionada como hora pasada
-    let pastHours2 = datesObjectsToString(pastHours); //Convierte ese array de strings a un array de tipo Date para hacer comparaciones de tiempo
-    let indiceHora = obtenerIndiceHora($('#horaReservaInicio').val(), horasAgendablesArray); //Obtiene el indice de la siguiente hora
+    pastHours2 = datesObjectsToString(pastHours); //Convierte ese array de strings a un array de tipo Date para hacer comparaciones de tiempo
+    indiceHora = obtenerIndiceHora($('#horaReservaInicio').val(), horasAgendablesArray); //Obtiene el indice de la siguiente hora
     pastHours2.push(siguienteHora(indiceHora)); //Agrega la siguiente hora de la hora seleccionada para deshabilitarla
-    let horasDisables2 = firstAndLast(pastHours2); //Regresa el rango con las horas deshabilitadas pasadas
+    horasDisables2 = firstAndLast(pastHours2); //Regresa el rango con las horas deshabilitadas pasadas
 
-    let finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene las horas pasadas en un arreglo de cadenas
+    finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene las horas pasadas en un arreglo de cadenas
 
     finalDisablesHours.push(postDisabledHours);
     finalDisablesHours.push(horasDisables2) //Se unen las horas agendadas con las horas deshabiliadas
