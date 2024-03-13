@@ -23,9 +23,8 @@ horasAgendablesArray.forEach((hora) => {
   horasInicialesDate.push(stringToDate(hora));
 });
 
-console.log(checkLabComp);
-
 $(function(){
+  //Inicialmente se deshabilitan los inputs de seleccionar hora hasta que el usuario escoja un día para hacer la reservación
   $('#horaReservaInicio').prop('disabled', true);
   $('#horaReservaFinal').prop('disabled', true);
 
@@ -34,7 +33,7 @@ $(function(){
     'maxTime': '9:01pm',
     timeFormat: 'H:i',
     // 'scrollDefault': 'now',
-    'disableTimeRanges': disabledHoras //Estoy tratando de agregar estas horas dinamicamente
+    'disableTimeRanges': disabledHoras 
   }); 
   $('#horaReservaFinal').timepicker({
     'minTime': '7:00am',
