@@ -125,7 +125,9 @@ diaReservar.on('change', function(){
     //Deshabilita las horas posteriores a una cita ya reservada
     disabledHorasString.forEach((rango)=> {
       if (stringToDate(rango[0]) > horaSelDate) {
-        postDisabledHours = firstAndLast(datesObjectsToString(disablePostHoursString(rango[0])));
+        tempDisHours = datesObjectsToString(disablePostHoursString(rango[0]));
+        tempDisHours.push('22:00');
+        postDisabledHours = firstAndLast(tempDisHours);
       }
     });
 
