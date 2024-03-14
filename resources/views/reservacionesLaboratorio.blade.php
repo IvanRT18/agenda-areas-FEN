@@ -37,7 +37,7 @@
                 <div class="lineaEscudo"></div>
                 <div class="titulo">
                     <a href="/">
-                        <span id="Titulo">Horarios reservados</span>
+                        <span id="Titulo">Horarios de áreas reservadas - FEN</span>
                         <span id="TituloMobile">Agenda de áreas</span>
                     </a>
                 </div>

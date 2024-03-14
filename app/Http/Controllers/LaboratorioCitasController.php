@@ -35,7 +35,7 @@ class LaboratorioCitasController extends Controller
         $LabCompCita->nombreCurso = $request->nombreCurso;
         $LabCompCita->save();
 
-        return redirect('inicio')->with('status', 'Se ha reservado el área correctamente');
+        return redirect()->back()->with('status', 'Se ha reservado el área correctamente');
     }
 
     public function showAll(Request $request)

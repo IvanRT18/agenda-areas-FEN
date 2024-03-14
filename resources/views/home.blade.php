@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Agenda de laboratorios</title>
+    <title>Reservación de áreas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />   
     <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
 
@@ -33,8 +33,8 @@
                 <div class="lineaEscudo"></div>
                 <div class="titulo">
                     <a href="/">
-                        <span id="Titulo">Agenda de áreas - Fac. Enfermería y Nutrición</span>
-                        <span id="TituloMobile">Agenda de áreas</span>
+                        <span id="Titulo">Reservación de áreas - Fac. Enfermería y Nutrición</span>
+                        <span id="TituloMobile">Reservación de áreas</span>
                     </a>
                 </div>
             </div>
@@ -47,16 +47,16 @@
             <div class="LemaAzul"><img src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/amarillo_azul.png'></div>
             <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
         </div>
+
+       
     
         <div>
-            <h1>Agenda de áreas comúnes</h1>
+            <h1>Reservación de áreas comúnes</h1>
             {{-- <h1>{{$_GET["user"]}}</h1> --}}
 
-            @if(session('status'))
-            <div>
-                {{ session('status') }}
-            </div>
-          @endif
+            @if (session('status'))
+                <h6 class="alert alert-success">{{ session('status') }}</h6>
+            @endif
         </div>
 
         {{-- Checkboxes de areas para reservar --}}
