@@ -14,6 +14,22 @@ let disabledHorasString = [];
 let disabledHorasFinales = []; //horas deshabilitadas para la hora de reserva final
 let pastHours = [] //Horas pasadas de la hora inicial de reserva que selecciono el usuario
 
+
+$("#formularioLabComp").addClass('hidden');
+
+checkLabComp.on('click', function () {
+  console.dir($('#radioContainer'));
+$("#formularioLabComp").removeClass('hidden');
+})
+
+$("#radioContainer").on('click', function (e) {
+  var target = e.target;
+  if (target.type === 'radio' && target.name === 'chAreas') {
+    mostrarFormulario(target.id.replace('checkbox', 'formulario'))
+  }
+})
+
+
 //Se obtiene el dia de hoy
 const date = new Date();
 let fullDiaActual = date.toJSON().slice(0, 10);
@@ -177,6 +193,34 @@ diaReservar.on('change', function(){
   });
 });
 
+ $('#radioContainer').on('click', function(event) {
+  var target = event.target;
+  console.dir(target);
+  
+  hideAllForms();
+  if (target.type === 'radio' && target.id === 'radioAuditorio' || target.htmlFor === 'radioAuditorio') {
+    $('#formAuditorio').removeClass('hidden');
+  }
+  if (target.type === 'radio' && target.id === 'radioLab' || target.htmlFor === 'radioLab') {
+    $('#formularioLabComp').removeClass('hidden');
+  }
+  if (target.type === 'radio' && target.id === 'radioAulaMagna' || target.htmlFor === 'radioAulaMagna') {
+    $('#formAulaMagna').removeClass('hidden');
+  }
+  if (target.type === 'radio' && target.id === 'formularioLabComp' || target.htmlFor === 'formularioLabComp') {
+    $('#formularioLabComp').removeClass('hidden');
+  }
+  if (target.type === 'radio' && target.id === 'radioSalaV' || target.htmlFor === 'radioSalaV') {
+    $('#formSalaV').removeClass('hidden');
+  }
+});
+
+function hideAllForms() {
+  var formularios = document.querySelectorAll('.formulario');
+  formularios.forEach(function(formulario) {
+      formulario.classList.add('hidden');
+  });
+}
 
 
 // Función para convertir una cadena (string) hora a un objeto de tipo Date

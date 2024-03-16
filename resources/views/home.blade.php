@@ -59,18 +59,19 @@
             @endif
         </div>
 
-        {{-- Checkboxes de areas para reservar --}}
+        {{-- Radios de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
         <h1>Área para reservar:</h1>
         <div class="radio-container col-xs-6" id="radioContainer">
-            <label for="checkboxAuditorio"><input type="radio" name="chAreas" id="checkboxAuditorio">Auditorio</label>
-            <label for="checkboxAulaMagna"><input type="radio" name="chAreas" id="checkboxAulaMagna">Aula magna (propedéutico)</label>
-            <label for="checkboxLabComp"><input type="radio" name="chAreas" id="checkboxLabComp">Laboratorio de cómputo</label>
-            <label for="checkboxSalaVideo"><input type="radio" name="chAreas" id="checkboxSalaVideo">Sala de videoconferencia</label>
+            <label for="radioAuditorio"><input type="radio" name="radioItem" id="radioAuditorio">Auditorio</label>
+            <label for="radioAulaMagna"><input type="radio" name="radioItem" id="radioAulaMagna">Aula magna (propedéutico)</label>
+            <label for="radioLab"><input type="radio" name="radioItem" id="radioLab">Laboratorio de cómputo</label>
+            <label for="radioSalaV"><input type="radio" name="radioItem" id="radioSalaV">Sala de videoconferencia</label>
        </div>
 
+
        {{-- Formulario Laboratorio de cómputo--}}
-       <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}" id="formularioLabComp">
+       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formularioLabComp">
            @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div>
@@ -147,7 +148,7 @@
     </form>
 
     {{-- Formulario auditorio --}}
-    {{-- <form name="" method="POST" class="formulario-container col-xs-6 mb-4" action="{{url('guarda-auditorio-cita')}}">
+    <form name="formAuditorio" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAuditorio">
         <div>
             <input type="checkbox" name="proyector" id="proyector">
             <label for="proyector">¿Usará el proyector?</label>
@@ -176,7 +177,72 @@
             <label for=""></label>
         </div>
 
-    </form> --}}
+    </form>
+
+    {{-- Formulario aula magna --}}
+    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAulaMagna">
+        <div>
+            <input type="checkbox" name="proyector" id="proyector">
+            <label for="proyector">¿Usará el proyector?</label>
+        </div>
+
+        <div class="flex flex-col">
+            <label for="microfonos">
+                ¿Cuantos microfonos usará?
+            </label>
+            <input type="number" name="microfonos" id="microfonos" min="0" max="2">
+        </div>
+
+        <div>
+            <input type="checkbox" name="computadora" id="computadora">
+            <label for="computadora">¿Usará la computadora?</label>
+        </div>
+
+        <div>
+            <input type="checkbox" name="audio" id="audio">
+            <label for="audio">
+                ¿Usará las bocinas? (multimedia, videos, étc)
+            </label>
+        </div>
+
+        <div>
+            <label for=""></label>
+        </div>
+
+    </form>
+
+    {{-- Formulario sala de videoconferencia --}}
+    <form name="formSalaV" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formSalaV">
+        <div>
+            <input type="checkbox" name="proyector" id="proyector">
+            <label for="proyector">¿Usará el proyector?</label>
+        </div>
+
+        <div class="flex flex-col">
+            <label for="microfonos">
+                ¿Cuantos microfonos usará?
+            </label>
+            <input type="number" name="microfonos" id="microfonos" min="0" max="2">
+        </div>
+
+        <div>
+            <input type="checkbox" name="computadora" id="computadora">
+            <label for="computadora">¿Usará la computadora?</label>
+        </div>
+
+        <div>
+            <input type="checkbox" name="audio" id="audio">
+            <label for="audio">
+                ¿Usará las bocinas? (multimedia, videos, étc)
+            </label>
+        </div>
+
+        <div>
+            <label for=""></label>
+        </div>
+
+    </form>
+
 
     </div>
 
