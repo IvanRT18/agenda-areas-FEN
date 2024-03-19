@@ -20,12 +20,13 @@ $("#formularioLabComp").addClass('hidden');
 checkLabComp.on('click', function () {
   console.dir($('#radioContainer'));
 $("#formularioLabComp").removeClass('hidden');
+
 })
 
 $("#radioContainer").on('click', function (e) {
   var target = e.target;
   if (target.type === 'radio' && target.name === 'chAreas') {
-    mostrarFormulario(target.id.replace('checkbox', 'formulario'))
+    mostrarFormulario(target.id.replace('checkbox', 'formulario'));
   }
 })
 
@@ -38,6 +39,20 @@ console.log(fullDiaActual); // "yyyy-mm-dd"
 //Convierte el arreglo de horas (string) validas para agendar a horas tipo Date para hacer comparaciones de tiempo
 horasAgendablesArray.forEach((hora) => {
   horasInicialesDate.push(stringToDate(hora));
+});
+
+flatpickr("#fechaReservada", {
+  // Opciones de Flatpickr
+  // altInput: true,
+  // altFormat: "F j, Y",
+  minDate: new Date().fp_incr(1), // A partir del día de mañana
+  maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
+  disable: [
+    {
+      from: "2024-03-25",
+      to: "2024-04-08"
+    }
+  ],
 });
 
 //Inicialmente se deshabilitan los inputs de seleccionar hora hasta que el usuario escoja un día para hacer la reservación

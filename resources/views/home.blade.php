@@ -17,7 +17,10 @@
     
     {{-- Timepicker css --}}
     <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
-    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
+    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
+    
+    {{-- flatpickr css --}}
+    <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
 </head>
 
 <body>
@@ -80,6 +83,8 @@
                 <input id="numEquipos" type="number" name="numEquipos" min="1" max="40" required/>
             </div>
             </div>
+
+            
             
             <div class="flex flex-col">
                 <label for="fechaReservada">Fecha para reservar:</label>
@@ -258,6 +263,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
+<script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
 <script src="js/index.js"></script>
 {{-- <script src="{{ asset('js/datepair.js/dist/jquery.datepair.min.js') }}"></script> --}}
 

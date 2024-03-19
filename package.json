@@ -14,6 +14,7 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "flatpickr": "^4.6.13",
         "timepicker": "^1.14.1"
     }
 }
