@@ -47,12 +47,12 @@ flatpickr("#fechaReservada", {
   // altFormat: "F j, Y",
   minDate: new Date().fp_incr(1), // A partir del día de mañana
   maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
-  disable: [
-    {
-      from: "2024-03-25",
-      to: "2024-04-08"
-    }
-  ],
+  // disable: [
+  //   {
+  //     from: "2024-03-25",
+  //     to: "2024-04-08"
+  //   }
+  // ],
 });
 
 //Inicialmente se deshabilitan los inputs de seleccionar hora hasta que el usuario escoja un día para hacer la reservación
