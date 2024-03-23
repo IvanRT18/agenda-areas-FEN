@@ -60,8 +60,11 @@
             <a href="{{ url('admin-reservas-laboratorio') }}" class="btn btn-danger float-end">Regresar</a>
         </div>
         <div class="d-flex justify-content-around ">
-            <div class="col-3">
-                <p class="fs-4 text-center ">Días deshabilitados</p>
+            <div class="col-6">
+                <div class="d-flex justify-content-around">
+                    <p class="fs-4 text-center ">Días deshabilitados</p>
+                        <a href="{{ url('elimina-all-dias-deshabilitados-laboratorio/') }}" class="btn bg-success btn-sm text-white fs-6" style="width: 50%;height: min-content;">Reiniciar días</a>
+                </div>
                 {{-- <div class="form-group mb-3">
                     <input type="date" id="diasDeshabilitadosInput" name="diasDeshabilitadosInput">
 
@@ -69,29 +72,31 @@
                     
                 </div> --}}
 
-                @foreach ($diasDeshabilitados as $diaDeshabilitado)
-                    <div class="bg-secondary p-2 text-white bg-opacity-75 mb-2 d-flex justify-content-around align-items-center rounded-2">
-                        <div class="">
-                            <p style="
-                            margin-bottom: 0px;
-                        " class="fs-6">
-                                {{$diaDeshabilitado->diaDeshabiliado}}
-                            </p>
+                <div>
+                    @foreach ($diasDeshabilitados as $diaDeshabilitado)
+                        <div class="bg-secondary p-2 text-white bg-opacity-75 mb-2 d-flex justify-content-around align-items-center rounded-2">
+                            <div class="">
+                                <p style="
+                                margin-bottom: 0px;
+                            " class="fs-6">
+                                    {{$diaDeshabilitado->diaDeshabiliado}}
+                                </p>
+                            </div>
+                            <a href="{{ url('elimina-dia-deshabilitado-laboratorio/'. $diaDeshabilitado->id) }}" class="btn bg-success btn-sm text-white fs-6">Habilitar</a>
                         </div>
-                        <a href="{{ url('elimina-dia-deshabilitado-laboratorio/'. $diaDeshabilitado->id) }}" class="btn bg-success btn-sm text-white fs-6">Habilitar</a>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
                 
             </div>
 
-            <div>
+            <div class="col-6">
                 <p class="fs-4 text-center">Deshabilitar nuevo día</p>
                 <form action="{{ url('/agrega-dia-inhabilitado-laboratorio') }}" method="POST" class="d-flex flex-column align-items-center ">
                     @csrf
 
                     <input type="date" id="agregarDiaDesactivadoInput" name="agregarDiaDesactivadoInput">
 
-                    <button type="submit" class="btn btn-primary mt-4 ">Deshabilitar día</button>
+                    <button type="submit" class="btn btn-primary mt-4 ">Guardar cambios</button>
                 </form>
             </div>
         </div>

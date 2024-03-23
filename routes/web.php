@@ -50,3 +50,5 @@ Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::cl
 
 Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoController::class, 'eliminaDiaDeshabilitado']);
 
+Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);
+
