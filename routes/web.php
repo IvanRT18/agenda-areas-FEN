@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuditorioCitasController;
+use App\Http\Controllers\DiaDeshabilitadoController;
 use App\Http\Controllers\LaboratorioCitasController;
 use App\Http\Controllers\LoginController;
 use App\Login\login_client;
+use App\Models\DiaDeshabilitado;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,4 +41,12 @@ Route::get('/edita-cita-laboratorio/{id}', [LaboratorioCitasController::class, '
 Route::put('/update-cita-laboratoria/{id}', [LaboratorioCitasController::class, 'updateCita']);
 
 Route::get('borra-cita-laboratorio/{id}', [LaboratorioCitasController::class, 'borrarCita']);
+
+Route::get('dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'index']);
+
+Route::post('agrega-dia-inhabilitado-laboratorio', [DiaDeshabilitadoController::class, 'store']);
+
+Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'allDiasDeshabilitados']);
+
+Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoController::class, 'eliminaDiaDeshabilitado']);
 

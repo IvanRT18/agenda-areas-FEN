@@ -15,6 +15,8 @@ let disabledHorasFinales = []; //horas deshabilitadas para la hora de reserva fi
 let pastHours = [] //Horas pasadas de la hora inicial de reserva que selecciono el usuario
 
 
+let disabledDays = [];
+
 $("#formularioLabComp").addClass('hidden');
 
 checkLabComp.on('click', function () {
@@ -41,19 +43,31 @@ horasAgendablesArray.forEach((hora) => {
   horasInicialesDate.push(stringToDate(hora));
 });
 
-flatpickr("#fechaReservada", {
-  // Opciones de Flatpickr
-  // altInput: true,
-  // altFormat: "F j, Y",
-  minDate: new Date().fp_incr(1), // A partir del día de mañana
-  maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
-  // disable: [
-  //   {
-  //     from: "2024-03-25",
-  //     to: "2024-04-08"
-  //   }
-  // ],
+
+//
+$.get('all-dias-inhabilitados-laboratorio', function(data){
+  data.forEach(dias => {
+    disabledDays.push(dias.diaDesInicio);
+  });
+
+  console.log(disabledDays);
+
+  flatpickr("#fechaReservada", {
+    // Opciones de Flatpickr
+    // altInput: true,
+    // altFormat: "F j, Y",
+    minDate: new Date().fp_incr(1), // A partir del día de mañana
+    maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
+    disable: disabledDays,
+      // {
+      //   from: "2024-03-25",
+      //   to: "2024-04-08"
+      // }
+    
+  });
 });
+
+
 
 //Inicialmente se deshabilitan los inputs de seleccionar hora hasta que el usuario escoja un día para hacer la reservación
 $('#horaReservaInicio').prop('disabled', true);
@@ -416,6 +430,8 @@ function obtenRangosDeshabilitados(){
   return rangosHelper;
 }
 
+// Toma como parametro la hora inicial y final de reservación y regresa un arreglo con el rango de horas reservadas
+// horaInicial = '08:00', horaFinal = '11:00' => ['08:00', '09:00', '10:00', '11:00'] 
 function obtenerRangoHoras(horaInicial, horaFinal, arregloHoras) {
   // Obtenemos los índices de la hora inicial y final
   let indiceInicial = arregloHoras.indexOf(horaInicial);

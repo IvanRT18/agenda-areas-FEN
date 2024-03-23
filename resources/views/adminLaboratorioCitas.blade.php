@@ -7,7 +7,7 @@
     <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
 
     {{-- @vite('resources/css/app.css') --}}
-
+    @vite('resources/js/app.js')
     <!-- Bootstrap -->
     {{-- <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" />  --}}
     
@@ -54,7 +54,11 @@
             <h6 class="alert alert-success">{{ session('status') }}</h6>
         @endif
 
-        <table class="table table-bordered table-striped mt-table">
+        <div class="container-fluid d-inline-flex justify-content-end mt-3">
+            <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
+        </div>
+
+        <table class="table table-bordered table-striped mt-3">
             <thead>
                 <tr>
                     <th>ID</th>

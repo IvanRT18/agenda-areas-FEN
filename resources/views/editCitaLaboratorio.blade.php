@@ -68,7 +68,7 @@
                     </div>
                     <div class="card-body">
     
-                        <form action="{{ url('/update-cita-laboratoria/'.$cita->id) }}" method="POST">
+                        <form action="{{ url('/update-cita-laboratoria/'. $cita->id) }}" method="POST">
                             @csrf
                             @method('PUT')
     

@@ -90,4 +90,9 @@ class LaboratorioCitasController extends Controller
         $citaLab->delete();
         return redirect()->back()->with('status', 'Cita borrada correctamente');
     }
+
+    public function diasInhabiles()
+    {
+        return view('diasDesactivados');
+    }
 }
