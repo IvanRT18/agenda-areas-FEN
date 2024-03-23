@@ -75,7 +75,7 @@
                             <p style="
                             margin-bottom: 0px;
                         " class="fs-6">
-                                {{$diaDeshabilitado->diaDesInicio}}
+                                {{$diaDeshabilitado->diaDeshabiliado}}
                             </p>
                         </div>
                         <a href="{{ url('elimina-dia-deshabilitado-laboratorio/'. $diaDeshabilitado->id) }}" class="btn bg-success btn-sm text-white fs-6">Habilitar</a>

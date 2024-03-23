@@ -18,13 +18,13 @@ flatpickr("#diasDeshabilitadosInput", {
 $.get('all-dias-inhabilitados-laboratorio', function(data){
     let disabledDays = [];
     data.forEach(dias => {
-        disabledDays.push(dias.diaDesInicio);
+        disabledDays.push(dias.diaDeshabiliado);
     });
     
     flatpickr("#agregarDiaDesactivadoInput", {
         mode: "multiple",
         inline: true,
-        disable: disabledDays,
+        defaultDate: disabledDays,
     });
 });
 

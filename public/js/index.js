@@ -47,7 +47,7 @@ horasAgendablesArray.forEach((hora) => {
 //
 $.get('all-dias-inhabilitados-laboratorio', function(data){
   data.forEach(dias => {
-    disabledDays.push(dias.diaDesInicio);
+    disabledDays.push(dias.diaDeshabiliado);
   });
 
   console.log(disabledDays);

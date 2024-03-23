@@ -10,7 +10,6 @@ class DiaDeshabilitado extends Model
     use HasFactory;
     protected $table = 'dias_deshabilitados';
     protected $fillable = [
-        'diaDesInicio',
-        'diaDesFinal',
+        'diaDeshabiliado',
     ];
 }

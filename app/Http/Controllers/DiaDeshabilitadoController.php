@@ -15,22 +15,24 @@ class DiaDeshabilitadoController extends Controller
 
     public function store(Request $request)
     {
-        $diaDes = new DiaDeshabilitado();
-        $diaDes->diaDesInicio = $request->input('agregarDiaDesactivadoInput');
-        $diasdata = $request->input('agregarDiaDesactivadoInput');
-        $fechas = $this->extraerFechas($diasdata);
+        $this->eliminaAllDiasDeshabilitados();
+        if ($request->input('agregarDiaDesactivadoInput') !== null) {
+            $diasdata = $request->input('agregarDiaDesactivadoInput');
+            $fechas = $this->extraerFechas($diasdata);
 
+            foreach ($fechas as $fecha) {
+                $diaDeshabilitadoFecha = new DiaDeshabilitado();
         
-        foreach ($fechas as $fecha) {
-            $diaDeshabilitadoFecha = new DiaDeshabilitado();
-    
-            // Asignar la fecha al modelo
-            $diaDeshabilitadoFecha->diaDesInicio = $fecha;
-    
-            // Guardar el modelo
-            $diaDeshabilitadoFecha->save();
+                // Asignar la fecha al modelo
+                $diaDeshabilitadoFecha->diaDeshabiliado = $fecha;
+        
+                // Guardar el modelo
+                $diaDeshabilitadoFecha->save();
+            }
+            return redirect()->back()->with('status', 'Dia deshabilitado correctamente');
         }
-        return redirect()->back()->with('status', 'Dia deshabilitado correctamente');
+        return redirect()->back();
+        
     }
 
     public function allDiasDeshabilitados(){
@@ -43,6 +45,11 @@ class DiaDeshabilitadoController extends Controller
         $diaDisabled = DiaDeshabilitado::find($idDia);
         $diaDisabled->delete();
         return redirect()->back()->with('status', 'Día nuevamente habilitado para agendar');
+    }
+
+    public function eliminaAllDiasDeshabilitados(){
+        DiaDeshabilitado::truncate();
+        return redirect()->back()->with('status', 'Se han borrado todos los dias deshabilitados');
     }
 
     public function extraerFechas($cadenaFechas) {
