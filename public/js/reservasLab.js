@@ -19,7 +19,7 @@ const date = new Date();
 let fullDiaActual = date.toJSON().slice(0, 10);
 // console.log(fullDiaActual); // "yyyy-mm-dd"
 
-class HoraReserva {
+class HoraClass {
     constructor(horas, actividad, localizacion) {
         this.horas = horas;
         this.actividad = actividad;
@@ -31,17 +31,17 @@ class HoraReserva {
     }
 }
 
-class HoraLibre {
-    constructor(horas, actividad, localizacion) {
-        this.horas = horas;
-        this.actividad = actividad;
-        this.localizacion = localizacion;
-    }
+// class HoraLibre {
+//     constructor(horas, actividad, localizacion) {
+//         this.horas = horas;
+//         this.actividad = actividad;
+//         this.localizacion = localizacion;
+//     }
 
-    getRangoHoras(arrayHoras){
-        return obtenerRangoHoras(this.horas[0], this.horas[1], arrayHoras);
-    }
-}
+//     getRangoHoras(arrayHoras){
+//         return obtenerRangoHoras(this.horas[0], this.horas[1], arrayHoras);
+//     }
+// }
 
 const diaActual = diasArray[date.getDay()];
 $('#diaReservaLab').text(diaActual); //Titulo que indica el dia que se estan consultando los horarios reservados (en este ejemplo se usa el dia de hoy)
@@ -60,7 +60,7 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
       if (terminaEnTreinta(hora.horaReservaInicio) || terminaEnTreinta(hora.horaReservaFinal)) {
         mediaHoras = 1;
       }
-      horasClassObj.push(new HoraReserva([hora.horaReservaInicio, hora.horaReservaFinal],hora.actividad,'parte posterior'));
+      horasClassObj.push(new HoraClass([hora.horaReservaInicio, hora.horaReservaFinal],hora.actividad,'parte posterior'));
       console.log(horasClassObj);
     });
 
@@ -75,6 +75,20 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
             horasInicialesDate.push(stringToDate(hora));
         });
         
+        let horasFinalesMedias = []
+        horasInicialesDate.forEach((horaI, index) => {
+            horasClassObj.forEach(horaReservada => {
+                if (stringToDate(horaReservada.horas[0]) === horaI) {
+                    console.log('reservada');
+horasFinalesMedias.push('reservada');
+
+                }
+                else{
+horasFinalesMedias.push(new HoraClass([dateToString(horasInicialesDate[index]), dateToString(horasInicialesDate[index+1])], 'libre', 'libre'));
+                }
+            });
+        });
+
         //Aquí se asignan las horas ocupadas
         horasClassObj.forEach(horaCls => {
             let rangeTemp = horaCls.getRangoHoras(horasInicialesMediasArray);
@@ -84,7 +98,7 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
         //Aquí debe de ir un metodo para asignar a todas las horas libres un objeto y agregarlo a un array
         horasMediasIterables.forEach((horaLibre, index) => {
             if (index+1 <= horasMediasIterables.length) {
-                horasClassObj.push(new HoraLibre([horasMediasIterables[index], horasMediasIterables[index+1]], 'libre', 'libre'));
+                horasClassObj.push(new HoraClass([horasMediasIterables[index], horasMediasIterables[index+1]], 'libre', 'libre'));
             }
         });
         console.log(horasClassObj);
@@ -92,8 +106,8 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
         //Aquí se debe de crear un array que sea la union del array de horas libre y el de horas reservadas
 
         // numeros.sort((a, b) => a - b);
-        let del = horasClassObj.sort((a, b) => a.horas[0] - b.horas[0]);
-        console.log(del);
+        let temp = horasClassObj.sort((a, b) => a.horas[0] - b.horas[0]);
+        console.log(temp);
 
         //Aqui va a haber un arreglo que tenga la union de horas libre y reservadas y se va a iterar para mostrar las reservaciones
         horasClassObj.forEach(horaCls => {
