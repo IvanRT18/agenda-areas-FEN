@@ -7,7 +7,7 @@
     <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
 
     {{-- @vite('resources/css/app.css') --}}
-    @vite('resources/js/app.js')
+    {{-- @vite('resources/js/app.js') --}}
     <!-- Bootstrap -->
     {{-- <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" />  --}}
     

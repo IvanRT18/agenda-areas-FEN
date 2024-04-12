@@ -1,3 +1,4 @@
+let disabledDays = [];
 flatpickr("#diasDeshabilitadosInput", {
     // mode: "multiple",
     inline: true,
@@ -16,16 +17,15 @@ flatpickr("#diasDeshabilitadosInput", {
 
 
 $.get('all-dias-inhabilitados-laboratorio', function(data){
-    let disabledDays = [];
     data.forEach(dias => {
         disabledDays.push(dias.diaDeshabiliado);
     });
-    
-    flatpickr("#agregarDiaDesactivadoInput", {
-        mode: "multiple",
-        inline: true,
-        defaultDate: disabledDays,
-    });
+});
+
+flatpickr("#agregarDiaDesactivadoInput", {
+    mode: "multiple",
+    inline: true,
+    defaultDate: disabledDays,
 });
 
 
