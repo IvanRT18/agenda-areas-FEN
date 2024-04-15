@@ -1,0 +1,47 @@
+name: Deploy Laravel to IIS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Install Composer dependencies
+        run: |
+          composer install --no-dev --optimize-autoloader
+
+      - name: Generate Laravel environment file
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run Laravel migrations
+        run: |
+          php artisan migrate --force
+
+      - name: Cache Laravel routes and configuration
+        run: |
+          php artisan route:cache
+          php artisan config:cache
+
+      - name: Deploy to IIS
+        uses: aplevyakin/iis-web-deploy@v2
+        with:
+          server-url: '10.110.128.28'
+          site-name: 'AgendaAreasFEN'
+          username: ${{ secrets.IIS_USERNAME }}
+          password: ${{ secrets.IIS_PASSWORD }}
+          source-path: '.'
+          exclude-files: 'storage/*,bootstrap/cache/*,vendor/*'
