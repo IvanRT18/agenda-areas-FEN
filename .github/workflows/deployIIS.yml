@@ -37,11 +37,10 @@ jobs:
           php artisan config:cache
 
       - name: Deploy to IIS
-        uses: aplevyakin/iis-web-deploy@v2
+        uses: ChristopheLav/iis-deploy@v1
         with:
-          server-url: '10.110.128.28'
-          site-name: 'AgendaAreasFEN'
-          username: ${{ secrets.IIS_USERNAME }}
-          password: ${{ secrets.IIS_PASSWORD }}
-          source-path: '.'
-          exclude-files: 'storage/*,bootstrap/cache/*,vendor/*'
+          website-name: 'AgendaFEN'
+          msdeploy-service-url: ${{ secrets.IIS_AGENDA_URL }}
+          msdeploy-username: ${{ secrets.IIS_USERNAME }}
+          msdeploy-password: ${{ secrets.IIS_PASSWORD }}
+          source-path: ${{ github.workspace }}\website\publish
