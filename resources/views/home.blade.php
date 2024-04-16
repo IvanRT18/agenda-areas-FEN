@@ -58,14 +58,17 @@
             {{-- <h1>{{$_GET["user"]}}</h1> --}}
 
             @if (session('status'))
-                <h6 class="alert alert-success">{{ session('status') }}</h6>
+                <div class="flex flex-row justify-arnd alert alert-success ">
+                    <h6 class="">{{ session('status') }}</h6>
+                    <button id="close-btn">X</button>
+                </div>
             @endif
         </div>
 
         {{-- Radios de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
         <h1>Área para reservar:</h1>
-        <div class="radio-container col-xs-6" id="radioContainer">
+        <div class="radio-container col-md-6" id="radioContainer">
             <label for="radioAuditorio"><input type="radio" name="radioItem" id="radioAuditorio">Auditorio</label>
             <label for="radioAulaMagna"><input type="radio" name="radioItem" id="radioAulaMagna">Aula magna (propedéutico)</label>
             <label for="radioLab"><input type="radio" name="radioItem" id="radioLab">Laboratorio de cómputo</label>
@@ -74,7 +77,7 @@
 
 
        {{-- Formulario Laboratorio de cómputo--}}
-       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formularioLabComp">
+       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formularioLabComp">
            @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div>
@@ -153,7 +156,7 @@
     </form>
 
     {{-- Formulario auditorio --}}
-    <form name="formAuditorio" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAuditorio">
+    <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAuditorio">
         <div>
             <input type="checkbox" name="proyector" id="proyector">
             <label for="proyector">¿Usará el proyector?</label>
@@ -185,7 +188,7 @@
     </form>
 
     {{-- Formulario aula magna --}}
-    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAulaMagna">
+    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAulaMagna">
         <div>
             <input type="checkbox" name="proyector" id="proyector">
             <label for="proyector">¿Usará el proyector?</label>
@@ -217,7 +220,7 @@
     </form>
 
     {{-- Formulario sala de videoconferencia --}}
-    <form name="formSalaV" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formSalaV">
+    <form name="formSalaV" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formSalaV">
         <div>
             <input type="checkbox" name="proyector" id="proyector">
             <label for="proyector">¿Usará el proyector?</label>

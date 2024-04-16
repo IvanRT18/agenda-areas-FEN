@@ -32,6 +32,10 @@ $("#radioContainer").on('click', function (e) {
   }
 })
 
+$('#close-btn').on('click', function (e) {
+  $(this).parent().remove();
+})
+
 
 //Se obtiene el dia de hoy
 const date = new Date();
