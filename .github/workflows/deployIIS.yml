@@ -20,7 +20,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          composer install
+          composer install --ignore-platform-reqs
 
       - name: Generate Laravel environment file
         run: |
