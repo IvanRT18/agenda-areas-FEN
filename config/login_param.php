@@ -37,7 +37,6 @@ return [
 'serviceClientId' => 4,
 
 //Dirección de página, modulo o sitio dondé será agregado el código.
-'serviceReturnURL' => "http://localhost:81/index",
-
+'serviceReturnURL' => "http://10.110.128.28/index",
 ];
 ?>
