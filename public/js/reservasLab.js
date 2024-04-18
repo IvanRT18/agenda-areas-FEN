@@ -3,7 +3,6 @@ let disabledHoras = [];
 let disabledHorasRange = [];
 let horasInicialesArray = ['07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 let horasInicialesMediasArray = ['07:00','07:30','08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00','20:30','21:00'];
-let horasMediasIterables = [...horasInicialesMediasArray];
 
 let RangodisabledHoras = [];
 let rangoHorasReservadas = [];
@@ -50,8 +49,6 @@ $('#diaReservaLab').text(diaActual); //Titulo que indica el dia que se estan con
 $.get('/horas-agendadas/' + fullDiaActual, function(data){
     mediaHoras = 0; //Bandera para saber si se reservo en una media hora, de aqui dependera la manera en que se muestran las horas
 
-    // console.log('Horas agendadas:', data);
-
     disabledHoras = [];
 
     data.forEach(hora => {
@@ -65,59 +62,76 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
     });
 
     console.log('horas reservadas ese día', disabledHoras);
-    console.log(mediaHoras);
-
     
     //Si hay una reservación que tiene una hora con la terminacion 30
     if (mediaHoras) {
-        
-        horasInicialesMediasArray.forEach((hora) => {
-            horasInicialesDate.push(stringToDate(hora));
-        });
-        
-        let horasFinalesMedias = []
-        horasInicialesDate.forEach((horaI, index) => {
-            horasClassObj.forEach(horaReservada => {
-                if (stringToDate(horaReservada.horas[0]) === horaI) {
-                    console.log('reservada');
-horasFinalesMedias.push('reservada');
+        //Ordena las horas deshabilitadas
+        disabledHoras.sort(ordenaHorasBidimensional);
+        console.log(disabledHoras);
 
-                }
-                else{
-horasFinalesMedias.push(new HoraClass([dateToString(horasInicialesDate[index]), dateToString(horasInicialesDate[index+1])], 'libre', 'libre'));
+        //Se crea arreglo de las horas disponibles a agendar con el tipo Date para hacer las comparaciones
+        let horasMediasDate = [];
+        horasInicialesMediasArray.forEach((horaMedia) => {
+            horasMediasDate.push(stringToDate(horaMedia));
+        });
+
+    
+        // Recorre el arreglo de horas reservadas y verifica si la hora actual está dentro de alguno de los rangos
+        disabledHoras.forEach(rango => {
+            const inicioRango = stringToDate(rango[0]);
+            const finRango = stringToDate(rango[1]);
+    
+            horasMediasDate.forEach((horaD) => {
+                if (horaD >= inicioRango && horaD <= finRango) {
+                    reservada = true;
+                    rangoHorasReservadas.push(horaD);
                 }
             });
+    
+            rangoHorasReservadas.shift()
+            horasFinalesSeleccionable.push(rangoHorasReservadas);
+            rangoHorasReservadas = [];
+        });
+    
+        //Convierte las horas finales para reservar de tipo Date a string
+        dateToString(horasFinalesSeleccionable);
+    
+        // Colorea las horas dependiendo de si están reservadas o no
+        horasInicialesMediasArray.forEach((hora, index) => {
+            let reservada = false;
+            const horaActual = stringToDate(hora);
+    
+            
+    
+            // //Crea el rango de horas ocupadas
+            // Recorre el arreglo de horas reservadas y verifica si la hora actual está dentro de alguno de los rangos
+            disabledHoras.forEach(rango => {
+                const inicioRango = stringToDate(rango[0]);
+                const finRango = stringToDate(rango[1]);
+        
+                if (horaActual >= inicioRango && horaActual < finRango) {
+                    // rangoHorasReservadas.push(horaActual);
+                    reservada = true;
+                }
+            });
+    
+            // Agrega la clase hora-reservada si la hora está reservada, o la clase hora-libre si no lo está
+            const claseHora = reservada ? 'bg-danger' : 'bg-success';
+    
+            index === horasInicialesMediasArray.length - 1 ? 
+            $('#horasContainer').append(`<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between' id='horaLab-${index}'><div>${horasInicialesMediasArray[index]} - 22:00 hrs</div>`) : 
+            $('#horasContainer').append(`<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between' id='horaLab-${index}'><div>${horasInicialesMediasArray[index]} - ${horasInicialesMediasArray[index+1]} hrs</div>`)
+    
+            // if (claseHora == 'bg-danger') {
+            //     $(`#horaLab-${index}`).append(`<div>${data[actividadIndex].actividad}</div>`);
+            //     actividadIndex++;
+            // }
         });
 
-        //Aquí se asignan las horas ocupadas
-        horasClassObj.forEach(horaCls => {
-            let rangeTemp = horaCls.getRangoHoras(horasInicialesMediasArray);
-            horasMediasIterables = horasMediasIterables.filter(elemento => !rangeTemp.includes(elemento)); //Eliminar el rango de las horas medias iterables
-        });
 
-        //Aquí debe de ir un metodo para asignar a todas las horas libres un objeto y agregarlo a un array
-        horasMediasIterables.forEach((horaLibre, index) => {
-            if (index+1 <= horasMediasIterables.length) {
-                horasClassObj.push(new HoraClass([horasMediasIterables[index], horasMediasIterables[index+1]], 'libre', 'libre'));
-            }
-        });
-        console.log(horasClassObj);
 
-        //Aquí se debe de crear un array que sea la union del array de horas libre y el de horas reservadas
 
-        // numeros.sort((a, b) => a - b);
-        let temp = horasClassObj.sort((a, b) => a.horas[0] - b.horas[0]);
-        console.log(temp);
-
-        //Aqui va a haber un arreglo que tenga la union de horas libre y reservadas y se va a iterar para mostrar las reservaciones
-        horasClassObj.forEach(horaCls => {
-            if (horaCls.actividad === 'libre') {
-                dibujaLibreHoraMediaReservada(horaCls.horas[0], horaCls.horas[1], horaCls.actividad);
-            }
-            else{
-                dibujaBloqueHoraMediaReservada(horaCls.horas[0], horaCls.horas[1], horaCls.actividad);
-            }
-        });
+        
     }
     else{
         horasInicialesArray.forEach((hora) => {
@@ -201,8 +215,34 @@ function dateToString(hourDate) {
         disabledHorasFinales.push(tempArray);
         tempArray = [];
     }
-
 }
+
+// Función de comparación para ordenar un arreglo bidimensional de horas (string)
+function ordenaHorasBidimensional(a, b) {
+    // let tempBiArray = [];
+    // horasBidimensional.forEach(horaRange => {
+    //     horaRange.forEach(hora => {
+    //         tempBiArray.push(stringToDate(horaRange));
+    //     });
+    // });
+
+    // Comparar las primeras horas
+    if (a[0] < b[0]) {
+        return -1;
+    }
+    if (a[0] > b[0]) {
+        return 1;
+    }
+    // Si las primeras horas son iguales, comparar las segundas horas
+    if (a[1] < b[1]) {
+        return -1;
+    }
+    if (a[1] > b[1]) {
+        return 1;
+    }
+    return 0;
+}
+
 
 //Función que determina si una hora tiene la terminacion 30
 function terminaEnTreinta(cadenaHora) {
