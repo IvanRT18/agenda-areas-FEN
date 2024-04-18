@@ -32,6 +32,7 @@ $("#radioContainer").on('click', function (e) {
   }
 })
 
+//Boton para cerrar la alerta que aparece cuando se guarda una reservación
 $('#close-btn').on('click', function (e) {
   $(this).parent().remove();
 })

@@ -65,6 +65,9 @@
             @endif
         </div>
 
+        {{session('user')}}
+        {{session('type')}}
+
         {{-- Radios de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
         <h1>Área para reservar:</h1>

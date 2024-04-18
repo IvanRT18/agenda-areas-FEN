@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Login;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+
 ob_start();
 /*
  *      /* 
@@ -63,23 +66,24 @@ ob_start();
  * */
 class LoginClass
 {
-	private $_svc_url;
-	private $_svc_id;
-	private $_svc_return;
-	private $_svc_instance;
-	private $_svc_form_url;
+	private $serviceUrl;
+	private $serviceClientId;
+	private $serviceReturnUrl;
+	private $serviceFormUrl;
+	private $serviceInstance;
 	
 	public $mensaje  = 'Vacio';
 	public $succesfull_login = false;
 	public $data = null;
 	
-	public function __construct($serviceUrl,$serviceLoginFormUrl,$serviceClientId,$serviceReturnURL)
+	public function __construct()
 	{
-		$this->_svc_url = $serviceUrl; //URL de Servicio para consumir
-		$this->_svc_id = $serviceClientId; //Id de la app
-		$this->_svc_return = $serviceReturnURL; //URL de regreso
-		$this->_svc_form_url = $serviceLoginFormUrl; //Url con formulario de login
-		$this->_svc_instance = new \SoapClient($serviceUrl, array('soap_version'=> SOAP_1_1));
+		$this->serviceUrl = config('login_param.serviceUrl'); //URL de Servicio para consumir
+        $this->serviceClientId = config('login_param.serviceClientId'); //Id de la app
+        $this->serviceReturnUrl = config('login_param.serviceReturnURL'); //URL de regreso
+        $this->serviceFormUrl = config('login_param.serviceLoginFormUrl'); //Url con formulario de login
+
+		$this->serviceInstance = new \SoapClient($this->serviceUrl, array('soap_version'=> SOAP_1_1));
 	}
 	
 	
@@ -93,12 +97,29 @@ class LoginClass
 		// NO DEBE USARSE EN ENTORNOS DE PRODUCCI�N.!!!!!
 		//-----------------------------------------------
 		// Preferible utilizar sesiones, Ej: if(!isset($_SESION['user']))..etc
-		header('Location: '.$this->_svc_return."?usuario=".$this->data['Usuario']."&tipo=".$this->data['Tipo']);
+		header('Location: '.$this->serviceReturnUrl."?usuario=".$this->data['Usuario']."&tipo=".$this->data['Tipo']);
 		exit;
 	}
 	
 	public function autentificar()
 	{
+
+		// if (request()->has('Ticket')) {
+        //     if (request()->hasCookie('SC')) {
+        //         $this->_verificarTicket();
+        //         if ($this->succesfull_login) {
+        //             return $this->_iniciaSesionContinua();
+        //         } else {
+        //             abort(403, "Fallo: " . $this->mensaje);
+        //         }
+        //     } else {
+        //         return Redirect::to($this->serviceReturnUrl);
+        //     }
+        // } else {
+        //     return $this->_crearNuevoTicket();
+        // }
+
+		
 		//Verifica si existe un tiket 
 		if(isset($_GET["Ticket"]))
 		{
@@ -118,7 +139,7 @@ class LoginClass
 				//##Mensaje de Debug.
 				echo  "No se encontró cookie.";
 				//Se Redirecciona a página inicial para iniciar proceso de login.
-				header('Location: '.$this->_svc_return);
+				header('Location: '.$this->serviceReturnUrl);
 				exit;
 			}	
 		}
@@ -141,9 +162,9 @@ class LoginClass
 		 * */
 		//if(isset($_GET["ReturnUrl"]))
 		{		
-			$parametros = array ('idAplicacion' => $this->_svc_id, 'ReturnUrl' => $this->_svc_return);
+			$parametros = array ('idAplicacion' => $this->serviceClientId, 'ReturnUrl' => $this->serviceReturnUrl);
 			// var_dump($parametros);
-			$Respuesta = $this->_svc_instance->NuevaSesionConUrlRetorno($parametros);
+			$Respuesta = $this->serviceInstance->NuevaSesionConUrlRetorno($parametros);
 			// var_dump('Esta es la respuesta');
 			// var_dump($Respuesta);	
 			$xmlObject = simplexml_load_string($Respuesta->NuevaSesionConUrlRetornoResult);
@@ -153,7 +174,7 @@ class LoginClass
 //		else
 //		{
 //			$parametros = array ('idAplicacion' => $this->_svc_id);
-//			$Respuesta = $this->_svc_instance->NuevaSesion($parametros);								
+//			$Respuesta = $this->serviceInstance->NuevaSesion($parametros);								
 //			$xmlObject = simplexml_load_string($Respuesta->NuevaSesionResult);	
 //		}	
 		//##Mensaje de Debug.	
@@ -168,14 +189,20 @@ class LoginClass
 		// var_dump($sesionId);
 		// //Se crea la cookie de autentificación.
 		setcookie("SC",$sesionId,time()+600);
+
+		Session::put('SC', $sesionId);
 		// //Se redirige a pantalla de Login institucional
 		// var_dump('Esta es la form_url');
 		// var_dump($this->_svc_form_url);
 
-		header('Location: '.$this->_svc_form_url.'?Ticket='.$ticket);
+		header('Location: '.$this->serviceFormUrl.'?Ticket='.$ticket);
 
-		// return view('inicio', compact('ticket'));
 		exit;
+		// return view('inicio', compact('ticket'));
+
+		// return redirect($this->serviceFormUrl . '?Ticket=' . $ticket);
+		// return redirect('inicio');
+
 	}
 
 	private function _verificarTicket()
@@ -192,7 +219,7 @@ class LoginClass
 		//Validar cookie
 		if ( $_GET["Ticket"] > 0 )
 		{			
-			$Respuesta = $this->_svc_instance->ValidaCliente($parametros);
+			$Respuesta = $this->serviceInstance->ValidaCliente($parametros);
 			$valido = $Respuesta->ValidaClienteResult;	
 		}
 		//Analiza Resultado de la consulta
@@ -204,7 +231,7 @@ class LoginClass
 				case 1: // Ok  Cookie Valida!                                
 						//Obtener Resultado
 						//***** Aquí se obtiene el usuario y el tipo de usuario      ***                  
-						$Respuesta = $this->_svc_instance->EstadoUsuario($parametros);
+						$Respuesta = $this->serviceInstance->EstadoUsuario($parametros);
 						$xmlObject = simplexml_load_string($Respuesta->EstadoUsuarioResult);
 						
 						//##Mensaje de Debug.

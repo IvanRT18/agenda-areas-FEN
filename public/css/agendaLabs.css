@@ -143,6 +143,32 @@ padding-left: 5px;
     white-space: nowrap;
 }
 
+#close-btn:focus:not(:focus-visible):not(.focus-visible) {
+    box-shadow: none;
+    outline: none;
+  }
+  
+  #close-btn:hover {
+    background-color: #2c974b;
+  }
+  
+  #close-btn:focus {
+    box-shadow: rgba(46, 164, 79, .4) 0 0 0 3px;
+    outline: none;
+  }
+  
+  #close-btn:disabled {
+    background-color: #94d3a2;
+    border-color: rgba(27, 31, 35, .1);
+    color: rgba(255, 255, 255, .8);
+    cursor: default;
+  }
+  
+  #close-btn:active {
+    background-color: #298e46;
+    box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+  }
+
 .justify-arnd{
     justify-content: space-between;
 }
