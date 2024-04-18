@@ -121,17 +121,7 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
             index === horasInicialesMediasArray.length - 1 ? 
             $('#horasContainer').append(`<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between' id='horaLab-${index}'><div>${horasInicialesMediasArray[index]} - 22:00 hrs</div>`) : 
             $('#horasContainer').append(`<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between' id='horaLab-${index}'><div>${horasInicialesMediasArray[index]} - ${horasInicialesMediasArray[index+1]} hrs</div>`)
-    
-            // if (claseHora == 'bg-danger') {
-            //     $(`#horaLab-${index}`).append(`<div>${data[actividadIndex].actividad}</div>`);
-            //     actividadIndex++;
-            // }
         });
-
-
-
-
-        
     }
     else{
         horasInicialesArray.forEach((hora) => {

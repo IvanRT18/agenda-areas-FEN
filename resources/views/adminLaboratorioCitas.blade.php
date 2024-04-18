@@ -18,6 +18,37 @@
     <!-- UASLP -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
+
+    <style>
+        .sortable-header {
+            cursor: pointer;
+        }
+        .sort-icon {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: 5px;
+            vertical-align: middle;
+            border-top: 4px solid;
+            border-right: 4px solid transparent;
+            border-bottom: none;
+            border-left: 4px solid transparent;
+        }
+        .sort-icon.asc {
+            border-top: none;
+            border-right: 4px solid transparent;
+            border-bottom: 4px solid;
+            border-left: 4px solid transparent;
+        }
+
+        .sort-icon.desc {
+            background-color: blueviolet;
+            border-top: 4px solid;
+            border-right: 4px solid transparent;
+            border-bottom: none;
+            border-left: 4px solid transparent;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -49,13 +80,15 @@
             <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
         </div>
 
-
+        {{-- Alerta --}}
         @if (session('status'))
             <h6 class="alert alert-success">{{ session('status') }}</h6>
         @endif
 
+        {{-- Contenido  --}}
         <div class="container-fluid d-inline-flex justify-content-end mt-3">
             <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
+            <a href="{{ url('reservas-laboratorio') }}" class="btn btn-success btn-sm fs-6">Ver horas reservadas</a>
         </div>
 
         <table class="table table-bordered table-striped mt-3">
@@ -63,7 +96,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Número de equipos</th>
-                    <th>Fecha Reservada</th>
+                    <th class="sortable-header" data-sort>Fecha Reservada<span class="sort-icon"></span></th>
                     <th>Empieza</th>
                     <th>Termina</th>
                     <th>Usa Proyector</th>
@@ -121,7 +154,8 @@
         </div>
 
     </div>
-
-    
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="js/adminLab.js"></script>
+
 </html>
