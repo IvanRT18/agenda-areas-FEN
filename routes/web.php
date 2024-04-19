@@ -26,6 +26,8 @@ Route::get('admin-reservas-laboratorio', [LaboratorioCitasController::class, 'sh
 Route::get('reservas-laboratorio', [LaboratorioCitasController::class, 'showHorasDia']);
 
 Route::get('index', [LoginController::class, 'index']);
+Route::get('/public/index', [LoginController::class, 'index']);
+Route::get('public/index', [LoginController::class, 'index']);
 
 Route::get('inicio', function(){
     return view('home');
@@ -50,4 +52,3 @@ Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::cl
 Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoController::class, 'eliminaDiaDeshabilitado']);
 
 Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);
-
