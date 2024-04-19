@@ -6,42 +6,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use App\Login\LoginClass;
 use Symfony\Component\VarDumper\VarDumper;
+namespace App\Http\Controllers;
 
-ob_start();
+use Illuminate\Http\Request;
+use App\Login\LoginClass;
 
 class LoginController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $LoginParams = config('login_param');
-        
-        // var_dump($LoginParams);
-        //Si no existe sesi�n de Usuario
+        // Si no existe sesión de Usuario
+        if (!$request->has('usuario') && !$request->has('tipo')) {
+            $clienteLogin = new LoginClass();
+            $clienteLogin->autentificar();
 
-		if(!isset($_GET['usuario']) && !isset($_GET['tipo']))
-		{
-            // var_dump('Sesión no existente');
-            $cliente_login = new LoginClass($LoginParams['serviceUrl'], $LoginParams['serviceLoginFormUrl'], $LoginParams['serviceClientId'], $LoginParams['serviceReturnURL']);
-            // var_dump($cliente_login);
-			$cliente_login->autentificar();
-
-            //Asignación de user y tipo user a $GET
-            
-
-			echo($cliente_login->mensaje);
-		}
-		//Si existe la Sesión de Usuario.
-		else
-		{
-            var_dump('Sesión sí existente');
-            var_dump($_GET);
-			header('Location: '."http://localhost:81/inicio?user=".$_GET['usuario']."&type=".$_GET['tipo']);
-            exit;
-		}
-    }
-
-    public function home()
-    {
-        
+            // return $clienteLogin->mensaje;
+        }
+        // Si existe la Sesión de Usuario.
+        else {
+            $usuario_test = $request->input('usuario');
+            $tipo_test = $request->input('tipo');
+            return redirect()->route('inicio', [
+                'user' => $request->input('usuario'),
+                'type' => $request->input('tipo')
+            ]);
+        }
     }
 }

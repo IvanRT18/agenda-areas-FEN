@@ -30,9 +30,8 @@ Route::get('/public/index', [LoginController::class, 'index']);
 Route::get('public/index', [LoginController::class, 'index']);
 
 Route::get('inicio', function(){
-    // var_dump('dentro de la página inicio');
     return view('home');
-});
+})->name('inicio');
 
 Route::post('guarda-auditorio-cita', [LaboratorioCitasController::class, 'store']);
 

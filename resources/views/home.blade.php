@@ -5,10 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Reservación de áreas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />   
-    <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
+    <link rel="icon" href="https://cuan.uaslp.mx/uaslp_icon.ico">
 
     {{-- @vite('resources/css/app.css') --}}
 
+    <link rel="stylesheet" type="text/css" href="https://cuan.uaslp.mx/adds/estilos/pagina.css">
 
     <!-- Bootstrap -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" /> 
@@ -21,51 +22,57 @@
     
     {{-- flatpickr css --}}
     <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
+
 </head>
 
 <body>
     <div class="container">
-        <div class="Encabezado">
-            <div class="escudos">
-                <div class="escudo escudoUASLP">
-                    <a href={{url('http://www.uaslp.mx')}}>
-                        <img id="UASLPLogo" src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/UASLP.png' class="img-responsive">
-                        <img id="UASLPLogoMobile" src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/UASLPVertical.png' class="img-responsive">
-                    </a>
-                </div>
-                <div class="lineaEscudo"></div>
-                <div class="titulo">
-                    <a href="/">
-                        <span id="Titulo">Reservación de áreas - Fac. Enfermería y Nutrición</span>
-                        <span id="TituloMobile">Reservación de áreas</span>
-                    </a>
-                </div>
-            </div>
-            <div class="foto"></div>
-        </div>
-
-        <div class="Idioma" style="display:block"></div>
-
-        <div class="Lema">
-            <div class="LemaAzul"><img src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/amarillo_azul.png'></div>
-            <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
+        <div class="header">
+            <table width="1170px" align="center" border="0">
+            <tbody><tr>
+                <td width="293px" style="background-color:#1B3257" align="center">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_uaslp_blanco.png">
+                </td>
+                <td width="292px" style="background-color:#1B3257" align="center">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_fe_blanco.png" style="margin">
+                </td>
+                <td width="585px" style="background-color:#1B3257">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/banner_der.png" width="585px" height="150">
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor="#FFF" colspan="3">
+                    <table width="100%" style="margin-top:10px" align="center">
+                    <tbody><tr>
+                        <td style="height:32px; background-color:#1B3257" width="58.6%"><div style="color:#fff; margin-left:20px">Reservación de áreas comúnes</div></td>
+                        <td style="background-color:#FCC200"><img src="https://cuan.uaslp.mx/comunes/imagenes/amarillo_azul.png"></td>
+                        <td align="right" style="background-color:#FCC200; font-size:16px">"HUMANISMI ET SCIENTIA" &nbsp;</td>
+                    </tr>
+                    </tbody></table>
+                </td>
+            
+            </tr></tbody></table>
         </div>
 
        
     
         <div>
-            <h1>Reservación de áreas comúnes</h1>
-            {{-- <h1>{{$_GET["user"]}}</h1> --}}
 
             @if (session('status'))
-                <h6 class="alert alert-success">{{ session('status') }}</h6>
+                <div class="flex flex-row justify-arnd alert alert-success ">
+                    <h6 class="">{{ session('status') }}</h6>
+                    <button id="close-btn">X</button>
+                </div>
             @endif
         </div>
+
+        {{session('user')}}
+        {{session('type')}}
 
         {{-- Radios de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
         <h1>Área para reservar:</h1>
-        <div class="radio-container col-xs-6" id="radioContainer">
+        <div class="radio-container col-md-6" id="radioContainer">
             <label for="radioAuditorio"><input type="radio" name="radioItem" id="radioAuditorio">Auditorio</label>
             <label for="radioAulaMagna"><input type="radio" name="radioItem" id="radioAulaMagna">Aula magna (propedéutico)</label>
             <label for="radioLab"><input type="radio" name="radioItem" id="radioLab">Laboratorio de cómputo</label>
@@ -74,7 +81,7 @@
 
 
        {{-- Formulario Laboratorio de cómputo--}}
-       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formularioLabComp">
+       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formularioLabComp">
            @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div>
@@ -153,7 +160,7 @@
     </form>
 
     {{-- Formulario auditorio --}}
-    <form name="formAuditorio" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAuditorio">
+    <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAuditorio">
         <div>
             <input type="checkbox" name="proyector" id="proyector">
             <label for="proyector">¿Usará el proyector?</label>
@@ -185,7 +192,7 @@
     </form>
 
     {{-- Formulario aula magna --}}
-    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAulaMagna">
+    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAulaMagna">
         <div>
             <input type="checkbox" name="proyector" id="proyector">
             <label for="proyector">¿Usará el proyector?</label>
@@ -217,7 +224,7 @@
     </form>
 
     {{-- Formulario sala de videoconferencia --}}
-    <form name="formSalaV" method="POST" class="formulario formulario-container col-xs-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formSalaV">
+    <form name="formSalaV" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formSalaV">
         <div>
             <input type="checkbox" name="proyector" id="proyector">
             <label for="proyector">¿Usará el proyector?</label>

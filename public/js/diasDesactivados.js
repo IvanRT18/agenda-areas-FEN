@@ -21,6 +21,7 @@ $.get('all-dias-inhabilitados-laboratorio', function(data){
         disabledDays.push(dias.diaDeshabiliado);
     });
     
+    console.log(disabledDays);
     flatpickr("#agregarDiaDesactivadoInput", {
         mode: "multiple",
         inline: true,

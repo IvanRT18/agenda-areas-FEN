@@ -7,7 +7,7 @@
     <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
 
     {{-- @vite('resources/css/app.css') --}}
-    @vite('resources/js/app.js')
+    {{-- @vite('resources/js/app.js') --}}
     <!-- Bootstrap -->
     {{-- <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" />  --}}
     
@@ -17,6 +17,14 @@
     
     <!-- UASLP -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
+    
+     {{-- flatpickr css --}}
+     <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
+
+    {{-- Timepicker css --}}
+    <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
+    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
+
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
 </head>
 <body>
@@ -104,6 +112,7 @@
    
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
 <script src="js/diasDesactivados.js"></script>
 </html>
