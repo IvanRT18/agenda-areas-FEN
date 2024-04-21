@@ -272,6 +272,4 @@
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
 <script src="js/index.js"></script>
-{{-- <script src="{{ asset('js/datepair.js/dist/jquery.datepair.min.js') }}"></script> --}}
-
 </html>
