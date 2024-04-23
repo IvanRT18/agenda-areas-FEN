@@ -60,6 +60,11 @@ $("#radioContainer").on("click", function (e) {
     }
 });
 
+//Boton para cerrar la alerta que aparece cuando se guarda una reservación
+$('#close-btn').on('click', function (e) {
+  $(this).parent().remove();
+})
+
 //Se obtiene el dia de hoy
 const date = new Date();
 let fullDiaActual = date.toJSON().slice(0, 10);

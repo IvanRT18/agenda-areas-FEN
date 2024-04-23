@@ -19,20 +19,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [LoginController::class, 'index']);
+Route::get('/', [LoginController::class, 'index'])->name('index');
 
-Route::get('admin-reservas-laboratorio', [LaboratorioCitasController::class, 'showAll']);
+Route::group(['middleware'=>['UsuarioAutenticado']], function(){
+    Route::get('admin-reservas-laboratorio', [LaboratorioCitasController::class, 'showAll']);
 
-Route::get('reservas-laboratorio', [LaboratorioCitasController::class, 'showHorasDia']);
+    Route::get('reservas-laboratorio', [LaboratorioCitasController::class, 'showHorasDia']);
+    
+    Route::get('inicio', function(){
+        return view('home');
+    })->name('inicio');
+    
+});
+
+Route::get(('/logout'), function(){
+    session()->forget('user');
+    session()->forget('type');
+    return redirect('index');
+});
+
+
 
 Route::get('index', [LoginController::class, 'index']);
 Route::get('/public/index', [LoginController::class, 'index']);
 Route::get('public/index', [LoginController::class, 'index']);
 
-Route::get('inicio', function(){
-    // var_dump('dentro de la página inicio');
-    return view('home');
-});
 
 Route::post('guarda-auditorio-cita', [LaboratorioCitasController::class, 'store']);
 
