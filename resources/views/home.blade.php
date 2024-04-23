@@ -16,8 +16,12 @@
     <!-- UASLP -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
     
+    {{-- flatpickr css --}}
+    <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
+
     {{-- Timepicker css --}}
     <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
+
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
     
     {{-- flatpickr css --}}
