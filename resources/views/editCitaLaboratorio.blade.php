@@ -18,6 +18,12 @@
     <!-- UASLP -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
+
+     {{-- Timepicker css --}}
+     <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
+     
+     {{-- flatpickr css --}}
+     <link rel="stylesheet" href="{{asset('js/flatpickr/flatpickr.min.css')}}">
 </head>
 <body>
     <div class="container">
@@ -82,7 +88,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Fecha reservada</label>
-                                <input type="text" name="fechaReservada" value="{{$cita->fechaReservada}}" class="form-control">
+                                <input id="editFechaReservada" type="date" name="fechaReservada" value="{{$cita->fechaReservada}}" class="form-control">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Hora de inicio de reservación</label>
@@ -133,4 +139,8 @@
     </div>
     
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
+<script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
+<script src="{{asset('js/editCita.js')}}"></script>
 </html>

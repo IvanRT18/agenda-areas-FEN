@@ -8,6 +8,7 @@
 
     {{-- @vite('resources/css/app.css') --}}
     {{-- @vite('resources/js/app.js') --}}
+
     <!-- Bootstrap -->
     {{-- <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" />  --}}
     
@@ -26,6 +27,7 @@
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
 
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
+
 </head>
 <body>
     <div class="container">

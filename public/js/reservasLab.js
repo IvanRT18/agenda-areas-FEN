@@ -30,18 +30,6 @@ class HoraClass {
     }
 }
 
-// class HoraLibre {
-//     constructor(horas, actividad, localizacion) {
-//         this.horas = horas;
-//         this.actividad = actividad;
-//         this.localizacion = localizacion;
-//     }
-
-//     getRangoHoras(arrayHoras){
-//         return obtenerRangoHoras(this.horas[0], this.horas[1], arrayHoras);
-//     }
-// }
-
 const diaActual = diasArray[date.getDay()];
 $('#diaReservaLab').text(diaActual); //Titulo que indica el dia que se estan consultando los horarios reservados (en este ejemplo se usa el dia de hoy)
 
@@ -181,8 +169,32 @@ $.get('/horas-agendadas/' + fullDiaActual, function(data){
         });
     }
 
-    
-    
+    $('#horasContainer').css({
+        'overflow-y': 'hidden',
+        'height': '400px' // Altura máxima del contenedor para activar el scroll
+    });
+
+    function scrollDown() {
+        var $contenedor = $('#horasContainer');
+        var alturaContenedor = $contenedor.outerHeight();
+        var alturaScroll = $contenedor.prop('scrollHeight');
+        var scrollTop = $contenedor.scrollTop();
+        
+        if (scrollTop >= alturaScroll - alturaContenedor - 60) {
+            // Si se llega al último elemento, detener el intervalo durante 1 segundo antes de reiniciar
+            clearInterval(intervalo); // Detiene el intervalo
+            setTimeout(function() {
+                // Después de 1 segundo, volver a iniciar el intervalo
+                intervalo = setInterval(scrollDown, 50);
+            }, 1000);
+            $contenedor.scrollTop(0); // Vuelve al principio del contenedor
+        } else {
+            $contenedor.scrollTop(scrollTop + 3); // Incrementa el desplazamiento hacia abajo
+        }
+    }
+
+    // Establece el intervalo inicial de desplazamiento
+    var intervalo = setInterval(scrollDown, 50);
 });
 
 

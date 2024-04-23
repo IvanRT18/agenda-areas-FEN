@@ -16,8 +16,12 @@
     <!-- UASLP -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
     
+    {{-- flatpickr css --}}
+    <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
+
     {{-- Timepicker css --}}
     <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
+
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
     
     {{-- flatpickr css --}}
@@ -68,6 +72,10 @@
 
         {{session('user')}}
         {{session('type')}}
+
+        <form action="{{url('/logout')}}">
+            <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
+        </form>
 
         {{-- Radios de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
@@ -272,6 +280,4 @@
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
 <script src="js/index.js"></script>
-{{-- <script src="{{ asset('js/datepair.js/dist/jquery.datepair.min.js') }}"></script> --}}
-
 </html>
