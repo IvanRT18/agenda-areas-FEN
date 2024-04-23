@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use App\Login\LoginClass;
 use Symfony\Component\VarDumper\VarDumper;
+use Illuminate\Session\store;
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Login\LoginClass;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -19,17 +21,12 @@ class LoginController extends Controller
         if (!$request->has('usuario') && !$request->has('tipo')) {
             $clienteLogin = new LoginClass();
             $clienteLogin->autentificar();
-
-            // return $clienteLogin->mensaje;
         }
         // Si existe la Sesión de Usuario.
         else {
-            $usuario_test = $request->input('usuario');
-            $tipo_test = $request->input('tipo');
-            return redirect()->route('inicio', [
-                'user' => $request->input('usuario'),
-                'type' => $request->input('tipo')
-            ]);
+            session()->put('user', $request->input('usuario'));
+            session()->put('type', $request->input('tipo'));
+            return redirect()->route('inicio');
         }
     }
 }

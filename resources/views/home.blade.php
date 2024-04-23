@@ -69,6 +69,10 @@
         {{session('user')}}
         {{session('type')}}
 
+        <form action="{{url('/logout')}}">
+            <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
+        </form>
+
         {{-- Radios de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
         <h1>Área para reservar:</h1>
