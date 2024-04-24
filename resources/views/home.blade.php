@@ -63,7 +63,7 @@
         <div>
 
             @if (session('status'))
-                <div class="flex flex-row justify-arnd alert alert-success ">
+                <div class="flex flex-row justify-arnd alert alert-success">
                     <h6 class="">{{ session('status') }}</h6>
                     <button id="close-btn">X</button>
                 </div>

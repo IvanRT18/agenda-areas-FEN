@@ -4,6 +4,7 @@ use App\Http\Controllers\AuditorioCitasController;
 use App\Http\Controllers\DiaDeshabilitadoController;
 use App\Http\Controllers\LaboratorioCitasController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegistraUsuariosController;
 use App\Login\login_client;
 use App\Models\DiaDeshabilitado;
 use Illuminate\Support\Facades\Route;
@@ -30,11 +31,15 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
         return view('home');
     })->name('inicio');
     
+
+    Route::get('dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'index']);
+
 });
 
 Route::get(('/logout'), function(){
     session()->forget('user');
     session()->forget('type');
+	setcookie("SC","",0);
     return redirect('index');
 });
 
@@ -55,8 +60,6 @@ Route::put('/update-cita-laboratoria/{id}', [LaboratorioCitasController::class, 
 
 Route::get('borra-cita-laboratorio/{id}', [LaboratorioCitasController::class, 'borrarCita']);
 
-Route::get('dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'index']);
-
 Route::post('agrega-dia-inhabilitado-laboratorio', [DiaDeshabilitadoController::class, 'store']);
 
 Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'allDiasDeshabilitados']);
@@ -64,3 +67,7 @@ Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::cl
 Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoController::class, 'eliminaDiaDeshabilitado']);
 
 Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);
+
+Route::get('registrar-usuario', [RegistraUsuariosController::class, 'index']);
+
+Route::post('registrar-usuario', [RegistraUsuariosController::class, 'store']);

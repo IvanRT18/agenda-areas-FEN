@@ -1,15 +1,25 @@
 $(function() {
+    //Boton para cerrar la alerta que aparece cuando se edita una reservación
+    $('#close-btn').on('click', function (e) {
+        $(this).parent().remove();
+    })
 
     //Agrega caledario al input de fecha reservada
     flatpickr("#editFechaReservada", {
         defaultDate: $('#editFechaReservada').val(),
     });
 
-    //Agrega la hora inicial reservada 
+    //Agrega plugin al input hora inicial 
     $('#horaReservaInicio').timepicker({
         'step' : 30,
         timeFormat: 'H:i',
     }); 
 
+    //Agrega plugin al input hora final
+     $('#horaReservaFinal').timepicker({
+        'step' : 30,
+        timeFormat: 'H:i',
+    }); 
+    
 
 });

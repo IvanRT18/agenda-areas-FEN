@@ -25,4 +25,10 @@ $(function() {
         var icon = header.hasClass('asc') ? '<span class="sort-icon asc"></span>' : '<span class="sort-icon"></span>';
         header.addClass('asc').find('.sort-icon').html(icon);
     }
+
+
+    //Boton para cerrar la alerta que aparece cuando se guarda una reservación
+    $('#close-btn').on('click', function (e) {
+        $(this).parent().remove();
+    })
 });

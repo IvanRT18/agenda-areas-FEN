@@ -52,7 +52,6 @@
 </head>
 <body>
     <div class="container">
-
         {{-- Header --}}
         <div class="Encabezado">
             <div class="escudos">
@@ -80,79 +79,88 @@
             <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
         </div>
 
-        {{-- Alerta --}}
-        @if (session('status'))
-            <h6 class="alert alert-success">{{ session('status') }}</h6>
-        @endif
 
-        {{-- Contenido  --}}
-        <div class="container-fluid d-inline-flex justify-content-end mt-3">
-            <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
-            <a href="{{ url('reservas-laboratorio') }}" class="btn btn-success btn-sm fs-6">Ver horas reservadas</a>
-        </div>
+        <div class="row">
+            <div class="col-md-12">
 
-        <table class="table table-bordered table-striped mt-3">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Número de equipos</th>
-                    <th class="sortable-header" data-sort>Fecha Reservada<span class="sort-icon"></span></th>
-                    <th>Empieza</th>
-                    <th>Termina</th>
-                    <th>Usa Proyector</th>
-                    <th>Requerimientos adicionales</th>
-                    <th>RPE</th>
-                    <th>Nombre Completo</th>
-                    <th>Materia</th>
-                    <th>Actividad</th>
-                    <th>Nombre Curso</th>
-                    <th>Editar / Eliminar</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($reservaciones as $reservacion)
-                    <tr>
-                        <td>{{$reservacion->id}}</td>
-                        <td>{{$reservacion->numEquipos}}</td>
-                        <td>{{$reservacion->fechaReservada}}</td>
-                        <td>{{$reservacion->horaReservaInicio}}</td>
-                        <td>{{$reservacion->horaReservaFinal}}</td>
-                        <td>{{$reservacion->usaProyector}}</td>
-                        <td>{{$reservacion->reqAdicionales}}</td>
-                        <td>{{$reservacion->Rpe}}</td>
-                        <td>{{$reservacion->nombreCompleto}}</td>
-                        <td>{{$reservacion->materia}}</td>
-                        <td>{{$reservacion->actividad}}</td>
-                        <td>{{$reservacion->nombreCurso}}</td>
-                        <td>
-                            <a href="{{ url('/edita-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
-                            <a href="{{ url('borra-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        
+                @if (session('status'))
+                    <div class="flex flex-row justify-arnd alert alert-success">
+                        <h6 class="">{{ session('status') }}</h6>
+                        <button id="close-btn">X</button>
+                    </div>
+                @endif
 
-        <!-- Modal -->
-        <div class="modal fade modal-dialog modal-dialog-scrollable" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                {{-- Contenido  --}}
+                <div class="container-fluid d-inline-flex justify-content-end mt-3">
+
+                    
+                    <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
+                    <a href="{{ url('reservas-laboratorio') }}" class="btn btn-success btn-sm fs-6">Ver horas reservadas</a>
                 </div>
-                <div class="modal-body">
-                ...
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+
+                <table class="table table-bordered table-striped mt-3" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Número de equipos</th>
+                            <th class="sortable-header" data-sort>Fecha Reservada<span class="sort-icon"></span></th>
+                            <th>Empieza</th>
+                            <th>Termina</th>
+                            <th>Usa Proyector</th>
+                            <th>Requerimientos adicionales</th>
+                            <th>RPE</th>
+                            <th>Nombre Completo</th>
+                            <th>Materia</th>
+                            <th>Actividad</th>
+                            <th>Nombre Curso</th>
+                            <th>Editar / Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($reservaciones as $reservacion)
+                            <tr>
+                                <td>{{$reservacion->id}}</td>
+                                <td>{{$reservacion->numEquipos}}</td>
+                                <td>{{$reservacion->fechaReservada}}</td>
+                                <td>{{$reservacion->horaReservaInicio}}</td>
+                                <td>{{$reservacion->horaReservaFinal}}</td>
+                                <td>{{$reservacion->usaProyector}}</td>
+                                <td>{{$reservacion->reqAdicionales}}</td>
+                                <td>{{$reservacion->Rpe}}</td>
+                                <td>{{$reservacion->nombreCompleto}}</td>
+                                <td>{{$reservacion->materia}}</td>
+                                <td>{{$reservacion->actividad}}</td>
+                                <td>{{$reservacion->nombreCurso}}</td>
+                                <td>
+                                    <a href="{{ url('/edita-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
+                                    <a href="{{ url('borra-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                
+
+                <!-- Modal -->
+                <div class="modal fade modal-dialog modal-dialog-scrollable" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        ...
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
-            </div>
         </div>
-
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
