@@ -65,7 +65,7 @@
             <h6 class="alert alert-success">{{ session('status') }}</h6>
         @endif
         <div class="d-flex my-4 justify-content-end ">
-            <a href="{{ url('admin-reservas-laboratorio') }}" class="btn btn-danger float-end">Regresar</a>
+            <a href="{{ url('administrador') }}" class="btn btn-danger float-end">Regresar</a>
         </div>
         <div class="d-flex justify-content-around ">
             <div class="col-6">

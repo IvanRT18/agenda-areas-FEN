@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\AreasControllers;
 
-use App\Models\LaboratorioCita;
+use App\Models\AreasModels\AuditorioModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use App\Http\Controllers\Controller;
 
-class LaboratorioCitasController extends Controller
+
+class AuditorioController extends Controller
 {
     public function index()
     {
@@ -16,7 +18,7 @@ class LaboratorioCitasController extends Controller
 
     public function store(Request $request)
     {
-        $LabCompCita = new LaboratorioCita();
+        $LabCompCita = new AuditorioModel();
         $LabCompCita->numEquipos = $request->numEquipos;
         $LabCompCita->fechaReservada = $request->fechaReservada;
         $LabCompCita->horaReservaInicio = $request->horaReservaInicio;
@@ -40,34 +42,34 @@ class LaboratorioCitasController extends Controller
 
     public function showAll(Request $request)
     {
-        $reservaciones = LaboratorioCita::all();
+        $reservaciones = AuditorioModel::all();
 
-        return view('adminLaboratorioCitas', compact('reservaciones'));
+        return view('AdminPanel', compact('reservaciones'));
     }
 
     public function showHorasDia(Request $request)
     {
-        // $reservaciones = LaboratorioCita::where('fechaReservada', $fecha)->get();
+        // $reservaciones = AuditorioModel::where('fechaReservada', $fecha)->get();
         return view('reservacionesLaboratorio');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = LaboratorioCita::where('fechaReservada', $fecha)->get();
+        $horasAgendadas = AuditorioModel::where('fechaReservada', $fecha)->get();
 
         return response()->json($horasAgendadas);
     }
 
     // Edita una cita
     public function editaCita($idCita){
-        $cita = LaboratorioCita::find($idCita);
+        $cita = AuditorioModel::find($idCita);
         return view('editCitaLaboratorio', compact('cita'));
     }
 
     public function updateCita(Request $request, $id)
     {
-        $cita = LaboratorioCita::find($id);
+        $cita = AuditorioModel::find($id);
         $cita->id = $request->input('id');
         $cita->numEquipos = $request->input('numEquipos');
         $cita->fechaReservada = $request->input('fechaReservada');
@@ -86,7 +88,7 @@ class LaboratorioCitasController extends Controller
 
     public function borrarCita($idCita)
     {
-        $citaLab = LaboratorioCita::find($idCita);
+        $citaLab = AuditorioModel::find($idCita);
         $citaLab->delete();
         return redirect()->back()->with('status', 'Cita borrada correctamente');
     }

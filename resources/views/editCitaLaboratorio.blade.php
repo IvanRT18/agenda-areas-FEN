@@ -69,7 +69,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h4>Editar cita - Laboratorio
-                            <a href="{{ url('admin-reservas-laboratorio') }}" class="btn btn-danger float-end">Regresar</a>
+                            <a href="{{ url('administrador') }}" class="btn btn-danger float-end">Regresar</a>
                         </h4>
                     </div>
                     <div class="card-body">

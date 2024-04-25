@@ -54,24 +54,27 @@
             </tr></tbody></table>
         </div>
 
-       
+        @if (session('status'))
+            <div class="flex flex-row justify-arnd alert alert-success ">
+                <h6 class="">{{ session('status') }}</h6>
+                <button id="close-btn">X</button>
+            </div>
+        @endif
+
+        <div style="
+        display: flex;
+        justify-content: space-between;
+        margin-top: 3rem;
+    ">
+            <h1>
+                {{session('user')}}
+            </h1>
     
-        <div>
-
-            @if (session('status'))
-                <div class="flex flex-row justify-arnd alert alert-success ">
-                    <h6 class="">{{ session('status') }}</h6>
-                    <button id="close-btn">X</button>
-                </div>
-            @endif
+            <form action="{{url('/logout')}}">
+                <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
+            </form>
         </div>
-
-        {{session('user')}}
-        {{session('type')}}
-
-        <form action="{{url('/logout')}}">
-            <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
-        </form>
+        
 
         {{-- Radios de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
@@ -263,7 +266,7 @@
     </div>
 
 
-    <div id="Creditos">          
+    <div id="Creditos" style="margin-top: 500px">          
         <h4>Universidad Autónoma de San Luis Potosí</h4>
             Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
         San Luis Potosí, S.L.P. México                <br>

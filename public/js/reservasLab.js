@@ -34,7 +34,7 @@ const diaActual = diasArray[date.getDay()];
 $('#diaReservaLab').text(diaActual); //Titulo que indica el dia que se estan consultando los horarios reservados (en este ejemplo se usa el dia de hoy)
 
 //Obtiene las horas reservadas
-$.get('/horas-agendadas/' + fullDiaActual, function(data){
+$.get('laboratorio/' + fullDiaActual, function(data){
     mediaHoras = 0; //Bandera para saber si se reservo en una media hora, de aqui dependera la manera en que se muestran las horas
 
     disabledHoras = [];
