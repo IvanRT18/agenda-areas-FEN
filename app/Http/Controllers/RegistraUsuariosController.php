@@ -13,6 +13,23 @@ class RegistraUsuariosController extends Controller
 
     //Registra un nuevo usuario a la base de datos
     public function store(Request $request){
+        // Validar si el correo ya está registrado
+        $existingUser = Usuario::where('correo', $request->correo)->first();
+        // Validar si la clave ya está registrada
+        $existingClave = Usuario::where('clave', $request->clave)->first();
+
+        // Definir los mensajes de error
+        $errors = [
+            'correo' => $existingUser ? 'El correo electrónico ya está registrado' : null,
+            'clave' => $existingClave ? 'El RPE ya está registrado' : null,
+        ];
+
+        // Redireccionar con los errores si es necesario
+        if ($existingUser || $existingClave) {
+            return redirect()->back()->withInput()->withErrors($errors);
+        }
+
+        // Crear el nuevo usuario
         $user = new Usuario();
         $user->clave = $request->clave;
         $user->apellido_materno = $request->apellido_materno;

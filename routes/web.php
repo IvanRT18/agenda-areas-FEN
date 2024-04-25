@@ -103,6 +103,8 @@ Route::post('agrega-dia-inhabilitado-laboratorio', [DiaDeshabilitadoController::
 
 Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'allDiasDeshabilitados']);
 
+Route::get('dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'index']);
+
 Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoController::class, 'eliminaDiaDeshabilitado']);
 
 Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);

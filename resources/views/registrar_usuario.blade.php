@@ -63,10 +63,21 @@
             </div>
         @endif
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+
         <div class="card mt-3">
             <div class="card-header">
                 <h4>Registrar usuario
-                    <a href="{{ url('registrar-usuario') }}" class="btn btn-danger float-end">Regresar</a>
+                    <a href="{{ url('administrador') }}" class="btn btn-danger float-end">Regresar</a>
                 </h4>
             </div>
             <div class="card-body">
@@ -76,29 +87,29 @@
 
                     <div class="form-group mb-3">
                         <label for="">RPE</label>
-                        <input type="text" name="clave" class="form-control">
+                        <input type="text" name="clave" class="form-control" value="{{ old('clave') }}">
                     </div>
                     <div class="form-group mb-3">
                         <label for="">Apellido materno</label>
-                        <input type="text" name="apellido_materno" class="form-control">
+                        <input type="text" name="apellido_materno" class="form-control" value="{{ old('apellido_materno') }}">
                     </div>
                     <div class="form-group mb-3">
                         <label for="">Apellido paterno</label>
-                        <input type="text" id="apellido_paterno" name="apellido_paterno" class="form-control">
+                        <input type="text" id="apellido_paterno" name="apellido_paterno" class="form-control" value="{{ old('apellido_paterno') }}">
                     </div>
                     <div class="form-group mb-3">
                         <label for="">Nombre(s)</label>
-                        <input type="text" name="nombres" id="nombres" class="form-control">
+                        <input type="text" name="nombres" id="nombres" class="form-control" value="{{ old('nombres') }}">
                     </div>
                     <div class="form-group mb-3">
                         <select class="form-select" aria-label="Default select example" name="tipo">
-                            <option value="docente" selected>Docente</option>
-                            <option value="administrador">Administrador</option>
+                            <option value="docente" {{ old('tipo') == 'docente' ? 'selected' : '' }} >Docente</option>
+                            <option value="administrador" {{ old('tipo') == 'administrador' ? 'selected' : '' }}>Administrador</option>
                         </select>
                     </div>
                     <div class="form-group mb-3">
                         <label for="">Correo</label>
-                        <input type="email" name="correo" class="form-control">
+                        <input type="email" name="correo" class="form-control" value="{{ old('correo') }}">
                     </div>
                     <div class="form-group mb-3">
                         <button type="submit" class="btn btn-primary">Registrar usuario</button>
@@ -109,4 +120,6 @@
         </div>
     </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{{asset('js/registrarUsuario.js')}}"></script>
 </html>

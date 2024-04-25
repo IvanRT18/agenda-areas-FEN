@@ -90,7 +90,7 @@
             <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
             {{-- <a href="{{ url('reservas-laboratorio') }}" class="btn btn-success btn-sm fs-6">Ver horas reservadas</a> --}}
 
-                    <!-- Button trigger modal -->
+        <!-- Modal selecciona área horas reservadas -->
         <button type="button" class="btn btn-success fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
             Ver horas reservadas
         </button>
