@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Registrar nuevo usuario | Agenda Áreas FEN</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />   
+        <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
+    
+        {{-- FEN estilos --}}
+        <link rel="stylesheet" type="text/css" href="https://cuan.uaslp.mx/adds/estilos/pagina.css">
+
+        <!-- Bootstrap --> 
+        {{-- <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" />  --}}
+        <link rel="stylesheet" href="https://www.uaslp.mx/Content/bootstrap.min.css">
+        <script src="https://www.uaslp.mx/Scripts/bootstrap.bundle.min.js"></script>
+
+        <!-- UASLP -->
+        <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
+        
+        {{-- Flatpickr css --}}
+        <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
+    
+        {{-- Timepicker css --}}
+        <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
+
+        {{-- Agenda Áreas css --}}
+        <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
+    </head>
+<body>
+    <div class="container">
+        <div class="header">
+            <table width="1170px" align="center" border="0">
+            <tbody><tr>
+                <td width="293px" style="background-color:#1B3257" align="center">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_uaslp_blanco.png">
+                </td>
+                <td width="292px" style="background-color:#1B3257" align="center">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_fe_blanco.png" style="margin">
+                </td>
+                <td width="585px" style="background-color:#1B3257">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/banner_der.png" width="585px" height="150">
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor="#FFF" colspan="3">
+                    <table width="100%" style="margin-top:10px" align="center">
+                    <tbody><tr>
+                        <td style="height:32px; background-color:#1B3257" width="58.6%"><div style="color:#fff; margin-left:20px">Reservación de áreas comúnes</div></td>
+                        <td style="background-color:#FCC200"><img src="https://cuan.uaslp.mx/comunes/imagenes/amarillo_azul.png"></td>
+                        <td align="right" style="background-color:#FCC200; font-size:16px">"HUMANISMI ET SCIENTIA" &nbsp;</td>
+                    </tr>
+                    </tbody></table>
+                </td>
+            
+            </tr></tbody></table>
+        </div>
+
+        {{-- Alerta de confimación --}}
+        @if (session('status'))
+            <div class="flex flex-row justify-arnd alert alert-success">
+                <h6 class="">{{ session('status') }}</h6>
+                <button id="close-btn">X</button>
+            </div>
+        @endif
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h4>Registrar usuario
+                    <a href="{{ url('registrar-usuario') }}" class="btn btn-danger float-end">Regresar</a>
+                </h4>
+            </div>
+            <div class="card-body">
+
+                <form action="{{ url('registrar-usuario') }}" method="POST">
+                    @csrf
+
+                    <div class="form-group mb-3">
+                        <label for="">RPE</label>
+                        <input type="text" name="clave" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Apellido materno</label>
+                        <input type="text" name="apellido_materno" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Apellido paterno</label>
+                        <input type="text" id="apellido_paterno" name="apellido_paterno" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Nombre(s)</label>
+                        <input type="text" name="nombres" id="nombres" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <select class="form-select" aria-label="Default select example" name="tipo">
+                            <option value="docente" selected>Docente</option>
+                            <option value="administrador">Administrador</option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Correo</label>
+                        <input type="email" name="correo" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <button type="submit" class="btn btn-primary">Registrar usuario</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
