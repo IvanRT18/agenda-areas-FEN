@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('auditorio_reservaciones', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('Rpe');
-            $table->boolean('usaProyector');
-            $table->string('fechaReservada');
-            $table->string('horaReservaInicio');
-            $table->string('horaReservaFinal');
-            $table->integer('numeroMicrofonos');
-            $table->boolean('usaComputadora');
-            $table->boolean('usaBocinas');
+            $table->string('rpe');
+            $table->string('fecha_reservada');
+            $table->string('hora_reserva_inicio');
+            $table->string('hora_reserva_final');
+            $table->boolean('usa_proyector');
+            $table->integer('numero_microfonos');
+            $table->boolean('usa_computadora');
+            $table->boolean('usa_bocinas');
         });
     }
 

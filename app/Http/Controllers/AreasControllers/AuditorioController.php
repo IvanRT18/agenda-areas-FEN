@@ -18,24 +18,24 @@ class AuditorioController extends Controller
 
     public function store(Request $request)
     {
-        $LabCompCita = new AuditorioModel();
-        $LabCompCita->numEquipos = $request->numEquipos;
-        $LabCompCita->fechaReservada = $request->fechaReservada;
-        $LabCompCita->horaReservaInicio = $request->horaReservaInicio;
-        $LabCompCita->horaReservaFinal = $request->horaReservaFinal;
+        $reservacion = new AuditorioModel();
+        $reservacion->rpe = $request->rpe;
+        $reservacion->fechaReservada = $request->fechaReservada;
+        $reservacion->horaReservaInicio = $request->horaReservaInicio;
+        $reservacion->horaReservaFinal = $request->horaReservaFinal;
         if ($request->usaProyector == 'true') //Si es 1 (osea si se selecciono)
-            $LabCompCita->usaProyector = true;
+            $reservacion->usaProyector = true;
         else
-            $LabCompCita->usaProyector = false;
+            $reservacion->usaProyector = false;
 
-        // $LabCompCita->usaProyector = $request->usaProyector;
-        $LabCompCita->reqAdicionales = $request->reqAdicionales;
-        $LabCompCita->Rpe = $request->Rpe;
-        $LabCompCita->nombreCompleto = $request->nombreCompleto;
-        $LabCompCita->materia = $request->materia;
-        $LabCompCita->actividad = $request->actividad;
-        $LabCompCita->nombreCurso = $request->nombreCurso;
-        $LabCompCita->save();
+        // $reservacion->usaProyector = $request->usaProyector;
+        $reservacion->reqAdicionales = $request->reqAdicionales;
+        $reservacion->Rpe = $request->Rpe;
+        $reservacion->nombreCompleto = $request->nombreCompleto;
+        $reservacion->materia = $request->materia;
+        $reservacion->actividad = $request->actividad;
+        $reservacion->nombreCurso = $request->nombreCurso;
+        $reservacion->save();
 
         return redirect()->back()->with('status', 'Se ha reservado el área correctamente');
     }

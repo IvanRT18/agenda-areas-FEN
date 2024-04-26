@@ -101,15 +101,11 @@
                 <input id="numEquipos" type="number" name="numEquipos" min="1" max="40" required/>
             </div>
             </div>
-
-            
             
             <div class="flex flex-col">
                 <label for="fechaReservada">Fecha para reservar:</label>
-            <input type="date" id="fechaReservada" name="fechaReservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
-
-            <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
-            
+                <input type="date" id="fechaReservada" name="fechaReservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+                <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
             </div>
 
             <div class="flex flex-col">
@@ -172,34 +168,52 @@
 
     {{-- Formulario auditorio --}}
     <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAuditorio">
-        <div>
-            <input type="checkbox" name="proyector" id="proyector">
-            <label for="proyector">¿Usará el proyector?</label>
+        @csrf
+        <div class="flex flex-col col-xs-12 gap">
+            <div class="flex flex-col">
+                <label for="fechaReservadaAuditorio">Fecha para reservar:</label>
+                <input type="date" id="fechaReservadaAuditorio" name="fechaReservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+                <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="horaReservaInicioAuditorio">Hora para reservar:</label>
+                <div class="col-12">
+                    <input type="text" id="horaReservaInicioAuditorio" name="horaReservaInicio" class="w-100" required/>
+                </div>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="horaReservaFinalAuditorio">A</label>
+                <div class="col-12">
+                    <input type="text" id="horaReservaFinalAuditorio" name="horaReservaFinal" class="w-100" required/>
+                </div>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_proyector" id="usa_proyector">
+                <label for="usa_proyector">¿Usará el proyector?</label>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="numero_microfonos">
+                    ¿Cuantos microfonos usará?
+                </label>
+                <input type="number" name="numero_microfonos" id="numero_microfonos" min="0" max="2">
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_computadora" id="usa_computadora">
+                <label for="usa_computadora">¿Usará la computadora?</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_bocinas" id="usa_bocinas">
+                <label for="usa_bocinas">
+                    ¿Usará las bocinas? (multimedia, videos, étc)
+                </label>
+            </div>
         </div>
-
-        <div class="flex flex-col">
-            <label for="microfonos">
-                ¿Cuantos microfonos usará?
-            </label>
-            <input type="number" name="microfonos" id="microfonos" min="0" max="2">
-        </div>
-
-        <div>
-            <input type="checkbox" name="computadora" id="computadora">
-            <label for="computadora">¿Usará la computadora?</label>
-        </div>
-
-        <div>
-            <input type="checkbox" name="audio" id="audio">
-            <label for="audio">
-                ¿Usará las bocinas? (multimedia, videos, étc)
-            </label>
-        </div>
-
-        <div>
-            <label for=""></label>
-        </div>
-
     </form>
 
     {{-- Formulario aula magna --}}
