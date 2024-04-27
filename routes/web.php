@@ -87,6 +87,8 @@ Route::get(('/logout'), function(){
     session()->forget('user');
     session()->forget('type');
 	setcookie("SC","",0);
+    session()->invalidate();
+    session()->regenerate();
     return redirect('index');
 });
 

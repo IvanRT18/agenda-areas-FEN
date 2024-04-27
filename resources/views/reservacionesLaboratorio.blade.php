@@ -5,22 +5,11 @@
     <title>Horas reservadas laboratorio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />   
     <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
-
-    {{-- @vite('resources/css/app.css') --}}
-
-
-    <!-- old Bootstrap -->
-    {{-- <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" />  --}}
-
     {{-- Nuevo bootstrap --}}
     <link rel="stylesheet" href="https://www.uaslp.mx/Scripts/bootstrap.bundle.min.js">
     <link rel="stylesheet" href="https://www.uaslp.mx/Content/bootstrap.min.css">
-
     <!-- UASLP -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
-
-    {{-- Estilos propios --}}
-    {{-- <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>  --}}
 </head>
 <body>
     <div class="container">
