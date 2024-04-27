@@ -33,7 +33,7 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
         return view('home');
     })->name('inicio');
     
-    //Ruta de las horas reservadas
+    //Ruta para ver las horas reservadas
     Route::prefix('horas-reservadas')->group(function () {
         Route::get('/', function () {
             // Redirije al usuario a las horas agendadas del laboratorio por default
@@ -58,10 +58,10 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
 
         Route::prefix('auditorio')->group(function () {
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio
-            Route::get('/', [LaboratorioCitasController::class, 'showHorasDia'])->name('auditorio');
+            Route::get('/', [AuditorioController::class, 'showHorasDia'])->name('auditorio');
     
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio/{fecha}
-            Route::get('{fecha}', [LaboratorioCitasController::class, 'horasAgendadas'])->name('reserva-por-fecha');
+            Route::get('{fecha}', [AuditorioController::class, 'horasAgendadas'])->name('reserva-por-fecha');
         });
 
         Route::prefix('sala-videoconferencias')->group(function () {
@@ -71,6 +71,14 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio/{fecha}
             Route::get('{fecha}', [LaboratorioCitasController::class, 'horasAgendadas'])->name('reserva-por-fecha');
         });
+    });
+
+    //Rutas para registrar reservaciones de áreas
+    Route::prefix('registra-reservacion')->group(function(){
+        Route::post('auditorio', [AuditorioController::class, 'store']);
+        Route::post('aula-magna', [AuditorioController::class, 'store']);
+        Route::post('laboratorio', [LaboratorioCitasController::class, 'store']);
+        Route::post('sala-videoconferencias', [AuditorioController::class, 'store']);
     });
 });
 
@@ -87,9 +95,6 @@ Route::get(('/logout'), function(){
 Route::get('index', [LoginController::class, 'index']);
 Route::get('/public/index', [LoginController::class, 'index']);
 Route::get('public/index', [LoginController::class, 'index']);
-
-
-Route::post('guarda-auditorio-cita', [LaboratorioCitasController::class, 'store']);
 
 Route::get('/horas-agendadas/{fecha}', [LaboratorioCitasController::class, 'horasAgendadas']);
 

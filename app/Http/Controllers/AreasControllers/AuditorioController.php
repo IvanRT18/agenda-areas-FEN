@@ -19,22 +19,31 @@ class AuditorioController extends Controller
     public function store(Request $request)
     {
         $reservacion = new AuditorioModel();
-        $reservacion->rpe = $request->rpe;
-        $reservacion->fechaReservada = $request->fechaReservada;
-        $reservacion->horaReservaInicio = $request->horaReservaInicio;
-        $reservacion->horaReservaFinal = $request->horaReservaFinal;
-        if ($request->usaProyector == 'true') //Si es 1 (osea si se selecciono)
-            $reservacion->usaProyector = true;
-        else
-            $reservacion->usaProyector = false;
+        $reservacion->rpe = session('user');
+        $reservacion->fecha_reservada = $request->fecha_reservada_auditorio;
+        $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio_auditorio;
+        $reservacion->hora_reserva_final = $request->hora_reserva_final_auditorio;
 
-        // $reservacion->usaProyector = $request->usaProyector;
-        $reservacion->reqAdicionales = $request->reqAdicionales;
-        $reservacion->Rpe = $request->Rpe;
-        $reservacion->nombreCompleto = $request->nombreCompleto;
-        $reservacion->materia = $request->materia;
-        $reservacion->actividad = $request->actividad;
-        $reservacion->nombreCurso = $request->nombreCurso;
+
+        if ($request->usa_proyector_auditorio == null) //Si es 1 (osea si se selecciono)
+            $reservacion->usa_proyector = true;
+        else
+            $reservacion->usa_proyector = false;
+
+        if ($request->usa_bocinas_auditorio == null) //Si es 1 (osea si se selecciono)
+            $reservacion->usa_bocinas = true;
+        else
+            $reservacion->usa_bocinas = false;
+
+        if ($request->usa_computadora_auditorio == null) //Si es 1 (osea si se selecciono)
+            $reservacion->usa_computadora = true;
+        else
+            $reservacion->usa_computadora = false;
+
+
+        $reservacion->numero_microfonos = $request->numero_microfonos_auditorio;
+        $reservacion->usa_computadora = $request->usa_computadora_auditorio;
+        $reservacion->usa_bocinas = $request->usa_bocinas_auditorio;
         $reservacion->save();
 
         return redirect()->back()->with('status', 'Se ha reservado el área correctamente');
@@ -56,8 +65,7 @@ class AuditorioController extends Controller
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = AuditorioModel::where('fechaReservada', $fecha)->get();
-
+        $horasAgendadas = AuditorioModel::where('fecha_reservada', $fecha)->get();
         return response()->json($horasAgendadas);
     }
 
