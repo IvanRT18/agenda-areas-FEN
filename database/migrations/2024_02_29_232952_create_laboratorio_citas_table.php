@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('laboratorio_citas', function (Blueprint $table) {
+        Schema::create('laboratorio_reservaciones', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->integer('numEquipos');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('laboratorio_citas');
+        Schema::dropIfExists('laboratorio_reservaciones');
     }
 };

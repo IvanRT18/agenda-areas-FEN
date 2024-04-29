@@ -62,14 +62,21 @@
         <div class="row">
             <div class="col-md-12">
     
-                @if (session('status'))
+                {{-- @if (session('status'))
                     <h6 class="alert alert-success">{{ session('status') }}</h6>
+                @endif --}}
+
+                @if (session('status'))
+                    <div class="flex flex-row justify-arnd alert alert-success">
+                        <h6 class="">{{ session('status') }}</h6>
+                        <button id="close-btn">X</button>
+                    </div>
                 @endif
     
                 <div class="card">
                     <div class="card-header">
                         <h4>Editar cita - Laboratorio
-                            <a href="{{ url('admin-reservas-laboratorio') }}" class="btn btn-danger float-end">Regresar</a>
+                            <a href="{{ url('administrador') }}" class="btn btn-danger float-end">Regresar</a>
                         </h4>
                     </div>
                     <div class="card-body">
@@ -92,11 +99,11 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Hora de inicio de reservación</label>
-                                <input type="text" name="horaReservaInicio" value="{{$cita->horaReservaInicio}}" class="form-control">
+                                <input type="text" name="horaReservaInicio" id="horaReservaInicio" value="{{$cita->horaReservaInicio}}" class="form-control">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Hora de finalización de reservación</label>
-                                <input type="text" name="horaReservaFinal" value="{{$cita->horaReservaFinal}}" class="form-control">
+                                <input type="text" name="horaReservaFinal" id="horaReservaFinal" value="{{$cita->horaReservaFinal}}" class="form-control">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">¿Usa el proyector del laboratorio?</label>
@@ -104,7 +111,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">Requerimientos adicionales</label>
-                                <input type="text" name="reqAdicionales" value="{{$cita->reqAdicionales}}" class="form-control">
+                                <textarea type="text" name="reqAdicionales" class="form-control">{{$cita->reqAdicionales}}</textarea>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="">RPE</label>

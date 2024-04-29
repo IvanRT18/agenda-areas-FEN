@@ -22,6 +22,7 @@
     {{-- Timepicker css --}}
     <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
 
+    {{-- Agenda css --}}
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
     
     {{-- flatpickr css --}}
@@ -58,24 +59,27 @@
             </tr></tbody></table>
         </div>
 
-       
+        @if (session('status'))
+            <div class="flex flex-row justify-arnd alert alert-success ">
+                <h6 class="">{{ session('status') }}</h6>
+                <button id="close-btn">X</button>
+            </div>
+        @endif
+
+        <div style="
+        display: flex;
+        justify-content: space-between;
+        margin-top: 3rem;
+    ">
+            <h1>
+                {{session('user')}}
+            </h1>
     
-        <div>
-
-            @if (session('status'))
-                <div class="flex flex-row justify-arnd alert alert-success ">
-                    <h6 class="">{{ session('status') }}</h6>
-                    <button id="close-btn">X</button>
-                </div>
-            @endif
+            <form action="{{url('/logout')}}">
+                <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
+            </form>
         </div>
-
-        {{session('user')}}
-        {{session('type')}}
-
-        <form action="{{url('/logout')}}">
-            <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
-        </form>
+        
 
         {{-- Radios de areas para reservar --}}
        <div class="flex flex-col contenido gap align-center">
@@ -89,7 +93,7 @@
 
 
        {{-- Formulario Laboratorio de cómputo--}}
-       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formularioLabComp">
+       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/laboratorio')}}" id="formularioLabComp">
            @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div>
@@ -98,15 +102,11 @@
                 <input id="numEquipos" type="number" name="numEquipos" min="1" max="40" required/>
             </div>
             </div>
-
-            
             
             <div class="flex flex-col">
                 <label for="fechaReservada">Fecha para reservar:</label>
-            <input type="date" id="fechaReservada" name="fechaReservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
-
-            <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
-            
+                <input type="date" id="fechaReservada" name="fechaReservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+                <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
             </div>
 
             <div class="flex flex-col">
@@ -162,41 +162,59 @@
                 <input type="text" name="nombreCurso" id="nombreCurso" required>
             </div>
 
-
             <input type="submit" name="AgendarButton" value="Agendar" id="AgendarButton" class="btn btn-primary">
         </div>
     </form>
 
     {{-- Formulario auditorio --}}
-    <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAuditorio">
-        <div>
-            <input type="checkbox" name="proyector" id="proyector">
-            <label for="proyector">¿Usará el proyector?</label>
+    <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/auditorio')}}" id="formAuditorio">
+        @csrf
+        <div class="flex flex-col col-xs-12 gap">
+            <div class="flex flex-col">
+                <label for="fecha_reservada_auditorio">Fecha para reservar:</label>
+                <input type="date" id="fecha_reservada_auditorio" name="fecha_reservada_auditorio" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+                <span id="pantallaCargaAuditorio" class="hidden"> <p>Cargando horas reservadas...</p></span>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="hora_reserva_inicio_auditorio">Hora para reservar:</label>
+                <div class="col-12">
+                    <input type="text" id="hora_reserva_inicio_auditorio" name="hora_reserva_inicio_auditorio" class="w-100" required/>
+                </div>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="hora_reserva_final_auditorio">A</label>
+                <div class="col-12">
+                    <input type="text" id="hora_reserva_final_auditorio" name="hora_reserva_final_auditorio" class="w-100" required/>
+                </div>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_proyector_auditorio" id="usa_proyector_auditorio" value="true">
+                <label for="usa_proyector_auditorio">¿Usará el proyector?</label>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="numero_microfonos_auditorio">
+                    ¿Cuantos microfonos usará?
+                </label>
+                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos" min="0" max="2">
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_computadora_auditorio" id="usa_computadora_auditorio" value="true">
+                <label for="usa_computadora_auditorio">¿Usará la computadora?</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_bocinas_auditorio" id="usa_bocinas_auditorio" value="true">
+                <label for="usa_bocinas_auditorio">
+                    ¿Usará las bocinas? (multimedia, videos, étc)
+                </label>
+            </div>
         </div>
-
-        <div class="flex flex-col">
-            <label for="microfonos">
-                ¿Cuantos microfonos usará?
-            </label>
-            <input type="number" name="microfonos" id="microfonos" min="0" max="2">
-        </div>
-
-        <div>
-            <input type="checkbox" name="computadora" id="computadora">
-            <label for="computadora">¿Usará la computadora?</label>
-        </div>
-
-        <div>
-            <input type="checkbox" name="audio" id="audio">
-            <label for="audio">
-                ¿Usará las bocinas? (multimedia, videos, étc)
-            </label>
-        </div>
-
-        <div>
-            <label for=""></label>
-        </div>
-
+        <input type="submit" name="AgendarButtonAuditorio" value="Agendar" id="AgendarButtonAuditorio" class="btn btn-primary">
     </form>
 
     {{-- Formulario aula magna --}}
@@ -267,7 +285,7 @@
     </div>
 
 
-    <div id="Creditos">          
+    <div id="Creditos" style="margin-top: 500px">          
         <h4>Universidad Autónoma de San Luis Potosí</h4>
             Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
         San Luis Potosí, S.L.P. México                <br>

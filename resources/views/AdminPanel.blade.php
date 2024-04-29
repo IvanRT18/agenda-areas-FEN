@@ -86,9 +86,37 @@
         @endif
 
         {{-- Contenido  --}}
-        <div class="container-fluid d-inline-flex justify-content-end mt-3">
+        <div class="container-fluid d-inline-flex justify-content-between mt-3">
             <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
-            <a href="{{ url('reservas-laboratorio') }}" class="btn btn-success btn-sm fs-6">Ver horas reservadas</a>
+            {{-- <a href="{{ url('reservas-laboratorio') }}" class="btn btn-success btn-sm fs-6">Ver horas reservadas</a> --}}
+
+        <!-- Modal selecciona área horas reservadas -->
+        <button type="button" class="btn btn-success fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Ver horas reservadas
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Seleccione el área</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="flex flex-column">
+                        <a href="{{ url('horas-reservadas/auditorio') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Auditorio</a>
+                        <a href="{{ url('horas-reservadas/aula-magna') }}" class="btn btn-success btn-sm fs-6 mb-3">Aula Magna</a>
+                        <a href="{{ url('horas-reservadas/laboratorio') }}" class="btn btn-success btn-sm fs-6 mb-3">Laboratorio de cómputo</a>
+                        <a href="{{ url('horas-reservadas/sala-videoconferencias') }}" class="btn btn-success btn-sm fs-6 mb-3">Sala de videoconferencia</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            </div>
+        </div>
         </div>
 
         <table class="table table-bordered table-striped mt-3">

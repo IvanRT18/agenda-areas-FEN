@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\AreasModels;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +9,7 @@ class LaboratorioCita extends Model
 {
     use HasFactory;
     
-    protected $table = 'laboratorio_citas';
+    protected $table = 'laboratorio_reservaciones';
 
     protected $fillable = [
         'numEquipos',
