@@ -173,7 +173,7 @@
             <div class="flex flex-col">
                 <label for="fecha_reservada_auditorio">Fecha para reservar:</label>
                 <input type="date" id="fecha_reservada_auditorio" name="fecha_reservada_auditorio" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
-                <span id="pantallaCargaAuditorio" class="hidden"> <p>Cargando horas reservadas...</p></span>
+                <span id="pantallaCargaMagna" class="hidden"> <p>Cargando horas reservadas...</p></span>
             </div>
     
             <div class="flex flex-col">
@@ -218,35 +218,53 @@
     </form>
 
     {{-- Formulario aula magna --}}
-    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formAulaMagna">
-        <div>
-            <input type="checkbox" name="proyector" id="proyector">
-            <label for="proyector">¿Usará el proyector?</label>
+    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/aula-magna')}}" id="formAulaMagna">
+        <div class="flex flex-col col-xs-12 gap">
+            <div class="flex flex-col">
+                <label for="fecha_reservada_magna">Fecha para reservar:</label>
+                <input type="date" id="fecha_reservada_magna" name="fecha_reservada_magna" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+                <span id="pantallaCargaAuditorio" class="hidden"> <p>Cargando horas reservadas...</p></span>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="hora_reserva_inicio_magna">Hora para reservar:</label>
+                <div class="col-12">
+                    <input type="text" id="hora_reserva_inicio_magna" name="hora_reserva_inicio_magna" class="w-100" required/>
+                </div>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="hora_reserva_final_magna">A</label>
+                <div class="col-12">
+                    <input type="text" id="hora_reserva_final_magna" name="hora_reserva_final_magna" class="w-100" required/>
+                </div>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_proyector_magna" id="usa_proyector_magna" value="true">
+                <label for="usa_proyector_magna">¿Usará el proyector?</label>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="numero_microfonos_magna">
+                    ¿Cuantos microfonos usará?
+                </label>
+                <input type="number" name="numero_microfonos_magna" id="numero_microfonos_magna" min="0" max="2">
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_computadora_magna" id="usa_computadora_magna" value="true">
+                <label for="usa_computadora_magna">¿Usará la computadora?</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_bocinas_magna" id="usa_bocinas_magna" value="true">
+                <label for="usa_bocinas_magna">
+                    ¿Usará las bocinas? (multimedia, videos, étc)
+                </label>
+            </div>
         </div>
-
-        <div class="flex flex-col">
-            <label for="microfonos">
-                ¿Cuantos microfonos usará?
-            </label>
-            <input type="number" name="microfonos" id="microfonos" min="0" max="2">
-        </div>
-
-        <div>
-            <input type="checkbox" name="computadora" id="computadora">
-            <label for="computadora">¿Usará la computadora?</label>
-        </div>
-
-        <div>
-            <input type="checkbox" name="audio" id="audio">
-            <label for="audio">
-                ¿Usará las bocinas? (multimedia, videos, étc)
-            </label>
-        </div>
-
-        <div>
-            <label for=""></label>
-        </div>
-
+        <input type="submit" name="AgendarButtonMagna" value="Agendar" id="AgendarButtonMagna" class="btn btn-primary">
     </form>
 
     {{-- Formulario sala de videoconferencia --}}

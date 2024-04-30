@@ -88,12 +88,13 @@
         {{-- Contenido  --}}
         <div class="container-fluid d-inline-flex justify-content-between mt-3">
             <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
-            {{-- <a href="{{ url('reservas-laboratorio') }}" class="btn btn-success btn-sm fs-6">Ver horas reservadas</a> --}}
 
-        <!-- Modal selecciona área horas reservadas -->
-        <button type="button" class="btn btn-success fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-            Ver horas reservadas
-        </button>
+            <a href="{{ url('registrar-usuario') }}" class="btn btn-success btn-sm fs-6">Registrar nuevo usuario</a>
+
+            <!-- Modal selecciona área horas reservadas -->
+            <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                Ver horas reservadas
+            </button>
         
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

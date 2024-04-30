@@ -49,9 +49,7 @@
             @yield('title-area')
         </div>
 
-         {{-- Horarios reservados del laboratorio --}}
-         <div id="horasContainer" class="flex flex-col">
-        </div>
+         @yield('content-reservaciones')
     </div>
     {{-- Scripts --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

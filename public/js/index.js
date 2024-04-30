@@ -1,6 +1,7 @@
 const checkLabComp = $("#checkboxLabComp");
 const diaReservaLabo = $("#fechaReservada");
 const diaReservaAuditorio = $("#fecha_reservada_auditorio");
+const diaReservaMagna = $("#fecha_reservada_magna");
 const horaReservaInicio = $("#horaReservaInicio");
 const horaReservaFinal = $("#horaReservaFinal");
 //En horasAgendablesArray van todas las horas en las que el usuario podrá reservar su cita
@@ -84,19 +85,27 @@ $(function() {
         });
 
         console.log(disabledDays);
+
+        flatpickr("#fechaReservada", {
+            minDate: new Date().fp_incr(1), // A partir del día de mañana
+            maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
+            disable: disabledDays,
+        });
+    
+        flatpickr("#fecha_reservada_auditorio", {
+            minDate: new Date().fp_incr(1), // A partir del día de mañana
+            maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
+            disable: disabledDays,
+        });
+
+        flatpickr("#fecha_reservada_magna", {
+            minDate: new Date().fp_incr(1), // A partir del día de mañana
+            maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
+            disable: disabledDays,
+        });
     });
 
-    flatpickr("#fechaReservada", {
-        minDate: new Date().fp_incr(1), // A partir del día de mañana
-        maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
-        disable: disabledDays,
-    });
-
-    flatpickr("#fecha_reservada_auditorio", {
-        minDate: new Date().fp_incr(1), // A partir del día de mañana
-        maxDate: new Date().fp_incr(15), // 15 días a partir de hoy
-        disable: disabledDays,
-    });
+   
 
     //Inicialmente se deshabilitan los inputs de seleccionar hora hasta que el usuario escoja un día para hacer la reservación
     $("#horaReservaInicio").prop("disabled", true);
@@ -105,6 +114,9 @@ $(function() {
      //Inicialmente se deshabilitan los inputs de seleccionar hora hasta que el usuario escoja un día para hacer la reservación
      $("#horaReservaInicioAuditorio").prop("disabled", true);
      $("#horaReservaFinalAuditorio").prop("disabled", true);
+
+     $("#hora_reserva_inicio_magna").prop("disabled", true);
+     $("#hora_reserva_final_magna").prop("disabled", true);
 
     // Cuando el usuario elija un día para reservar
     diaReservaLabo.on("change", function () {
@@ -373,6 +385,142 @@ $(function() {
                 //Se meustra el input de horas 2
                 if ($("#hora_reserva_inicio_auditorio").val()) {
                     $("#hora_reserva_final_auditorio").prop("disabled", false);
+                }
+            });
+        });
+    });
+
+
+    //Aula magna cuando el usuario elija un día para reservar
+    diaReservaMagna.on("change", function () {
+        let fechaSeleccionada = $(this).val(); //Fecha seleccionada por el usuario en el calendario
+
+        // Se deshabilita el input de la fecha y horas para que el usuario no haga otra solicitud
+        // hasta que se termine la primera
+        $(this).prop("disabled", true);
+        $("#hora_reserva_inicio_magna").prop("disabled", true);
+        $("#hora_reserva_final_magna").prop("disabled", true);
+
+        // Se limpian los inputs de las horas
+        $("#hora_reserva_inicio_magna").val("");
+        $("#hora_reserva_final_magna").val("");
+
+        //Muestra mensaje de que se estan cargando las horas reservadas
+        $("#pantallaCargaMagna").removeClass("hidden");
+
+        //Se hace la solicitud ajax para obtener las horas reservadas
+        $.get("/horas-reservadas/aula-magna/" + fechaSeleccionada, function (data) {
+            console.log("Horas agendadas:", data);
+
+            disabledHoras = [];
+            disabledHorasString = [];
+
+            //Obtiene las horas deshabilitadas para el input 1 (hora reserva inicial)
+            data.forEach((hora) => {
+                // Se agrega cada rango de hora reservada al arreglo
+                disabledHoras.push([hora.hora_reserva_inicio_magna, hora.hora_reserva_final_magna]);
+            });
+
+            console.log("horas reservadas ese día", disabledHoras);
+
+            // Obtiene las horas deshabilitadas para la hora final de reserva
+            disabledHoras.forEach((rango) => {
+                disabledHorasString.push([rango[0], rango[1]]);
+
+                const inicioRango = stringToDate(rango[0]);
+                const finRango = stringToDate(rango[1]);
+
+                horasInicialesDate.forEach((horaD) => {
+                    if (horaD >= inicioRango && horaD <= finRango) {
+                        reservada = true;
+                        rangoHorasReservadas.push(horaD);
+                    }
+                });
+
+                rangoHorasReservadas.shift();
+                horasFinalesSeleccionable.push(rangoHorasReservadas);
+                rangoHorasReservadas = [];
+            });
+
+            //Convierte las horas finales para reservar de tipo Date a string
+            datesToString(horasFinalesSeleccionable);
+
+            //Se deshabilitan las horas ya agendadas para ese día en el input de hora inicial
+            $("#hora_reserva_inicio_magna").timepicker({
+                minTime: "7:00am",
+                maxTime: "9:01pm",
+                step: 30,
+                timeFormat: "H:i",
+                disableTimeRanges: disabledHoras,
+            });
+
+            //Se quita el mensaje de carga
+            $("#pantallaCargaMagna").addClass("hidden");
+
+            //Se vuelve a habilitar el input de la fecha
+            diaReservaAuditorio.prop("disabled", false);
+
+            //Se habilita la hora de reserva inicial
+            $("#hora_reserva_inicio_magna").prop("disabled", false);
+
+            //Cuando el usuario selecciona una hora de reserva inicial
+            //Se activa el input de hora_reserva_final_magna
+            $("#hora_reserva_inicio_magna").on("change", function () {
+                //Limpia la hora reserva final
+                $("#hora_reserva_final_magna").val("");
+
+                let horaSelDate = stringToDate($("#hora_reserva_inicio_magna").val());
+
+                //Limpieza de variables para cuando se seleccionen otras fechas
+                let postDisabledHours = "";
+                let tempDisHours = "";
+                let pastHours = "";
+                let pastHours2 = "";
+                let indiceHora = "";
+                let horasDisables2 = "";
+                let finalDisablesHours = "";
+
+                //Deshabilita las horas posteriores a una cita ya reservada
+                disabledHorasString.forEach((rango) => {
+                    if (stringToDate(rango[0]) > horaSelDate) {
+                        tempDisHours = datesObjectsToString(
+                            disablePostHoursString(rango[0])
+                        );
+                        tempDisHours.push("22:00");
+                        postDisabledHours = firstAndLast(tempDisHours);
+                    }
+                });
+
+                //Deshabilita las horas ya pasadas de la hora de inicio seleccionada
+                pastHours = disablePastHoursString($("#hora_reserva_inicio_magna").val()); //Regresa un array de string de las horas pasadas a la seleccionada
+                pastHours.push(horaSelDate); // Agrega la hora seleccionada como hora pasada
+                pastHours2 = datesObjectsToString(pastHours); //Convierte ese array de strings a un array de tipo Date para hacer comparaciones de tiempo
+                indiceHora = obtenerIndiceHora(
+                    $("#hora_reserva_inicio_magna").val(),
+                    horasAgendablesArray
+                ); //Obtiene el indice de la siguiente hora
+                pastHours2.push(siguienteHora(indiceHora)); //Agrega la siguiente hora de la hora seleccionada para deshabilitarla
+                horasDisables2 = firstAndLast(pastHours2); //Regresa el rango con las horas deshabilitadas pasadas
+                finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene las horas pasadas en un arreglo de cadenas
+
+                finalDisablesHours.push(postDisabledHours); //Se unen las horas deshabilitadas despues de una agenda
+                finalDisablesHours.push(horasDisables2); //Se unen las horas agendadas con las horas deshabiliadas
+
+                //Se configura el input y las horas en las que el usuario puede terminar su reservación
+                $("#hora_reserva_final_magna").timepicker({
+                    minTime: "7:00am",
+                    maxTime: "9:01pm",
+                    step: 30,
+                    timeFormat: "H:i",
+                    showDuration: true,
+                    durationTime: $("#hora_reserva_inicio_magna").val(),
+                    scrollDefault: $("#hora_reserva_inicio_magna").val(),
+                    disableTimeRanges: finalDisablesHours,
+                });
+
+                //Se meustra el input de horas 2
+                if ($("#hora_reserva_inicio_magna").val()) {
+                    $("#hora_reserva_final_magna").prop("disabled", false);
                 }
             });
         });

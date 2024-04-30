@@ -4,6 +4,7 @@ use App\Http\Controllers\AuditorioCitasController;
 use App\Http\Controllers\DiaDeshabilitadoController;
 use App\Http\Controllers\AreasControllers\LaboratorioCitasController;
 use App\Http\Controllers\AreasControllers\AuditorioController;
+use App\Http\Controllers\AreasControllers\AulaMagnaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistraUsuariosController;
 use App\Login\login_client;
@@ -50,10 +51,10 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
     
         Route::prefix('aula-magna')->group(function () {
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio
-            Route::get('/', [LaboratorioCitasController::class, 'showHorasDia'])->name('aula-magna');
+            Route::get('/', [AulaMagnaController::class, 'showHorasDia'])->name('aula-magna');
     
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio/{fecha}
-            Route::get('{fecha}', [LaboratorioCitasController::class, 'horasAgendadas'])->name('reserva-por-fecha');
+            Route::get('{fecha}', [AulaMagnaController::class, 'horasAgendadas'])->name('reserva-por-fecha');
         });
 
         Route::prefix('auditorio')->group(function () {
@@ -76,7 +77,7 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
     //Rutas para registrar reservaciones de áreas
     Route::prefix('registra-reservacion')->group(function(){
         Route::post('auditorio', [AuditorioController::class, 'store']);
-        Route::post('aula-magna', [AuditorioController::class, 'store']);
+        Route::post('aula-magna', [AulaMagnaController::class, 'store']);
         Route::post('laboratorio', [LaboratorioCitasController::class, 'store']);
         Route::post('sala-videoconferencias', [AuditorioController::class, 'store']);
     });

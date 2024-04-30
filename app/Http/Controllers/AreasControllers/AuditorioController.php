@@ -26,14 +26,14 @@ class AuditorioController extends Controller
 
 
         if ($request->usa_proyector_auditorio == null) //Si es 1 (osea si se selecciono)
-            $reservacion->usa_proyector = true;
-        else
             $reservacion->usa_proyector = false;
-
-        if ($request->usa_bocinas_auditorio == null) //Si es 1 (osea si se selecciono)
-            $reservacion->usa_bocinas = true;
         else
+            $reservacion->usa_proyector = true;
+
+        if ($request->usa_bocinas_auditorio === null) //Si es 1 (osea si se selecciono)
             $reservacion->usa_bocinas = false;
+        else
+            $reservacion->usa_bocinas = true;
 
         if ($request->usa_computadora_auditorio == null) //Si es 1 (osea si se selecciono)
             $reservacion->usa_computadora = true;
@@ -59,7 +59,7 @@ class AuditorioController extends Controller
     public function showHorasDia(Request $request)
     {
         // $reservaciones = AuditorioModel::where('fechaReservada', $fecha)->get();
-        return view('reservacionesLaboratorio');
+        return view('reservaciones_auditorio');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
