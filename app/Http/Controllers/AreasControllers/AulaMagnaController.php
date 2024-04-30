@@ -19,7 +19,7 @@ class AulaMagnaController extends Controller
     public function store(Request $request)
     {
         $reservacion = new AulaMagnaModel();
-        $reservacion->rpe = $request->rpe;
+        $reservacion->rpe = session('user');
         $reservacion->fecha_reservada = $request->fecha_reservada_magna;
         $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio_magna;
         $reservacion->hora_reserva_final = $request->hora_reserva_final_magna;

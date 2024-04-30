@@ -219,6 +219,7 @@
 
     {{-- Formulario aula magna --}}
     <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/aula-magna')}}" id="formAulaMagna">
+        @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">
                 <label for="fecha_reservada_magna">Fecha para reservar:</label>
