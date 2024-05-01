@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AreaReservadaMail;
 
 class LaboratorioCitasController extends Controller
 {
@@ -36,7 +38,9 @@ class LaboratorioCitasController extends Controller
         $LabCompCita->nombreCurso = $request->nombreCurso;
         $LabCompCita->save();
 
-        return redirect()->back()->with('status', 'Se ha reservado el área correctamente');
+        // Mail::to('ivan18rt@outlook.com')->send(new AreaReservadaMail);
+
+        return redirect()->back()->with('status', 'Se ha reservado el laboratorio correctamente');
     }
 
     public function showAll(Request $request)

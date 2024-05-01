@@ -5,10 +5,13 @@ use App\Http\Controllers\DiaDeshabilitadoController;
 use App\Http\Controllers\AreasControllers\LaboratorioCitasController;
 use App\Http\Controllers\AreasControllers\AuditorioController;
 use App\Http\Controllers\AreasControllers\AulaMagnaController;
+use App\Http\Controllers\AreasControllers\SalaVideoconferenciaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegistraUsuariosController;
 use App\Login\login_client;
+use App\Mail\AreaReservadaMail;
 use App\Models\DiaDeshabilitado;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -79,7 +82,7 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
         Route::post('auditorio', [AuditorioController::class, 'store']);
         Route::post('aula-magna', [AulaMagnaController::class, 'store']);
         Route::post('laboratorio', [LaboratorioCitasController::class, 'store']);
-        Route::post('sala-videoconferencias', [AuditorioController::class, 'store']);
+        Route::post('sala-videoconferencias', [SalaVideoconferenciaController::class, 'store']);
     });
 });
 
@@ -120,3 +123,10 @@ Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoCont
 Route::get('registrar-usuario', [RegistraUsuariosController::class, 'index']);
 
 Route::post('registrar-usuario', [RegistraUsuariosController::class, 'store']);
+
+Route::get('email', function () {
+    $correo = new AreaReservadaMail;
+    Mail::to('ivan18rt@outlook.com')->send($correo);
+    return "Mensaje enviado.";
+    // return view('home');
+})->name('contactanos.index');

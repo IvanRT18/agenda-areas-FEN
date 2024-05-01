@@ -22,14 +22,14 @@ class UsuarioAutenticado
         }
         //Sí hay usuario en la sesión
         else{
-            // $usuario = Usuario::where('clave', session('user'))->first();
-            // if ($usuario) {
-            //     return $next($request);
-            // }
-            // else{
-            //     return redirect('home');
-            // }
-            return $next($request);
+            $usuario = Usuario::where('clave', session('user'))->first();
+            if ($usuario) {
+                return $next($request);
+            }
+            else{
+                return redirect('home');
+            }
+            // return $next($request);
         }
     }
 }

@@ -90,12 +90,12 @@
                         <input type="text" name="clave" class="form-control" value="{{ old('clave') }}">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Apellido materno</label>
-                        <input type="text" name="apellido_materno" class="form-control" value="{{ old('apellido_materno') }}">
-                    </div>
-                    <div class="form-group mb-3">
                         <label for="">Apellido paterno</label>
                         <input type="text" id="apellido_paterno" name="apellido_paterno" class="form-control" value="{{ old('apellido_paterno') }}">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="">Apellido materno</label>
+                        <input type="text" name="apellido_materno" class="form-control" value="{{ old('apellido_materno') }}">
                     </div>
                     <div class="form-group mb-3">
                         <label for="">Nombre(s)</label>

@@ -164,7 +164,7 @@
 
             <input type="submit" name="AgendarButton" value="Agendar" id="AgendarButton" class="btn btn-primary">
         </div>
-    </form>
+        </form>
 
     {{-- Formulario auditorio --}}
     <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/auditorio')}}" id="formAuditorio">
@@ -173,7 +173,7 @@
             <div class="flex flex-col">
                 <label for="fecha_reservada_auditorio">Fecha para reservar:</label>
                 <input type="date" id="fecha_reservada_auditorio" name="fecha_reservada_auditorio" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
-                <span id="pantallaCargaMagna" class="hidden"> <p>Cargando horas reservadas...</p></span>
+                <span id="pantallaCargaAuditorio" class="hidden"> <p>Cargando horas reservadas...</p></span>
             </div>
     
             <div class="flex flex-col">
@@ -224,7 +224,7 @@
             <div class="flex flex-col">
                 <label for="fecha_reservada_magna">Fecha para reservar:</label>
                 <input type="date" id="fecha_reservada_magna" name="fecha_reservada_magna" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
-                <span id="pantallaCargaAuditorio" class="hidden"> <p>Cargando horas reservadas...</p></span>
+                <span id="pantallaCargaMagna" class="hidden"> <p>Cargando horas reservadas...</p></span>
             </div>
     
             <div class="flex flex-col">
@@ -269,35 +269,54 @@
     </form>
 
     {{-- Formulario sala de videoconferencia --}}
-    <form name="formSalaV" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('guarda-auditorio-cita')}}" id="formSalaV">
-        <div>
-            <input type="checkbox" name="proyector" id="proyector">
-            <label for="proyector">¿Usará el proyector?</label>
+    <form name="formSalaV" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/sala-videoconferencias')}}" id="formSalaV">
+        @csrf
+        <div class="flex flex-col col-xs-12 gap">
+            <div class="flex flex-col">
+                <label for="fecha_reservada_sala_video">Fecha para reservar:</label>
+                <input type="date" id="fecha_reservada_sala_video" name="fecha_reservada_sala_video" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
+                <span id="pantallaCargaSalaVideo" class="hidden"> <p>Cargando horas reservadas...</p></span>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="hora_reserva_inicio_sala_video">Hora para reservar:</label>
+                <div class="col-12">
+                    <input type="text" id="hora_reserva_inicio_sala_video" name="hora_reserva_inicio_sala_video" class="w-100" required/>
+                </div>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="hora_reserva_final_sala_video">A</label>
+                <div class="col-12">
+                    <input type="text" id="hora_reserva_final_sala_video" name="hora_reserva_final_sala_video" class="w-100" required/>
+                </div>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_proyector_sala_video" id="usa_proyector_sala_video" value="true">
+                <label for="usa_proyector_sala_video">¿Usará el proyector?</label>
+            </div>
+    
+            <div class="flex flex-col">
+                <label for="numero_microfonos_sala_video">
+                    ¿Cuantos microfonos usará?
+                </label>
+                <input type="number" name="numero_microfonos_sala_video" id="numero_microfonos_sala_video" min="0" max="2">
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_computadora_sala_video" id="usa_computadora_sala_video" value="true">
+                <label for="usa_computadora_sala_video">¿Usará la computadora?</label>
+            </div>
+    
+            <div>
+                <input type="checkbox" name="usa_bocinas_sala_video" id="usa_bocinas_sala_video" value="true">
+                <label for="usa_bocinas_sala_video">
+                    ¿Usará las bocinas? (multimedia, videos, étc)
+                </label>
+            </div>
         </div>
-
-        <div class="flex flex-col">
-            <label for="microfonos">
-                ¿Cuantos microfonos usará?
-            </label>
-            <input type="number" name="microfonos" id="microfonos" min="0" max="2">
-        </div>
-
-        <div>
-            <input type="checkbox" name="computadora" id="computadora">
-            <label for="computadora">¿Usará la computadora?</label>
-        </div>
-
-        <div>
-            <input type="checkbox" name="audio" id="audio">
-            <label for="audio">
-                ¿Usará las bocinas? (multimedia, videos, étc)
-            </label>
-        </div>
-
-        <div>
-            <label for=""></label>
-        </div>
-
+        <input type="submit" name="AgendarButtonSalaVideo" value="Agendar" id="AgendarButtonSalaVideo" class="btn btn-primary">
     </form>
 
 

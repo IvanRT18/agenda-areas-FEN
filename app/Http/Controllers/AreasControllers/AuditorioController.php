@@ -23,30 +23,26 @@ class AuditorioController extends Controller
         $reservacion->fecha_reservada = $request->fecha_reservada_auditorio;
         $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio_auditorio;
         $reservacion->hora_reserva_final = $request->hora_reserva_final_auditorio;
+        $reservacion->numero_microfonos = $request->numero_microfonos_auditorio;
 
-
-        if ($request->usa_proyector_auditorio == null) //Si es 1 (osea si se selecciono)
-            $reservacion->usa_proyector = false;
-        else
+        if ($request->usa_proyector_auditorio == 'true') //Si es 1 (osea si se selecciono)
             $reservacion->usa_proyector = true;
-
-        if ($request->usa_bocinas_auditorio === null) //Si es 1 (osea si se selecciono)
-            $reservacion->usa_bocinas = false;
         else
-            $reservacion->usa_bocinas = true;
+            $reservacion->usa_proyector = false;
 
-        if ($request->usa_computadora_auditorio == null) //Si es 1 (osea si se selecciono)
+        if ($request->usa_computadora_auditorio == 'true') //Si es 1 (osea si se selecciono)
             $reservacion->usa_computadora = true;
         else
             $reservacion->usa_computadora = false;
 
+        if ($request->usa_bocinas_auditorio == 'true') //Si es 1 (osea si se selecciono)
+            $reservacion->usa_bocinas = true;
+        else
+            $reservacion->usa_bocinas = false;
 
-        $reservacion->numero_microfonos = $request->numero_microfonos_auditorio;
-        $reservacion->usa_computadora = $request->usa_computadora_auditorio;
-        $reservacion->usa_bocinas = $request->usa_bocinas_auditorio;
         $reservacion->save();
 
-        return redirect()->back()->with('status', 'Se ha reservado el área correctamente');
+        return redirect()->back()->with('status', 'Se ha reservado el auditorio correctamente');
     }
 
     public function showAll(Request $request)
