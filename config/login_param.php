@@ -37,6 +37,7 @@ return [
 'serviceClientId' => 4,
 
 //Dirección de página, modulo o sitio dondé será agregado el código.
-'serviceReturnURL' => "http://10.110.128.28/index",
+// 'serviceReturnURL' => "http://10.110.128.28/index",
+'serviceReturnURL' => rtrim(env('APP_URL'), '/') . '/index',
 ];
 ?>

@@ -5,29 +5,21 @@
     <title>Reservas laboratorio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />   
     <link rel="icon" href="https://serviciosenlinea.uaslp.mx/LoginGateway/favicon.ico">
-
-    {{-- @vite('resources/css/app.css') --}}
-    {{-- @vite('resources/js/app.js') --}}
-
-    <!-- Bootstrap -->
-    {{-- <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/bootstrap.min.css' rel="stylesheet" />  --}}
     
     {{-- Nuevo bootstrap --}}
     <link rel="stylesheet" href="https://www.uaslp.mx/Content/bootstrap.min.css">
     <script src="https://www.uaslp.mx/Scripts/bootstrap.bundle.min.js"></script>
     
-    <!-- UASLP -->
+    <!-- UASLP css -->
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
     
-     {{-- flatpickr css --}}
-     <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
+    {{-- Flatpickr css --}}
+    <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
 
     {{-- Timepicker css --}}
     <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
-
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
-
 </head>
 <body>
     <div class="container">
@@ -67,7 +59,7 @@
             <h6 class="alert alert-success">{{ session('status') }}</h6>
         @endif
         <div class="d-flex my-4 justify-content-end ">
-            <a href="{{ url('admin-reservas-laboratorio') }}" class="btn btn-danger float-end">Regresar</a>
+            <a href="{{ url('administrador') }}" class="btn btn-danger float-end">Regresar</a>
         </div>
         <div class="d-flex justify-content-around ">
             <div class="col-6">

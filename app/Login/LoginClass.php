@@ -102,24 +102,7 @@ class LoginClass
 	}
 	
 	public function autentificar()
-	{
-
-		// if (request()->has('Ticket')) {
-        //     if (request()->hasCookie('SC')) {
-        //         $this->_verificarTicket();
-        //         if ($this->succesfull_login) {
-        //             return $this->_iniciaSesionContinua();
-        //         } else {
-        //             abort(403, "Fallo: " . $this->mensaje);
-        //         }
-        //     } else {
-        //         return Redirect::to($this->serviceReturnUrl);
-        //     }
-        // } else {
-        //     return $this->_crearNuevoTicket();
-        // }
-
-		
+	{	
 		//Verifica si existe un tiket 
 		if(isset($_GET["Ticket"]))
 		{
@@ -189,20 +172,16 @@ class LoginClass
 		// var_dump($sesionId);
 		// //Se crea la cookie de autentificación.
 		setcookie("SC",$sesionId,time()+600);
-
-		Session::put('SC', $sesionId);
 		// //Se redirige a pantalla de Login institucional
 		// var_dump('Esta es la form_url');
 		// var_dump($this->_svc_form_url);
 
 		header('Location: '.$this->serviceFormUrl.'?Ticket='.$ticket);
-
 		exit;
 		// return view('inicio', compact('ticket'));
 
 		// return redirect($this->serviceFormUrl . '?Ticket=' . $ticket);
 		// return redirect('inicio');
-
 	}
 
 	private function _verificarTicket()
