@@ -23,6 +23,7 @@ class UsuarioAutenticado
         //Sí hay usuario en la sesión
         else{
             $usuario = Usuario::where('clave', session('user'))->first();
+            // session()->put('userData',$usuario);
             if ($usuario) {
                 return $next($request);
             }

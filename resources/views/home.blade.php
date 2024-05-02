@@ -72,8 +72,15 @@
         margin-top: 3rem;
     ">
             <h1>
-                {{session('user')}}
+                {{-- {{session('user')}} --}}
+                {{$usuario->getNombreCompleto()}}
             </h1>
+
+            @if($usuario && $usuario->esAdministrador())
+                <form action="{{url('/administrador')}}">
+                    <input type="submit" value="Administrador" class="btn btn-primary">
+                </form>
+            @endif
     
             <form action="{{url('/logout')}}">
                 <input type="submit" value="Cerrar Sesión" class="btn btn-primary">

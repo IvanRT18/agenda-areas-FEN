@@ -19,4 +19,24 @@ class Usuario extends Model
         'tipo',
         'correo',
     ];
+
+    /**
+     * Determine si el usuario es un administrador.
+     *
+     * @return bool
+     */
+    public function esAdministrador()
+    {
+        return $this->tipo === 'administrador';
+    }
+
+    /**
+     * Devuelve el nombre completo del usuario autenticado
+     *
+     * @return string
+     */
+    public function getNombreCompleto()
+    {
+        return $this->apellido_paterno . " " . $this->apellido_materno . " ". $this->nombres;
+    }
 }
