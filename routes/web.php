@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuditorioCitasController;
 use App\Http\Controllers\DiaDeshabilitadoController;
-use App\Http\Controllers\AreasControllers\LaboratorioCitasController;
+use App\Http\Controllers\AreasControllers\LaboratorioController;
 use App\Http\Controllers\AreasControllers\AuditorioController;
 use App\Http\Controllers\AreasControllers\AulaMagnaController;
 use App\Http\Controllers\AreasControllers\SalaVideoconferenciaController;
@@ -30,7 +30,7 @@ Route::get('/', [LoginController::class, 'index'])->name('index');
 
 Route::group(['middleware'=>['UsuarioAutenticado']], function(){
     //Ruta del administrador
-    Route::get('administrador', [LaboratorioCitasController::class, 'showAll']);
+    Route::get('administrador', [LaboratorioController::class, 'showAll']);
     
     //Ruta de la pagina de inicio
     Route::get('inicio', function(){
@@ -46,10 +46,10 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
 
         Route::prefix('laboratorio')->group(function () {
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio
-            Route::get('/', [LaboratorioCitasController::class, 'showHorasDia'])->name('laboratorio');
+            Route::get('/', [LaboratorioController::class, 'showHorasDia'])->name('laboratorio');
     
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio/{fecha}
-            Route::get('{fecha}', [LaboratorioCitasController::class, 'horasAgendadas'])->name('reserva-por-fecha');
+            Route::get('{fecha}', [LaboratorioController::class, 'horasAgendadas'])->name('reserva-por-fecha');
         });
     
         Route::prefix('aula-magna')->group(function () {
@@ -70,10 +70,10 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
 
         Route::prefix('sala-videoconferencias')->group(function () {
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio
-            Route::get('/', [LaboratorioCitasController::class, 'showHorasDia'])->name('sala-videoconferencias');
+            Route::get('/', [SalaVideoconferenciaController::class, 'showHorasDia'])->name('sala-videoconferencias');
     
             // Ruta para cuando el usuario accede a horas-reservadas/laboratorio/{fecha}
-            Route::get('{fecha}', [LaboratorioCitasController::class, 'horasAgendadas'])->name('reserva-por-fecha');
+            Route::get('{fecha}', [SalaVideoconferenciaController::class, 'horasAgendadas'])->name('reserva-por-fecha');
         });
     });
 
@@ -81,7 +81,7 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
     Route::prefix('registra-reservacion')->group(function(){
         Route::post('auditorio', [AuditorioController::class, 'store']);
         Route::post('aula-magna', [AulaMagnaController::class, 'store']);
-        Route::post('laboratorio', [LaboratorioCitasController::class, 'store']);
+        Route::post('laboratorio', [LaboratorioController::class, 'store']);
         Route::post('sala-videoconferencias', [SalaVideoconferenciaController::class, 'store']);
     });
 });
@@ -102,13 +102,13 @@ Route::get('index', [LoginController::class, 'index']);
 Route::get('/public/index', [LoginController::class, 'index']);
 Route::get('public/index', [LoginController::class, 'index']);
 
-Route::get('/horas-agendadas/{fecha}', [LaboratorioCitasController::class, 'horasAgendadas']);
+Route::get('/horas-reservadas/{fecha}', [LaboratorioController::class, 'horasAgendadas']);
 
-Route::get('/edita-cita-laboratorio/{id}', [LaboratorioCitasController::class, 'editaCita']);
+Route::get('/edita-cita-laboratorio/{id}', [LaboratorioController::class, 'editaCita']);
 
-Route::put('/update-cita-laboratoria/{id}', [LaboratorioCitasController::class, 'updateCita']);
+Route::put('/update-cita-laboratoria/{id}', [LaboratorioController::class, 'updateCita']);
 
-Route::get('borra-cita-laboratorio/{id}', [LaboratorioCitasController::class, 'borrarCita']);
+Route::get('borra-cita-laboratorio/{id}', [LaboratorioController::class, 'borrarCita']);
 
 Route::post('agrega-dia-inhabilitado-laboratorio', [DiaDeshabilitadoController::class, 'store']);
 

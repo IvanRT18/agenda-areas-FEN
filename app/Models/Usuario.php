@@ -39,4 +39,14 @@ class Usuario extends Model
     {
         return $this->apellido_paterno . " " . $this->apellido_materno . " ". $this->nombres;
     }
+
+    /**
+     * Devuelve el rpe del usuario
+     *
+     * @return number
+     */
+    public function getRpe()
+    {
+        return $this->clave;
+    }
 }

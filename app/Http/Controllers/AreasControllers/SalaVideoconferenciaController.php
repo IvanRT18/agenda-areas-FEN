@@ -46,7 +46,7 @@ class SalaVideoconferenciaController extends Controller
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = SalaVideoConferenciaModel::where('fechaReservada', $fecha)->get();
+        $horasAgendadas = SalaVideoConferenciaModel::where('fecha_reservada', $fecha)->get();
         return response()->json($horasAgendadas);
     }
 }

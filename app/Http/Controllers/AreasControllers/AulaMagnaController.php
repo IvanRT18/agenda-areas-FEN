@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AreasControllers;
 
-use App\Models\AreasModels\LaboratorioCita;
+use App\Models\AreasModels\LaboratorioModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -47,34 +47,34 @@ class AulaMagnaController extends Controller
 
     public function showAll(Request $request)
     {
-        $reservaciones = LaboratorioCita::all();
+        $reservaciones = AulaMagnaModel::all();
 
         return view('AdminPanel', compact('reservaciones'));
     }
 
     public function showHorasDia(Request $request)
     {
-        // $reservaciones = LaboratorioCita::where('fechaReservada', $fecha)->get();
+        // $reservaciones = LaboratorioModel::where('fechaReservada', $fecha)->get();
         return view('areas.reservaciones_aula_magna');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = LaboratorioCita::where('fechaReservada', $fecha)->get();
+        $horasAgendadas = AulaMagnaModel::where('fecha_reservada', $fecha)->get();
 
         return response()->json($horasAgendadas);
     }
 
     // Edita una cita
     public function editaCita($idCita){
-        $cita = LaboratorioCita::find($idCita);
+        $cita = AulaMagnaModel::find($idCita);
         return view('editCitaLaboratorio', compact('cita'));
     }
 
     public function updateCita(Request $request, $id)
     {
-        $cita = LaboratorioCita::find($id);
+        $cita = AulaMagnaModel::find($id);
         $cita->id = $request->input('id');
         $cita->numEquipos = $request->input('numEquipos');
         $cita->fechaReservada = $request->input('fechaReservada');
@@ -93,7 +93,7 @@ class AulaMagnaController extends Controller
 
     public function borrarCita($idCita)
     {
-        $citaLab = LaboratorioCita::find($idCita);
+        $citaLab = LaboratorioModel::find($idCita);
         $citaLab->delete();
         return redirect()->back()->with('status', 'Cita borrada correctamente');
     }

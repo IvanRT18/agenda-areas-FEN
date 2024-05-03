@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\AreasControllers;
 
-use App\Models\AreasModels\LaboratorioCita;
+use App\Models\AreasModels\LaboratorioModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AreaReservadaMail;
+use App\Models\Usuario;
 
-class LaboratorioCitasController extends Controller
+class LaboratorioController extends Controller
 {
     public function index()
     {
@@ -19,24 +20,23 @@ class LaboratorioCitasController extends Controller
 
     public function store(Request $request)
     {
-        $LabCompCita = new LaboratorioCita();
-        $LabCompCita->numEquipos = $request->numEquipos;
-        $LabCompCita->fechaReservada = $request->fechaReservada;
-        $LabCompCita->horaReservaInicio = $request->horaReservaInicio;
-        $LabCompCita->horaReservaFinal = $request->horaReservaFinal;
-        if ($request->usaProyector == 'true') //Si es 1 (osea si se selecciono)
-            $LabCompCita->usaProyector = true;
+        $usuario = Usuario::where('clave', session('user'))->first();
+        $reservacion = new LaboratorioModel();
+        $reservacion->rpe = $usuario->getRpe();
+        $reservacion->nombre_completo = $usuario->getNombreCompleto();
+        $reservacion->numero_equipos = $request->numero_equipos;
+        $reservacion->fecha_reservada = $request->fecha_reservada;
+        $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio;
+        $reservacion->hora_reserva_final = $request->hora_reserva_final;
+        if ($request->usa_proyector == 'true') //Si es 1 (osea si se selecciono)
+            $reservacion->usa_proyector = true;
         else
-            $LabCompCita->usaProyector = false;
-
-        // $LabCompCita->usaProyector = $request->usaProyector;
-        $LabCompCita->reqAdicionales = $request->reqAdicionales;
-        $LabCompCita->Rpe = $request->Rpe;
-        $LabCompCita->nombreCompleto = $request->nombreCompleto;
-        $LabCompCita->materia = $request->materia;
-        $LabCompCita->actividad = $request->actividad;
-        $LabCompCita->nombreCurso = $request->nombreCurso;
-        $LabCompCita->save();
+            $reservacion->usa_proyector = false;
+        $reservacion->req_adicionales = $request->req_adicionales;
+        $reservacion->materia = $request->materia;
+        $reservacion->actividad = $request->actividad;
+        $reservacion->nombre_curso = $request->nombre_curso;
+        $reservacion->save();
 
         // Mail::to('ivan18rt@outlook.com')->send(new AreaReservadaMail);
 
@@ -45,34 +45,34 @@ class LaboratorioCitasController extends Controller
 
     public function showAll(Request $request)
     {
-        $reservaciones = LaboratorioCita::all();
+        $reservaciones = LaboratorioModel::all();
 
         return view('AdminPanel', compact('reservaciones'));
     }
 
     public function showHorasDia(Request $request)
     {
-        // $reservaciones = LaboratorioCita::where('fechaReservada', $fecha)->get();
+        // $reservaciones = LaboratorioModel::where('fechaReservada', $fecha)->get();
         return view('reservacionesLaboratorio');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = LaboratorioCita::where('fechaReservada', $fecha)->get();
+        $horasAgendadas = LaboratorioModel::where('fecha_reservada', $fecha)->get();
 
         return response()->json($horasAgendadas);
     }
 
     // Edita una cita
     public function editaCita($idCita){
-        $cita = LaboratorioCita::find($idCita);
+        $cita = LaboratorioModel::find($idCita);
         return view('editCitaLaboratorio', compact('cita'));
     }
 
     public function updateCita(Request $request, $id)
     {
-        $cita = LaboratorioCita::find($id);
+        $cita = LaboratorioModel::find($id);
         $cita->id = $request->input('id');
         $cita->numEquipos = $request->input('numEquipos');
         $cita->fechaReservada = $request->input('fechaReservada');
@@ -91,7 +91,7 @@ class LaboratorioCitasController extends Controller
 
     public function borrarCita($idCita)
     {
-        $citaLab = LaboratorioCita::find($idCita);
+        $citaLab = LaboratorioModel::find($idCita);
         $citaLab->delete();
         return redirect()->back()->with('status', 'Cita borrada correctamente');
     }
