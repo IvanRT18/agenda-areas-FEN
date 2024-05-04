@@ -59,12 +59,25 @@
             </tr></tbody></table>
         </div>
 
+        {{-- Alerta de exito --}}
         @if (session('status'))
             <div class="flex flex-row justify-arnd alert alert-success ">
                 <h6 class="">{{ session('status') }}</h6>
                 <button id="close-btn">X</button>
             </div>
         @endif
+
+        {{-- Alerta de errores --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
 
         <div style="
         display: flex;
@@ -149,16 +162,6 @@
             <label for="req_adicionales">¿Necesita de algo en particular? (Software, cañones, bocinas, étc)</label>
             <textarea name="req_adicionales" id="req_adicionales" rows="5" style="resize: none"></textarea>
             </div>
-            
-            {{-- <div class="flex flex-col">
-                <label for="rpe">RPE</label>
-                <input type="text" name="rpe" id="rpe" required>
-            </div>
-
-            <div class="flex flex-col">
-                <label for="nombre_completo">Nombre completo</label>
-                <input type="text" name="nombre_completo" id="nombre_completo" required>
-            </div> --}}
 
             <div class="flex flex-col">
                 <label for="materia">Materia</label>
@@ -171,7 +174,7 @@
             </div>
 
             <div class="flex flex-col">
-                <label for="nombre_curso">Nombre del curso a realizar</label>
+                <label for="nombre_curso">Nombre del curso a realizar (en caso de ser curso)</label>
                 <input type="text" name="nombre_curso" id="nombre_curso">
             </div>
 
@@ -226,8 +229,8 @@
                     ¿Usará las bocinas? (multimedia, videos, étc)
                 </label>
             </div>
+            <input type="submit" name="AgendarButtonAuditorio" value="Agendar" id="AgendarButtonAuditorio" class="btn btn-primary">
         </div>
-        <input type="submit" name="AgendarButtonAuditorio" value="Agendar" id="AgendarButtonAuditorio" class="btn btn-primary">
     </form>
 
     {{-- Formulario aula magna --}}
@@ -277,8 +280,8 @@
                     ¿Usará las bocinas? (multimedia, videos, étc)
                 </label>
             </div>
+            <input type="submit" name="AgendarButtonMagna" value="Agendar" id="AgendarButtonMagna" class="btn btn-primary">
         </div>
-        <input type="submit" name="AgendarButtonMagna" value="Agendar" id="AgendarButtonMagna" class="btn btn-primary">
     </form>
 
     {{-- Formulario sala de videoconferencia --}}
@@ -328,8 +331,8 @@
                     ¿Usará las bocinas? (multimedia, videos, étc)
                 </label>
             </div>
+            <input type="submit" name="AgendarButtonSalaVideo" value="Agendar" id="AgendarButtonSalaVideo" class="btn btn-primary">
         </div>
-        <input type="submit" name="AgendarButtonSalaVideo" value="Agendar" id="AgendarButtonSalaVideo" class="btn btn-primary">
     </form>
 
 

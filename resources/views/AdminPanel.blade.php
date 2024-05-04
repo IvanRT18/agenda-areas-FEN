@@ -154,7 +154,7 @@
                         <td>{{$reservacion->actividad}}</td>
                         <td>{{$reservacion->nombre_curso}}</td>
                         <td>
-                            <a href="{{ url('edita-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
+                            <a href="{{ url('editar-reservacion/laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
                             <a href="{{ url('borra-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>

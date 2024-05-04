@@ -84,6 +84,22 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
         Route::post('laboratorio', [LaboratorioController::class, 'store']);
         Route::post('sala-videoconferencias', [SalaVideoconferenciaController::class, 'store']);
     });
+
+     //Rutas para actualizar reservaciones de áreas
+     Route::prefix('actualizar-reservacion')->group(function(){
+        Route::put('auditorio/{id}', [AuditorioController::class, 'update']);
+        Route::put('aula-magna/{id}', [AulaMagnaController::class, 'update']);
+        Route::put('laboratorio/{id}', [LaboratorioController::class, 'update']);
+        Route::put('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'update']);
+    });
+
+    //Rutas para editar reservaciones de áreas
+    Route::prefix('editar-reservacion')->group(function(){
+        Route::get('auditorio/{id}', [AuditorioController::class, 'edit']);
+        Route::get('aula-magna/{id}', [AulaMagnaController::class, 'edit']);
+        Route::get('laboratorio/{id}', [LaboratorioController::class, 'edit']);
+        Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'edit']);
+    });
 });
 
 //Cierra la sesión del usuario
@@ -104,9 +120,9 @@ Route::get('public/index', [LoginController::class, 'index']);
 
 Route::get('/horas-reservadas/{fecha}', [LaboratorioController::class, 'horasAgendadas']);
 
-Route::get('/edita-cita-laboratorio/{id}', [LaboratorioController::class, 'editaCita']);
+// Route::get('edita-cita-laboratorio/{id}', [LaboratorioController::class, 'edit']);
 
-Route::put('/update-cita-laboratoria/{id}', [LaboratorioController::class, 'updateCita']);
+// Route::put('update-cita-laboratoria/{id}', [LaboratorioController::class, 'update']);
 
 Route::get('borra-cita-laboratorio/{id}', [LaboratorioController::class, 'borrarCita']);
 

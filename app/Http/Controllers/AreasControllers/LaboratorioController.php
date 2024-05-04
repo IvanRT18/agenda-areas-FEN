@@ -65,34 +65,34 @@ class LaboratorioController extends Controller
     }
 
     // Edita una cita
-    public function editaCita($idCita){
-        $cita = LaboratorioModel::find($idCita);
-        return view('editCitaLaboratorio', compact('cita'));
+    public function edit($id){
+        $reservacion = LaboratorioModel::find($id);
+        return view('laboratorio_editar_view', compact('reservacion'));
     }
 
-    public function updateCita(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $cita = LaboratorioModel::find($id);
-        $cita->id = $request->input('id');
-        $cita->numEquipos = $request->input('numEquipos');
-        $cita->fechaReservada = $request->input('fechaReservada');
-        $cita->horaReservaInicio = $request->input('horaReservaInicio');
-        $cita->horaReservaFinal = $request->input('horaReservaFinal');
-        $cita->usaProyector = $request->input('usaProyector');
-        $cita->reqAdicionales = $request->input('reqAdicionales');
-        $cita->Rpe = $request->input('Rpe');
-        $cita->nombreCompleto = $request->input('nombreCompleto');
-        $cita->materia = $request->input('materia');
-        $cita->actividad = $request->input('actividad');
-        $cita->nombreCurso = $request->input('nombreCurso');
-        $cita->update();
-        return redirect()->back()->with('status','Cita actualizada correctamente');
+        $reservacion = LaboratorioModel::find($id);
+        $reservacion->id = $request->input('id');
+        $reservacion->rpe = $request->input('rpe');
+        $reservacion->nombre_completo = $request->input('nombre_completo');
+        $reservacion->fecha_reservada = $request->input('fecha_reservada');
+        $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
+        $reservacion->hora_reserva_final = $request->input('hora_reserva_final');
+        $reservacion->numero_equipos = $request->input('numero_equipos');
+        $reservacion->usa_proyector = $request->input('usa_proyector');
+        $reservacion->req_adicionales = $request->input('req_adicionales');
+        $reservacion->materia = $request->input('materia');
+        $reservacion->actividad = $request->input('actividad');
+        $reservacion->nombre_curso = $request->input('nombre_curso');
+        $reservacion->update();
+        return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
     public function borrarCita($idCita)
     {
-        $citaLab = LaboratorioModel::find($idCita);
-        $citaLab->delete();
+        $reservacionLab = LaboratorioModel::find($idCita);
+        $reservacionLab->delete();
         return redirect()->back()->with('status', 'Cita borrada correctamente');
     }
 

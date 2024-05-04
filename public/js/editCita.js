@@ -10,16 +10,14 @@ $(function() {
     });
 
     //Agrega plugin al input hora inicial 
-    $('#horaReservaInicio').timepicker({
+    $('#hora_reserva_inicio').timepicker({
         'step' : 30,
         timeFormat: 'H:i',
     }); 
 
     //Agrega plugin al input hora final
-     $('#horaReservaFinal').timepicker({
+     $('#hora_reserva_final').timepicker({
         'step' : 30,
         timeFormat: 'H:i',
     }); 
-    
-
 });

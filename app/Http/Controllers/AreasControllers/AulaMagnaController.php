@@ -67,12 +67,12 @@ class AulaMagnaController extends Controller
     }
 
     // Edita una cita
-    public function editaCita($idCita){
+    public function edit($idCita){
         $cita = AulaMagnaModel::find($idCita);
-        return view('editCitaLaboratorio', compact('cita'));
+        return view('laboratorio_editar_view', compact('cita'));
     }
 
-    public function updateCita(Request $request, $id)
+    public function update(Request $request, $id)
     {
         $cita = AulaMagnaModel::find($id);
         $cita->id = $request->input('id');
