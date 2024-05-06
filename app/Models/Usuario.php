@@ -49,4 +49,14 @@ class Usuario extends Model
     {
         return $this->clave;
     }
+
+    /**
+     * Devuelve el correo del usuario
+     *
+     * @return string
+     */
+    public function getCoreo()
+    {
+        return $this->correo;
+    }
 }

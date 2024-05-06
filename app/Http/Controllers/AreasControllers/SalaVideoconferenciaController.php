@@ -37,6 +37,12 @@ class SalaVideoconferenciaController extends Controller
         return redirect()->back()->with('status', 'Se ha reservado el aula magna correctamente');
     }
 
+    public function showAll(Request $request)
+    {
+        $reservaciones = SalaVideoConferenciaModel::all();
+        return view('AdminPanel', compact('reservaciones'));
+    }
+
     //Muestra las horas reservadas del día
     public function showHorasDia(Request $request)
     {

@@ -67,8 +67,8 @@ class AulaMagnaController extends Controller
     }
 
     // Edita una cita
-    public function edit($idCita){
-        $cita = AulaMagnaModel::find($idCita);
+    public function edit($id){
+        $cita = AulaMagnaModel::find($id);
         return view('laboratorio_editar_view', compact('cita'));
     }
 
@@ -91,9 +91,9 @@ class AulaMagnaController extends Controller
         return redirect()->back()->with('status','Cita actualizada correctamente');
     }
 
-    public function borrarCita($idCita)
+    public function borrarCita($id)
     {
-        $citaLab = LaboratorioModel::find($idCita);
+        $citaLab = LaboratorioModel::find($id);
         $citaLab->delete();
         return redirect()->back()->with('status', 'Cita borrada correctamente');
     }

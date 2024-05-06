@@ -100,6 +100,20 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
         Route::get('laboratorio/{id}', [LaboratorioController::class, 'edit']);
         Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'edit']);
     });
+
+    //Rutas para ver las reservaciones de las áreas
+    Route::prefix('administrador')->group(function(){
+        Route::get('/', [LaboratorioController::class, 'showAll']);
+        Route::prefix('reservaciones')->group(function(){
+            Route::get('/', [LaboratorioController::class, 'showAll']);
+            Route::get('auditorio/', [AuditorioController::class, 'showAll']);
+            Route::get('aula-magna/', [AulaMagnaController::class, 'showAll']);
+            Route::get('laboratorio/', [LaboratorioController::class, 'showAll']);
+            Route::get('sala-videoconferencias/', [SalaVideoconferenciaController::class, 'showAll']);
+        });
+    });
+
+
 });
 
 //Cierra la sesión del usuario

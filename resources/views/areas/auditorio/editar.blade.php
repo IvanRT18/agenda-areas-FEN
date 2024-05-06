@@ -1,0 +1,1 @@
+@extends('layouts.editar_reservacion_layout');
