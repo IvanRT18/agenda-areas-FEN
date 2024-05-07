@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 //Ruta que se ingresa al acceder a la direccion del servidor
 Route::get('/', [LoginController::class, 'index'])->name('index');
 
-Route::group(['middleware'=>['UsuarioAutenticado']], function(){
+Route::group(['middleware'=>['auth']], function(){
     //Ruta del administrador
     Route::get('administrador', [LaboratorioController::class, 'showAll']);
     
@@ -136,7 +136,7 @@ Route::get(('/logout'), function(){
 
 
 
-Route::get('index', [LoginController::class, 'index']);
+Route::get('index', [LoginController::class, 'index'])->name('login');
 Route::get('/public/index', [LoginController::class, 'index']);
 Route::get('public/index', [LoginController::class, 'index']);
 
