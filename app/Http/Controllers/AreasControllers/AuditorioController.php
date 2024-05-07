@@ -114,14 +114,14 @@ class AuditorioController extends Controller
         $reservacion->usa_computadora = $request->input('usa_computadora');
         $reservacion->usa_bocinas = $request->input('usa_bocinas');
         $reservacion->update();
-        return redirect()->back()->with('status','reservacion actualizada correctamente');
+        return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
-    public function borrarreservacion($id)
+    public function delete($id)
     {
-        $reservacionLab = AuditorioModel::find($id);
-        $reservacionLab->delete();
-        return redirect()->back()->with('status', 'reservacion borrada correctamente');
+        $reservacion = AuditorioModel::find($id);
+        $reservacion->delete();
+        return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
     public function diasInhabiles()

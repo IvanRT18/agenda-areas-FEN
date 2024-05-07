@@ -48,14 +48,13 @@ class AulaMagnaController extends Controller
     public function showAll(Request $request)
     {
         $reservaciones = AulaMagnaModel::all();
-
-        return view('AdminPanel', compact('reservaciones'));
+        return view('areas.aula-magna.admin', compact('reservaciones'));
     }
 
     public function showHorasDia(Request $request)
     {
         // $reservaciones = LaboratorioModel::where('fechaReservada', $fecha)->get();
-        return view('areas.reservaciones_aula_magna');
+        return view('areas.aula-magna.ver');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
@@ -68,34 +67,31 @@ class AulaMagnaController extends Controller
 
     // Edita una cita
     public function edit($id){
-        $cita = AulaMagnaModel::find($id);
-        return view('laboratorio_editar_view', compact('cita'));
+        $reservacion = AulaMagnaModel::find($id);
+        return view('areas.aula-magna.editar', compact('reservacion'));
     }
 
     public function update(Request $request, $id)
     {
-        $cita = AulaMagnaModel::find($id);
-        $cita->id = $request->input('id');
-        $cita->numEquipos = $request->input('numEquipos');
-        $cita->fechaReservada = $request->input('fechaReservada');
-        $cita->horaReservaInicio = $request->input('horaReservaInicio');
-        $cita->horaReservaFinal = $request->input('horaReservaFinal');
-        $cita->usaProyector = $request->input('usaProyector');
-        $cita->reqAdicionales = $request->input('reqAdicionales');
-        $cita->Rpe = $request->input('Rpe');
-        $cita->nombreCompleto = $request->input('nombreCompleto');
-        $cita->materia = $request->input('materia');
-        $cita->actividad = $request->input('actividad');
-        $cita->nombreCurso = $request->input('nombreCurso');
-        $cita->update();
-        return redirect()->back()->with('status','Cita actualizada correctamente');
+        $reservacion = AulaMagnaModel::find($id);
+        $reservacion->id = $request->input('id');
+        $reservacion->rpe = session('user');
+        $reservacion->fecha_reservada = $request->input('fecha_reservada');
+        $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
+        $reservacion->hora_reserva_final = $request->input('hora_reserva_final');
+        $reservacion->usa_proyector = $request->input('usa_proyector');
+        $reservacion->numero_microfonos = $request->input('numero_microfonos');
+        $reservacion->usa_computadora = $request->input('usa_computadora');
+        $reservacion->usa_bocinas = $request->input('usa_bocinas');
+        $reservacion->update();
+        return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
-    public function borrarCita($id)
+    public function delete($id)
     {
-        $citaLab = LaboratorioModel::find($id);
-        $citaLab->delete();
-        return redirect()->back()->with('status', 'Cita borrada correctamente');
+        $reservacion = AulaMagnaModel::find($id);
+        $reservacion->delete();
+        return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
     public function diasInhabiles()

@@ -113,6 +113,14 @@ Route::group(['middleware'=>['UsuarioAutenticado']], function(){
         });
     });
 
+    //Rutas para ver las reservaciones de las áreas
+    Route::prefix('borrar-reservacion')->group(function(){
+        Route::get('/', [LaboratorioController::class, 'showAll']);
+        Route::get('auditorio/{id}', [AuditorioController::class, 'delete']);
+        Route::get('aula-magna/{id}', [AulaMagnaController::class, 'delete']);
+        Route::get('laboratorio/{id}', [LaboratorioController::class, 'delete']);
+        Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'delete']);
+    });
 
 });
 

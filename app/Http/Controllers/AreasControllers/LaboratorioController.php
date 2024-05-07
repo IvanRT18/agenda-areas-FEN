@@ -93,7 +93,7 @@ class LaboratorioController extends Controller
     {
         $reservacionLab = LaboratorioModel::find($idCita);
         $reservacionLab->delete();
-        return redirect()->back()->with('status', 'Cita borrada correctamente');
+        return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
     public function diasInhabiles()
