@@ -79,7 +79,7 @@ class AuditorioController extends Controller
     {
         $reservaciones = AuditorioModel::all();
 
-        return view('AdminPanel', compact('reservaciones'));
+        return view('areas.auditorio.admin', compact('reservaciones'));
     }
 
     public function showHorasDia(Request $request)
@@ -95,36 +95,33 @@ class AuditorioController extends Controller
         return response()->json($horasAgendadas);
     }
 
-    // Edita una cita
+    // Edita una reservacion
     public function edit($id){
-        $cita = AuditorioModel::find($id);
-        return view('areas.auditorio.editar', compact('cita'));
+        $reservacion = AuditorioModel::find($id);
+        return view('areas.auditorio.editar', compact('reservacion'));
     }
 
     public function update(Request $request, $id)
     {
-        $cita = AuditorioModel::find($id);
-        $cita->id = $request->input('id');
-        $cita->numEquipos = $request->input('numEquipos');
-        $cita->fechaReservada = $request->input('fechaReservada');
-        $cita->horaReservaInicio = $request->input('horaReservaInicio');
-        $cita->horaReservaFinal = $request->input('horaReservaFinal');
-        $cita->usaProyector = $request->input('usaProyector');
-        $cita->reqAdicionales = $request->input('reqAdicionales');
-        $cita->Rpe = $request->input('Rpe');
-        $cita->nombreCompleto = $request->input('nombreCompleto');
-        $cita->materia = $request->input('materia');
-        $cita->actividad = $request->input('actividad');
-        $cita->nombreCurso = $request->input('nombreCurso');
-        $cita->update();
-        return redirect()->back()->with('status','Cita actualizada correctamente');
+        $reservacion = AuditorioModel::find($id);
+        $reservacion->id = $request->input('id');
+        $reservacion->rpe = session('user');
+        $reservacion->fecha_reservada = $request->input('fecha_reservada');
+        $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
+        $reservacion->hora_reserva_final = $request->input('hora_reserva_final');
+        $reservacion->usa_proyector = $request->input('usa_proyector');
+        $reservacion->numero_microfonos = $request->input('numero_microfonos');
+        $reservacion->usa_computadora = $request->input('usa_computadora');
+        $reservacion->usa_bocinas = $request->input('usa_bocinas');
+        $reservacion->update();
+        return redirect()->back()->with('status','reservacion actualizada correctamente');
     }
 
-    public function borrarCita($id)
+    public function borrarreservacion($id)
     {
-        $citaLab = AuditorioModel::find($id);
-        $citaLab->delete();
-        return redirect()->back()->with('status', 'Cita borrada correctamente');
+        $reservacionLab = AuditorioModel::find($id);
+        $reservacionLab->delete();
+        return redirect()->back()->with('status', 'reservacion borrada correctamente');
     }
 
     public function diasInhabiles()

@@ -100,7 +100,12 @@
             <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Mostrar horas reservadas
             </button>
-        
+
+            {{-- Cerrar sesión --}}
+            <form action="{{url('/logout')}}">
+                <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
+            </form>
+
             <!-- Modal -->
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
