@@ -81,7 +81,7 @@
                     </div>
                     <div class="card-body">
     
-                        <form action="{{ url('actualizar-reservacion/laboratorio/'. $reservacion->id) }}" method="POST">
+                        <form action="{{ url('administrador/administrador/actualizar-reservacion/laboratorio/'. $reservacion->id) }}" method="POST">
                             @csrf
                             @method('PUT')
     

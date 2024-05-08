@@ -30,27 +30,14 @@ class LoginController extends Controller
         else {
             session()->put('user', $request->input('usuario'));
             session()->put('type', $request->input('tipo'));
-        $usuario = Usuario::where('clave', session('user'))->first();
-            Auth::loginUsingId($usuario->clave);
-        return redirect(RouteServiceProvider::INICIO);
-            // return redirect()->route('inicio');
+            $usuario = Usuario::where('clave', session('user'))->first();
+            if ($usuario) {
+                Auth::loginUsingId($usuario->clave);
+                return redirect(RouteServiceProvider::INICIO);
+            }
+            else{
+                return redirect('usuario-no-registrado');
+            }
         }
-    }
-
-    public function authenticate(Request $request): RedirectResponse
-    {
-        $credentials = $request->validate([
-            'clave' => ['required', 'clave'],
-        ]);
- 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
- 
-            return redirect()->intended('inicio');
-        }
- 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
     }
 }

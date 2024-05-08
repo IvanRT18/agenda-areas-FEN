@@ -65,7 +65,7 @@ class AulaMagnaController extends Controller
         return response()->json($horasAgendadas);
     }
 
-    // Edita una cita
+    // Edita una reservación
     public function edit($id){
         $reservacion = AulaMagnaModel::find($id);
         return view('areas.aula-magna.editar', compact('reservacion'));

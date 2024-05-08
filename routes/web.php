@@ -7,7 +7,7 @@ use App\Http\Controllers\AreasControllers\AuditorioController;
 use App\Http\Controllers\AreasControllers\AulaMagnaController;
 use App\Http\Controllers\AreasControllers\SalaVideoconferenciaController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegistraUsuariosController;
+use App\Http\Controllers\UsuariosController;
 use App\Login\login_client;
 use App\Mail\AreaReservadaMail;
 use App\Models\DiaDeshabilitado;
@@ -77,33 +77,11 @@ Route::group(['middleware'=>['auth']], function(){
         });
     });
 
-    //Rutas para registrar reservaciones de áreas
-    Route::prefix('registra-reservacion')->group(function(){
-        Route::post('auditorio', [AuditorioController::class, 'store']);
-        Route::post('aula-magna', [AulaMagnaController::class, 'store']);
-        Route::post('laboratorio', [LaboratorioController::class, 'store']);
-        Route::post('sala-videoconferencias', [SalaVideoconferenciaController::class, 'store']);
-    });
-
-     //Rutas para actualizar reservaciones de áreas
-     Route::prefix('actualizar-reservacion')->group(function(){
-        Route::put('auditorio/{id}', [AuditorioController::class, 'update']);
-        Route::put('aula-magna/{id}', [AulaMagnaController::class, 'update']);
-        Route::put('laboratorio/{id}', [LaboratorioController::class, 'update']);
-        Route::put('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'update']);
-    });
-
-    //Rutas para editar reservaciones de áreas
-    Route::prefix('editar-reservacion')->group(function(){
-        Route::get('auditorio/{id}', [AuditorioController::class, 'edit']);
-        Route::get('aula-magna/{id}', [AulaMagnaController::class, 'edit']);
-        Route::get('laboratorio/{id}', [LaboratorioController::class, 'edit']);
-        Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'edit']);
-    });
-
     //Rutas para ver las reservaciones de las áreas
     Route::prefix('administrador')->group(function(){
         Route::get('/', [LaboratorioController::class, 'showAll']);
+
+        //Muestra las horas reservaciones en una tabla con scroll automatico
         Route::prefix('reservaciones')->group(function(){
             Route::get('/', [LaboratorioController::class, 'showAll']);
             Route::get('auditorio/', [AuditorioController::class, 'showAll']);
@@ -111,17 +89,50 @@ Route::group(['middleware'=>['auth']], function(){
             Route::get('laboratorio/', [LaboratorioController::class, 'showAll']);
             Route::get('sala-videoconferencias/', [SalaVideoconferenciaController::class, 'showAll']);
         });
-    });
 
-    //Rutas para ver las reservaciones de las áreas
-    Route::prefix('borrar-reservacion')->group(function(){
-        Route::get('/', [LaboratorioController::class, 'showAll']);
-        Route::get('auditorio/{id}', [AuditorioController::class, 'delete']);
-        Route::get('aula-magna/{id}', [AulaMagnaController::class, 'delete']);
-        Route::get('laboratorio/{id}', [LaboratorioController::class, 'delete']);
-        Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'delete']);
-    });
+        //Registro de usuarios
+        Route::prefix('usuarios')->group(function(){
+            Route::get('/', [UsuariosController::class, 'showUsers']);
+            Route::get('registrar', [UsuariosController::class, 'index']);
+            Route::post('registrar', [UsuariosController::class, 'store']);
+            Route::get('editar/{id}', [UsuariosController::class, 'edit']);
+            Route::put('actualizar/{id}', [UsuariosController::class, 'update']);
+            Route::get('eliminar/{id}', [UsuariosController::class, 'delete']);
+        });
 
+        //Rutas para registrar reservaciones de áreas
+        Route::prefix('registra-reservacion')->group(function(){
+            Route::post('auditorio', [AuditorioController::class, 'store']);
+            Route::post('aula-magna', [AulaMagnaController::class, 'store']);
+            Route::post('laboratorio', [LaboratorioController::class, 'store']);
+            Route::post('sala-videoconferencias', [SalaVideoconferenciaController::class, 'store']);
+        });
+
+        //Rutas para editar reservaciones de áreas
+        Route::prefix('editar-reservacion')->group(function(){
+            Route::get('auditorio/{id}', [AuditorioController::class, 'edit']);
+            Route::get('aula-magna/{id}', [AulaMagnaController::class, 'edit']);
+            Route::get('laboratorio/{id}', [LaboratorioController::class, 'edit']);
+            Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'edit']);
+        });
+
+        //Rutas para actualizar reservaciones de áreas
+        Route::prefix('actualizar-reservacion')->group(function(){
+            Route::put('auditorio/{id}', [AuditorioController::class, 'update']);
+            Route::put('aula-magna/{id}', [AulaMagnaController::class, 'update']);
+            Route::put('laboratorio/{id}', [LaboratorioController::class, 'update']);
+            Route::put('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'update']);
+        });
+
+        //Rutas para ver las reservaciones de las áreas
+        Route::prefix('borrar-reservacion')->group(function(){
+            Route::get('/', [LaboratorioController::class, 'showAll']);
+            Route::get('auditorio/{id}', [AuditorioController::class, 'delete']);
+            Route::get('aula-magna/{id}', [AulaMagnaController::class, 'delete']);
+            Route::get('laboratorio/{id}', [LaboratorioController::class, 'delete']);
+            Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'delete']);
+        });
+    });
 });
 
 //Cierra la sesión del usuario
@@ -158,13 +169,11 @@ Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoContro
 
 Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);
 
-Route::get('registrar-usuario', [RegistraUsuariosController::class, 'index']);
-
-Route::post('registrar-usuario', [RegistraUsuariosController::class, 'store']);
-
 Route::get('email', function () {
     $correo = new AreaReservadaMail;
     Mail::to('ivan18rt@outlook.com')->send($correo);
     return "Mensaje enviado.";
     // return view('home');
 })->name('contactanos.index');
+
+Route::get('usuario-no-registrado', [UsuariosController::class, 'isUserRegistered']);

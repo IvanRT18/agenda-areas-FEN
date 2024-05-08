@@ -119,7 +119,7 @@
 
 
        {{-- Formulario Laboratorio de cómputo--}}
-       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/laboratorio')}}" id="formularioLabComp">
+       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/laboratorio')}}" id="formularioLabComp">
            @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">
@@ -183,7 +183,7 @@
         </form>
 
     {{-- Formulario auditorio --}}
-    <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/auditorio')}}" id="formAuditorio">
+    <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/auditorio')}}" id="formAuditorio">
         @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">
@@ -234,7 +234,7 @@
     </form>
 
     {{-- Formulario aula magna --}}
-    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/aula-magna')}}" id="formAulaMagna">
+    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/aula-magna')}}" id="formAulaMagna">
         @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">
@@ -285,7 +285,7 @@
     </form>
 
     {{-- Formulario sala de videoconferencia --}}
-    <form name="formSalaV" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/sala-videoconferencias')}}" id="formSalaV">
+    <form name="formSalaV" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/sala-videoconferencias')}}" id="formSalaV">
         @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">

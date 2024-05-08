@@ -89,7 +89,7 @@
         <div class="container-fluid d-inline-flex justify-content-between mt-3">
             <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
 
-            <a href="{{ url('registrar-usuario') }}" class="btn btn-success btn-sm fs-6">Registrar nuevo usuario</a>
+            <a href="{{ url('administrador/usuarios/registrar') }}" class="btn btn-success btn-sm fs-6">Registrar nuevo usuario</a>
 
             {{-- Modal ver horas reservadas de área --}}
             <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
@@ -186,7 +186,7 @@
                         <td>{{$reservacion->actividad}}</td>
                         <td>{{$reservacion->nombre_curso}}</td>
                         <td>
-                            <a href="{{ url('editar-reservacion/laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
+                            <a href="{{ url('administrador/editar-reservacion/laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
                             <a href="{{ url('borra-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>

@@ -11,7 +11,7 @@
     </div>
     <div class="card-body">
 
-        <form action="{{ url('actualizar-reservacion/auditorio/'. $reservacion->id) }}" method="POST">
+        <form action="{{ url('administrador/actualizar-reservacion/auditorio/'. $reservacion->id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -19,14 +19,6 @@
                 <label for="">ID Reservación</label>
                 <input type="text" name="id" value="{{$reservacion->id}}" class="form-control">
             </div>
-            {{-- <div class="form-group mb-3">
-                <label for="">RPE</label>
-                <input type="text" name="rpe" value="{{$reservacion->rpe}}" class="form-control">
-            </div> --}}
-            {{-- <div class="form-group mb-3">
-                <label for="">Nombre Completo</label>
-                <input type="text" name="nombre_completo" value="{{$reservacion->nombre_completo}}" class="form-control">
-            </div> --}}
             <div class="form-group mb-3">
                 <label for="">Fecha reservada</label>
                 <input id="editFechaReservada" type="date" name="fecha_reservada" value="{{$reservacion->fecha_reservada}}" class="form-control">

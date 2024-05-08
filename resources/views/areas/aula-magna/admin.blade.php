@@ -33,8 +33,8 @@
                     <td>{{$reservacion->usa_computadora}}</td>
                     <td>{{$reservacion->usa_bocinas}}</td>
                     <td>
-                        <a href="{{ url('editar-reservacion/aula-magna/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
-                        <a href="{{ url('borrar-reservacion/aula-magna/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="{{ url('administrador/editar-reservacion/aula-magna/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
+                        <a href="{{ url('administrador/borrar-reservacion/aula-magna/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
             @endforeach
