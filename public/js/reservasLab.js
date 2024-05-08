@@ -41,11 +41,11 @@ $.get('laboratorio/' + fullDiaActual, function(data){
 
     data.forEach(hora => {
       // Se agrega cada rango de hora reservada al arreglo
-      disabledHoras.push([hora.horaReservaInicio, hora.horaReservaFinal]);
-      if (terminaEnTreinta(hora.horaReservaInicio) || terminaEnTreinta(hora.horaReservaFinal)) {
+      disabledHoras.push([hora.hora_reserva_inicio, hora.hora_reserva_final]);
+      if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
         mediaHoras = 1;
       }
-      horasClassObj.push(new HoraClass([hora.horaReservaInicio, hora.horaReservaFinal],hora.actividad,'parte posterior'));
+      horasClassObj.push(new HoraClass([hora.hora_reserva_inicio, hora.hora_reserva_final],hora.actividad,'parte posterior'));
       console.log(horasClassObj);
     });
 

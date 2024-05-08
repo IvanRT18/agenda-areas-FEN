@@ -12,13 +12,13 @@ class SalaVideoConferenciaModel extends Model
     protected $table = 'sala_videoconferencia_reservaciones';
 
     protected $fillable = [
-        'Rpe',
-        'usaProyector',
-        'fechaReservada',
-        'horaReservadaInicio',
-        'horaReservadaFinal',
-        'numeroMicrofonos',
-        'usaComputadora',
-        'usaBocinas',
+        'rpe',
+        'fecha_reservada',
+        'hora_reservada_inicio',
+        'hora_reservada_final',
+        'usa_proyector',
+        'numero_microfonos',
+        'usa_computadora',
+        'usa_bocinas',
     ];
 }

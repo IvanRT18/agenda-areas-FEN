@@ -11,6 +11,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Login\LoginClass;
+use App\Models\Usuario;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +30,10 @@ class LoginController extends Controller
         else {
             session()->put('user', $request->input('usuario'));
             session()->put('type', $request->input('tipo'));
-            return redirect()->route('inicio');
+        $usuario = Usuario::where('clave', session('user'))->first();
+            Auth::loginUsingId($usuario->clave);
+        return redirect(RouteServiceProvider::INICIO);
+            // return redirect()->route('inicio');
         }
     }
 

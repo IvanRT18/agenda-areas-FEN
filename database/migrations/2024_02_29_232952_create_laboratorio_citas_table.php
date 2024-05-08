@@ -14,17 +14,17 @@ return new class extends Migration
         Schema::create('laboratorio_reservaciones', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->integer('numEquipos');
-            $table->string('fechaReservada');
-            $table->string('horaReservaInicio');
-            $table->string('horaReservaFinal');
-            $table->boolean('usaProyector');
-            $table->text('reqAdicionales');
-            $table->integer('Rpe');
-            $table->string('nombreCompleto');
+            $table->integer('rpe');
+            $table->string('nombre_completo');
+            $table->string('fecha_reservada');
+            $table->string('hora_reserva_inicio');
+            $table->string('hora_reserva_final');
+            $table->integer('numero_equipos');
+            $table->boolean('usa_proyector');
+            $table->text('req_adicionales')->nullable();
             $table->string('materia');
             $table->string('actividad');
-            $table->string('nombreCurso');
+            $table->string('nombre_curso')->nullable();
         });
     }
 
