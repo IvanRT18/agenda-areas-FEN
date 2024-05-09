@@ -1,12 +1,12 @@
 <!-- Vista para el área 1 -->
 @extends('layouts.reservacion_layouts')
 
-@section('title', 'Horas reservadas - Aula magna');
+@section('title', 'Horas reservadas - Laboratorio')
 
 @section('title-area')
     {{-- Titulo --}}
     <h1 id="diaReservaLab" class="text-center fs-1"></h1>
-    <p class="text-center fs-2">Aula magna</p>
+    <p class="text-center fs-2">Laboratorio</p>
 @endsection
 
 @section('content-reservaciones')
@@ -17,5 +17,5 @@
 @endsection
 
 @section('scripts')
-    <script src={{asset("js/reservaciones_sala_videoconferencia.js")}}></script>
+    <script src={{asset("js/reservasLab.js")}}></script>
 @endsection

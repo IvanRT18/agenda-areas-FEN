@@ -76,15 +76,23 @@
         </div>
 
         {{-- Alerta --}}
-        @if (session('status'))
-            <h6 class="alert alert-success">{{ session('status') }}</h6>
-        @endif
+        <div class="container">
+            @if (session('status'))
+                <div class="flex flex-row justify-arnd alert alert-success">
+                    <h6 class="">{{ session('status') }}</h6>
+                    <button id="close-btn">X</button>
+                </div>
+            @endif
+        </div>
 
         {{-- Contenido  --}}
         <div class="container-fluid d-inline-flex justify-content-between mt-3">
-            <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
+            <a href="{{ url('administrador/deshabilitar-dias') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
 
-            <a href="{{ url('registrar-usuario') }}" class="btn btn-success btn-sm fs-6">Registrar nuevo usuario</a>
+            {{-- Modal de usuarios --}}
+            <button type="button" class="btn btn-success fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">
+                Usuarios
+            </button>
 
             {{-- Modal ver horas reservadas de área --}}
             <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
@@ -124,6 +132,7 @@
                 </div>
             </div>
 
+            {{-- Modal 2 --}}
             <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -137,6 +146,27 @@
                                 <a href="{{ url('administrador/reservaciones/aula-magna') }}" class="btn btn-success btn-sm fs-6 mb-3">Aula Magna</a>
                                 <a href="{{ url('administrador/reservaciones/laboratorio') }}" class="btn btn-success btn-sm fs-6 mb-3">Laboratorio de cómputo</a>
                                 <a href="{{ url('administrador/reservaciones/sala-videoconferencias') }}" class="btn btn-success btn-sm fs-6 mb-3">Sala de videoconferencia</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Modal 3 --}}
+            <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel3">Selecciona la opción:</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="flex flex-column">
+                                <a href="{{ url('administrador/usuarios/registrar') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Registrar</a>
+                                <a href="{{ url('administrador/usuarios/') }}" class="btn btn-success btn-sm fs-6 mb-3">Ver usuarios</a>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -173,5 +203,6 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="js/adminLab.js"></script>
+<script src="{{asset('js/editCita.js')}}"></script>
 
 </html>

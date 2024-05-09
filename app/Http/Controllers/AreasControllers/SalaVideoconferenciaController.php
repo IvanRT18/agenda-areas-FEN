@@ -40,7 +40,7 @@ class SalaVideoconferenciaController extends Controller
     public function showAll(Request $request)
     {
         $reservaciones = SalaVideoConferenciaModel::all();
-        return view('AdminPanel', compact('reservaciones'));
+        return view('areas.sala-videoconferencias.admin', compact('reservaciones'));
     }
 
     //Muestra las horas reservadas del día
@@ -54,5 +54,36 @@ class SalaVideoconferenciaController extends Controller
     {
         $horasAgendadas = SalaVideoConferenciaModel::where('fecha_reservada', $fecha)->get();
         return response()->json($horasAgendadas);
+    }
+
+    // Muestra vista de edición
+    public function edit($id){
+        $reservacion = SalaVideoConferenciaModel::find($id);
+        return view('areas.sala-videoconferencias.editar', compact('reservacion'));
+    }
+
+    // Actualiza la reservación
+    public function update(Request $request, $id)
+    {
+        $reservacion = SalaVideoConferenciaModel::find($id);
+        $reservacion->id = $request->input('id');
+        $reservacion->rpe = session('user');
+        $reservacion->fecha_reservada = $request->input('fecha_reservada');
+        $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
+        $reservacion->hora_reserva_final = $request->input('hora_reserva_final');
+        $reservacion->usa_proyector = $request->input('usa_proyector');
+        $reservacion->numero_microfonos = $request->input('numero_microfonos');
+        $reservacion->usa_computadora = $request->input('usa_computadora');
+        $reservacion->usa_bocinas = $request->input('usa_bocinas');
+        $reservacion->update();
+        return redirect()->back()->with('status','Reservación actualizada correctamente');
+    }
+
+    // Elimina una reservación
+    public function delete($id)
+    {
+        $reservacion = SalaVideoConferenciaModel::find($id);
+        $reservacion->delete();
+        return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 }

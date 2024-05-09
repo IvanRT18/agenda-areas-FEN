@@ -47,27 +47,26 @@ class LaboratorioController extends Controller
     {
         $reservaciones = LaboratorioModel::all();
 
-        return view('AdminPanel', compact('reservaciones'));
+        return view('areas.laboratorio.admin', compact('reservaciones'));
     }
 
     public function showHorasDia(Request $request)
     {
         // $reservaciones = LaboratorioModel::where('fechaReservada', $fecha)->get();
-        return view('reservacionesLaboratorio');
+        return view('areas.laboratorio.ver');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
         $horasAgendadas = LaboratorioModel::where('fecha_reservada', $fecha)->get();
-
         return response()->json($horasAgendadas);
     }
 
     // Edita una cita
     public function edit($id){
         $reservacion = LaboratorioModel::find($id);
-        return view('laboratorio_editar_view', compact('reservacion'));
+        return view('areas.laboratorio.editar', compact('reservacion'));
     }
 
     public function update(Request $request, $id)
@@ -89,15 +88,15 @@ class LaboratorioController extends Controller
         return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
-    public function borrarCita($idCita)
+    public function delete($id)
     {
-        $reservacionLab = LaboratorioModel::find($idCita);
-        $reservacionLab->delete();
+        $reservacion = LaboratorioModel::find($id);
+        $reservacion->delete();
         return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
     public function diasInhabiles()
     {
-        return view('diasDesactivados');
+        return view('dias_deshabilitados');
     }
 }

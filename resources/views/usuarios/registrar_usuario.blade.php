@@ -82,7 +82,7 @@
             </div>
             <div class="card-body">
 
-                <form action="{{ url('registrar-usuario') }}" method="POST">
+                <form action="{{ url('administrador/usuarios/registrar') }}" method="POST">
                     @csrf
 
                     <div class="form-group mb-3">
