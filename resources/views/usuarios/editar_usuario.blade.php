@@ -12,12 +12,12 @@
     </div>
     <div class="card-body">
 
-        <form action="{{ url('administrador/usuarios/actualizar'. $usuario->id) }}" method="POST">
+        <form action="{{ url('administrador/usuarios/actualizar/'. $usuario->id) }}" method="POST">
             @csrf
-
+            @method('PUT')
             <div class="form-group mb-3">
                 <label for="">RPE</label>
-                <input type="text" name="clave" class="form-control" value="{{$usuario->id}}">
+                <input type="text" name="clave" class="form-control" value="{{$usuario->clave}}">
             </div>
             <div class="form-group mb-3">
                 <label for="">Apellido paterno</label>

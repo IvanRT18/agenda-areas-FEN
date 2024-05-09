@@ -88,15 +88,15 @@ class LaboratorioController extends Controller
         return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
-    public function borrarCita($idCita)
+    public function delete($id)
     {
-        $reservacionLab = LaboratorioModel::find($idCita);
-        $reservacionLab->delete();
+        $reservacion = LaboratorioModel::find($id);
+        $reservacion->delete();
         return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
     public function diasInhabiles()
     {
-        return view('diasDesactivados');
+        return view('dias_deshabilitados');
     }
 }

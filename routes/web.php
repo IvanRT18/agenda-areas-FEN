@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LoginController::class, 'index'])->name('index');
 
 Route::group(['middleware'=>['auth']], function(){
+    Route::get('obtener-dias-deshabilitados', [DiaDeshabilitadoController::class, 'getAllDisabledDays']);
+
     //Ruta del administrador
     Route::get('administrador', [LaboratorioController::class, 'showAll']);
     
@@ -78,7 +80,7 @@ Route::group(['middleware'=>['auth']], function(){
     });
 
     //Rutas para ver las reservaciones de las áreas
-    Route::prefix('administrador')->group(function(){
+    Route::middleware('admin')->prefix('administrador')->group(function(){
         Route::get('/', [LaboratorioController::class, 'showAll']);
 
         //Muestra las horas reservaciones en una tabla con scroll automatico
@@ -132,8 +134,18 @@ Route::group(['middleware'=>['auth']], function(){
             Route::get('laboratorio/{id}', [LaboratorioController::class, 'delete']);
             Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'delete']);
         });
+
+         //Rutas deshabilitar días
+         Route::prefix('deshabilitar-dias')->group(function(){
+            Route::get('/', [DiaDeshabilitadoController::class, 'index']);
+            Route::post('agregar-dia', [DiaDeshabilitadoController::class, 'store']);
+            Route::get('habilita-dia/{id}', [DiaDeshabilitadoController::class, 'habilitaDia']);
+            Route::get('habilita-todos-dias', [DiaDeshabilitadoController::class, 'habilitaTodosDias']);
+            Route::get('obtener-dias-deshabilitados', [DiaDeshabilitadoController::class, 'getAllDisabledDays']);
+        });
     });
 });
+
 
 //Cierra la sesión del usuario
 Route::get(('/logout'), function(){
@@ -157,17 +169,17 @@ Route::get('/horas-reservadas/{fecha}', [LaboratorioController::class, 'horasAge
 
 // Route::put('update-cita-laboratoria/{id}', [LaboratorioController::class, 'update']);
 
-Route::get('borra-cita-laboratorio/{id}', [LaboratorioController::class, 'borrarCita']);
+// Route::get('borra-cita-laboratorio/{id}', [LaboratorioController::class, 'borrarCita']);
 
-Route::post('agrega-dia-inhabilitado-laboratorio', [DiaDeshabilitadoController::class, 'store']);
+// Route::post('agrega-dia-inhabilitado-laboratorio', [DiaDeshabilitadoController::class, 'store']);
 
-Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'allDiasDeshabilitados']);
+// Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'allDiasDeshabilitados']);
 
-Route::get('dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'index']);
+// Route::get('dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'index']);
 
-Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoController::class, 'eliminaDiaDeshabilitado']);
+// Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoController::class, 'eliminaDiaDeshabilitado']);
 
-Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);
+// Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);
 
 Route::get('email', function () {
     $correo = new AreaReservadaMail;
@@ -176,4 +188,6 @@ Route::get('email', function () {
     // return view('home');
 })->name('contactanos.index');
 
-Route::get('usuario-no-registrado', [UsuariosController::class, 'isUserRegistered']);
+Route::get('usuario-no-registrado', [UsuariosController::class, 'isUserRegistered'])->name('no-access');
+
+Route::get('usuario-no-admin', [UsuariosController::class, 'isUserAdmin'])->name('no-admin');

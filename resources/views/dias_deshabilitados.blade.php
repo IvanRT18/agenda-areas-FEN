@@ -14,7 +14,7 @@
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
     
     {{-- Flatpickr css --}}
-    <link rel="stylesheet" href="js/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" href="/js/flatpickr/flatpickr.min.css">
 
     {{-- Timepicker css --}}
     <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
@@ -65,14 +65,8 @@
             <div class="col-6">
                 <div class="d-flex justify-content-around">
                     <p class="fs-4 text-center ">Días deshabilitados</p>
-                        <a href="{{ url('elimina-all-dias-deshabilitados-laboratorio/') }}" class="btn bg-success btn-sm text-white fs-6" style="width: 50%;height: min-content;">Reiniciar días</a>
+                        <a href="{{ url('administrador/deshabilitar-dias/habilita-todos-dias') }}" class="btn bg-success btn-sm text-white fs-6" style="width: 50%;height: min-content;">Reiniciar días</a>
                 </div>
-                {{-- <div class="form-group mb-3">
-                    <input type="date" id="diasDeshabilitadosInput" name="diasDeshabilitadosInput">
-
-                    <p>YYYY-MM-DD</p>
-                    
-                </div> --}}
 
                 <div>
                     @foreach ($diasDeshabilitados as $diaDeshabilitado)
@@ -84,7 +78,7 @@
                                     {{$diaDeshabilitado->diaDeshabiliado}}
                                 </p>
                             </div>
-                            <a href="{{ url('elimina-dia-deshabilitado-laboratorio/'. $diaDeshabilitado->id) }}" class="btn bg-success btn-sm text-white fs-6">Habilitar</a>
+                            <a href="{{ url('administrador/deshabilitar-dias/habilita-dia/'. $diaDeshabilitado->id) }}" class="btn bg-success btn-sm text-white fs-6">Habilitar</a>
                         </div>
                     @endforeach
                 </div>
@@ -93,7 +87,7 @@
 
             <div class="col-6">
                 <p class="fs-4 text-center">Deshabilitar nuevo día</p>
-                <form action="{{ url('/agrega-dia-inhabilitado-laboratorio') }}" method="POST" class="d-flex flex-column align-items-center ">
+                <form action="{{ url('administrador/deshabilitar-dias/agregar-dia') }}" method="POST" class="d-flex flex-column align-items-center ">
                     @csrf
 
                     <input type="date" id="agregarDiaDesactivadoInput" name="agregarDiaDesactivadoInput">
@@ -108,5 +102,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
-<script src="js/diasDesactivados.js"></script>
+<script src="{{ asset('js/dias_deshabilitados.js') }}"></script>
 </html>

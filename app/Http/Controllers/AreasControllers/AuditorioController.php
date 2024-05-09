@@ -126,6 +126,6 @@ class AuditorioController extends Controller
 
     public function diasInhabiles()
     {
-        return view('diasDesactivados');
+        return view('dias_deshabilitados');
     }
 }

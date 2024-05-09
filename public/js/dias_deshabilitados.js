@@ -16,7 +16,7 @@ flatpickr("#diasDeshabilitadosInput", {
   });
 
 
-$.get('all-dias-inhabilitados-laboratorio', function(data){
+$.get('deshabilitar-dias/obtener-dias-deshabilitados', function(data){
     data.forEach(dias => {
         disabledDays.push(dias.diaDeshabiliado);
     });

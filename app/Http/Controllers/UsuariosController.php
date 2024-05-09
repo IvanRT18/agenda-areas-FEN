@@ -84,4 +84,13 @@ class UsuariosController extends Controller
             return view('usuarios.usuario_no_registrado');
         }
     }
+
+    public function isUserAdmin(){
+        if (Auth::check() && auth()->user()->tipo === 'administrador') {
+            return redirect(route('inicio'));
+        }
+        else{
+            return view('usuarios.usuario_no_admin');
+        }
+    }
 }

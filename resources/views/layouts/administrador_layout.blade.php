@@ -76,15 +76,18 @@
         </div>
 
         {{-- Alerta --}}
-        @if (session('status'))
-            <h6 class="alert alert-success">{{ session('status') }}</h6>
-        @endif
+        <div class="container">
+            @if (session('status'))
+                <div class="flex flex-row justify-arnd alert alert-success">
+                    <h6 class="">{{ session('status') }}</h6>
+                    <button id="close-btn">X</button>
+                </div>
+            @endif
+        </div>
 
         {{-- Contenido  --}}
         <div class="container-fluid d-inline-flex justify-content-between mt-3">
-            <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
-
-            {{-- <a href="{{ url('administrador/usuarios/registrar') }}" class="btn btn-success btn-sm fs-6">Registrar nuevo usuario</a> --}}
+            <a href="{{ url('administrador/deshabilitar-dias') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
 
             {{-- Modal de usuarios --}}
             <button type="button" class="btn btn-success fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">
@@ -200,5 +203,6 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="js/adminLab.js"></script>
+<script src="{{asset('js/editCita.js')}}"></script>
 
 </html>

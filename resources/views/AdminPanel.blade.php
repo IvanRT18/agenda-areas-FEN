@@ -187,7 +187,7 @@
                         <td>{{$reservacion->nombre_curso}}</td>
                         <td>
                             <a href="{{ url('administrador/editar-reservacion/laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
-                            <a href="{{ url('borra-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{{ url('administrador/borrar-reservacion/laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>
                 @endforeach

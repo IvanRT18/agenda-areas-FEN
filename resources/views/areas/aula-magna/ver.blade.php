@@ -1,7 +1,7 @@
 <!-- Vista para el área 1 -->
 @extends('layouts.reservacion_layouts')
 
-@section('title', 'Horas reservadas - Aula magna');
+@section('title', 'Horas reservadas - Aula magna')
 
 @section('title-area')
     {{-- Titulo --}}

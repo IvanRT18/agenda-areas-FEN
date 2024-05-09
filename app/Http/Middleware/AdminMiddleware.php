@@ -15,9 +15,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check() && auth()->user()->tipo) {
+        if (auth()->check() && auth()->user()->tipo == 'administrador') {
             return $next($request);
         }
-        return redirect('login');
+        return redirect(route('no-admin'));
     }
 }

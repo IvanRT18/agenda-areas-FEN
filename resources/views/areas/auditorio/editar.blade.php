@@ -5,16 +5,14 @@
 @section('form-update')
 <div class="card">
     <div class="card-header">
-        <h4>Editar reservacion auditorio - Agenda Areas FEN
+        <h4>Editar reservacion auditorio
             <a href="/administrador/reservaciones/auditorio" class="btn btn-danger float-end">Regresar</a>
         </h4>
     </div>
     <div class="card-body">
-
         <form action="{{ url('administrador/actualizar-reservacion/auditorio/'. $reservacion->id) }}" method="POST">
             @csrf
             @method('PUT')
-
             <div class="form-group mb-3">
                 <label for="">ID Reservación</label>
                 <input type="text" name="id" value="{{$reservacion->id}}" class="form-control">

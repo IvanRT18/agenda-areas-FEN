@@ -81,7 +81,7 @@ $(function() {
     });
 
     //
-    $.get("all-dias-inhabilitados-laboratorio", function (data) {
+    $.get("obtener-dias-deshabilitados", function (data) {
         data.forEach((dias) => {
             disabledDays.push(dias.diaDeshabiliado);
         });

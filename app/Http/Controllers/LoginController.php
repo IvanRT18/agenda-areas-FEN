@@ -36,7 +36,7 @@ class LoginController extends Controller
                 return redirect(RouteServiceProvider::INICIO);
             }
             else{
-                return redirect('usuario-no-registrado');
+                return redirect(route('no-access'));
             }
         }
     }

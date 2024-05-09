@@ -1,4 +1,4 @@
-@extends('layouts.administrador_layout');
+@extends('layouts.administrador_layout')
 
 @section('title', 'Usuarios registrados')
 
