@@ -12,13 +12,23 @@ use Illuminate\Queue\SerializesModels;
 class AreaReservadaMail extends Mailable
 {
     use Queueable, SerializesModels;
+    
+    public $rpe;
+    public $nombreCompleto;
+    public $fechaReservada;
+    public $horaInicio;
+    public $horaFinal;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($rpe, $nombreCompleto, $fechaReservada, $horaInicio, $horaFinal)
     {
-        //
+        $this->rpe = $rpe;
+        $this->nombreCompleto = $nombreCompleto;
+        $this->fechaReservada = $fechaReservada;
+        $this->horaInicio = $horaInicio;
+        $this->horaFinal = $horaFinal;
     }
 
     /**
@@ -27,7 +37,7 @@ class AreaReservadaMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Área reservada - FEN',
+            subject: 'Área reservada correctamente - FEN',
         );
     }
 

@@ -9,7 +9,9 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
+use App\Mail\AreaReservadaMail;
 use App\Models\DiaDeshabilitado;
+use Illuminate\Support\Facades\Mail;
 
 class AuditorioController extends Controller
 {
@@ -71,6 +73,9 @@ class AuditorioController extends Controller
 
         // Guardar la reserva
         $reservacion->save();
+
+        $correo = new AreaReservadaMail($reservacion->rpe, 'Iván', $reservacion->fecha_reservada, $reservacion->hora_reserva_inicio, $reservacion->hora_reserva_final);
+        Mail::to('ivan18rt@outlook.com')->send($correo);
 
         return redirect()->back()->with('status', 'Se ha reservado el auditorio correctamente');
     }

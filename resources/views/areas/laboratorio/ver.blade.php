@@ -14,6 +14,20 @@
  <div id="horasContainer" class="flex flex-col">
     <!-- Contenido específico de las horas agendadas para el área 1 -->
 </div>
+
+<div class="modal fade" id="alertaModalReservacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertaModalReservacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen">
+      <div class="modal-content bg-danger">
+        <div class="modal-header bg-danger">
+          <h5 class="modal-title text-white fs-1" id="alertaModalReservacionLabel">Reservación pronto a comenzar</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body bg-danger text-white fs-1">
+          La clase empezará en 5 minutos
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('scripts')

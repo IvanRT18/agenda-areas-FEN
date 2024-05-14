@@ -19,10 +19,11 @@ let fullDiaActual = date.toJSON().slice(0, 10);
 // console.log(fullDiaActual); // "yyyy-mm-dd"
 
 class HoraClass {
-    constructor(horas, actividad, localizacion) {
+    constructor(horas, actividad, localizacion, ocupado) {
         this.horas = horas;
         this.actividad = actividad;
         this.localizacion = localizacion;
+        this.ocupado = ocupado;
     }
 
     getRangoHoras(arrayHoras){
@@ -31,7 +32,7 @@ class HoraClass {
 }
 
 const diaActual = diasArray[date.getDay()];
-$('#diaReservaLab').text(diaActual); //Titulo que indica el dia que se estan consultando los horarios reservados (en este ejemplo se usa el dia de hoy)
+$('#diaReservaLab').text(diaActual); //Titulo que indica el dia que se estan consultando los horarios reservados (dia de hoy)
 
 //Obtiene las horas reservadas
 $.get('laboratorio/' + fullDiaActual, function(data){
@@ -45,8 +46,8 @@ $.get('laboratorio/' + fullDiaActual, function(data){
       if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
         mediaHoras = 1;
       }
-      horasClassObj.push(new HoraClass([hora.hora_reserva_inicio, hora.hora_reserva_final],hora.actividad,'parte posterior'));
-      console.log(horasClassObj);
+    //   horasClassObj.push(new HoraClass([hora.hora_reserva_inicio, hora.hora_reserva_final],hora.actividad,'parte posterior'));
+    //   console.log(horasClassObj);
     });
 
     console.log('horas reservadas ese día', disabledHoras);
@@ -197,6 +198,50 @@ $.get('laboratorio/' + fullDiaActual, function(data){
     var intervalo = setInterval(scrollDown, 50);
 });
 
+// Función para verificar y mostrar la alerta
+function verificarReservacionProxima() {
+    // Calcula la hora actual
+    const horaActual = new Date();
+
+    // Calcula la hora actual más 5 minutos
+    const horaAlerta = new Date(horaActual.getTime() + 5 * 60000); // 5 minutos en milisegundos
+    console.log(horaActual);
+    console.log(horaAlerta);
+
+    // Recorre las horas de reservación para verificar si alguna está próxima a iniciar
+    disabledHoras.forEach(rango => {
+        const inicioRango = stringToDate(rango[0]);
+        
+        // Compara si la hora de inicio del rango de reservación coincide con la hora de la alerta
+        if (horaAlerta.getHours() === inicioRango.getHours() && horaAlerta.getMinutes() === inicioRango.getMinutes()) {
+            // Muestra la alerta
+            // alert(`La reservación está por comenzar en 5 minutos.`);
+            mostrarModal();
+        }
+    });
+}
+
+// Llama a la función para verificar y mostrar la alerta cada 1 minuto (puedes ajustar el intervalo según tus necesidades)
+setInterval(verificarReservacionProxima, 60000); // 60000 milisegundos = 1 minuto
+
+
+// Función para mostrar el modal
+function mostrarModal() {
+    // Muestra el modal
+    var alertaReservacion = new bootstrap.Modal(document.getElementById('alertaModalReservacion'), {
+        keyboard: false
+      });
+      
+    alertaReservacion.show();
+    
+    // Configura un temporizador para que el modal se cierre automáticamente después de 10 segundos
+    setTimeout(function() {
+        alertaReservacion.hide();
+    }, 10000); // 10000 milisegundos = 10 segundos
+}
+
+
+
 
 // Función para convertir una cadena de hora en un objeto Date
 function stringToDate(hourString) {
@@ -204,6 +249,7 @@ function stringToDate(hourString) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDay(), hours, minutes);
 }
 
+// Convierte un arreglo de tipo Date a string
 function dateToString(hourDate) {
     let tempArray = [];
     
@@ -218,6 +264,39 @@ function dateToString(hourDate) {
         tempArray = [];
     }
 }
+
+// Convierte un arreglo de tipo Date a string
+function datesToStringMedia(hourDate, isMedia) {
+    let tempArray = [];
+    
+    for (let i = 0; i < hourDate.length; i++) {
+        const element = hourDate[i];
+        let horaStringTemp = element.getHours();
+        isMedia ? horaStringTemp = horaStringTemp + ":30" : horaStringTemp = horaStringTemp + ":00";
+        tempArray.push(horaStringTemp);
+    }
+    return tempArray;
+}
+
+function mediasHorasEntreDosHoras(horaInicial, horaFinal) {
+    // Parsear las cadenas de tiempo para obtener las horas y minutos
+    const [horaInicio, minInicio] = horaInicial.split(':').map(Number);
+    const [horaFin, minFin] = horaFinal.split(':').map(Number);
+    
+    // Calcular el total de minutos entre las dos horas
+    const totalMinutosInicio = horaInicio * 60 + minInicio;
+    const totalMinutosFin = horaFin * 60 + minFin;
+    
+    // Generar el arreglo de horas en intervalos de 30 minutos
+    const horasIntervalo = [];
+    for (let minutos = totalMinutosInicio; minutos <= totalMinutosFin; minutos += 30) {
+      const hora = Math.floor(minutos / 60);
+      const minuto = minutos % 60;
+      horasIntervalo.push(`${hora.toString().padStart(2, '0')}:${minuto.toString().padStart(2, '0')}`);
+    }
+    
+    return horasIntervalo;
+  }
 
 // Función de comparación para ordenar un arreglo bidimensional de horas (string)
 function ordenaHorasBidimensional(a, b) {
@@ -285,6 +364,11 @@ function obtenerRangoHoras(horaInicial, horaFinal, arregloHoras) {
   
     return rangoHoras;
 }
+
+//Devuelve true or false si la hora esta contenido en el arreglo
+function horaEstaEnArray(hora, arreglo) {
+    return arreglo.includes(hora);
+  }
 
 // Filtra las horas reservadas de las horas disponibles
 function filtrarHorasDisponibles(horasTotales, horasReservadas) {
