@@ -228,19 +228,13 @@ setInterval(verificarReservacionProxima, 60000); // 60000 milisegundos = 1 minut
 // Función para mostrar el modal
 function mostrarModal() {
     // Muestra el modal
-    var alertaReservacion = new bootstrap.Modal(document.getElementById('alertaModalReservacion'), {
-        keyboard: false
-      });
-      
-    alertaReservacion.show();
+    $('#alertaModalReservacion').modal('show');
     
     // Configura un temporizador para que el modal se cierre automáticamente después de 10 segundos
     setTimeout(function() {
-        alertaReservacion.hide();
+        $('#alertaModalReservacion').modal('hide');
     }, 10000); // 10000 milisegundos = 10 segundos
 }
-
-
 
 
 // Función para convertir una cadena de hora en un objeto Date
