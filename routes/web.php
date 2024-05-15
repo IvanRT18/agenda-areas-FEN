@@ -11,6 +11,7 @@ use App\Http\Controllers\UsuariosController;
 use App\Login\login_client;
 use App\Mail\AreaReservadaMail;
 use App\Models\DiaDeshabilitado;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -181,12 +182,13 @@ Route::get('/horas-reservadas/{fecha}', [LaboratorioController::class, 'horasAge
 
 // Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);
 
-Route::get('email', function () {
-    $correo = new AreaReservadaMail;
-    Mail::to('ivan18rt@outlook.com')->send($correo);
-    return "Mensaje enviado.";
-    // return view('home');
-})->name('contactanos.index');
+// Route::get('email', function () {
+//     $correo = new AreaReservadaMail();
+//     Mail::to('ivan18rt@outlook.com')->send($correo);
+//     // Log::info();
+//     return "Mensaje enviado.";
+//     // return view('home');
+// })->name('contactanos.index');
 
 Route::get('usuario-no-registrado', [UsuariosController::class, 'isUserRegistered'])->name('no-access');
 
