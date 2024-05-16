@@ -13,6 +13,9 @@ let mediaHoras = 0;
 let horasClassObj = [];
 let horasLibres = [];
 
+let horasRestantes = [];
+
+
 //Se obtiene el dia de hoy
 const date = new Date();
 let fullDiaActual = date.toJSON().slice(0, 10);
@@ -113,6 +116,7 @@ $.get('laboratorio/' + fullDiaActual, function(data){
         });
     }
     else{
+        // Convierte las horas iniciales a tipo Date para hacer comparaciones de tiempo
         horasInicialesArray.forEach((hora) => {
             horasInicialesDate.push(stringToDate(hora));
         });
@@ -138,7 +142,7 @@ $.get('laboratorio/' + fullDiaActual, function(data){
         dateToString(horasFinalesSeleccionable);
     
         // Colorea las horas dependiendo de si están reservadas o no
-        horasInicialesArray.forEach((hora, index) => {
+        horasRestantes.forEach((hora, index) => {
             let reservada = false;
             const horaActual = stringToDate(hora);
     
@@ -223,6 +227,53 @@ function verificarReservacionProxima() {
 
 // Llama a la función para verificar y mostrar la alerta cada 1 minuto (puedes ajustar el intervalo según tus necesidades)
 setInterval(verificarReservacionProxima, 60000); // 60000 milisegundos = 1 minuto
+
+
+function borrarHorasAnteriores(hora, arregloHoras) {
+    // Encuentra el índice de la hora proporcionada en el arreglo
+    const indiceHora = arregloHoras.indexOf(hora);
+    
+    // Verifica si la hora proporcionada se encuentra en el arreglo
+    if (indiceHora !== -1) {
+        // Elimina todas las horas anteriores al índice de la hora proporcionada
+        arregloHoras.splice(0, indiceHora);
+    }
+    
+    // Retorna el arreglo modificado
+    return arregloHoras;
+}
+
+
+function obtenerHoraActual() {
+    const ahora = new Date();
+    const hora = ahora.getHours();
+    // const minutos = ahora.getMinutes();
+    const minutos = '00';
+    
+    // Formatea la hora y los minutos a un formato 'HH:MM'
+    // const horaActual = `${hora < 10 ? '0' + hora : hora}:${minutos < 10 ? '0' + minutos : minutos}`;
+    const horaActual = `${hora < 10 ? '0' + hora : hora}:${minutos}`;
+    
+    console.log(horaActual);
+    return horaActual;
+}
+
+// Función para actualizar la hora cada 30 minutos
+function actualizarHoraCada30Minutos() {
+    // Obtiene la hora actual
+    const horaActual = obtenerHoraActual();
+    
+    // Llama a la función para borrar horas anteriores con la hora actual
+    horasRestantes = borrarHorasAnteriores(horaActual, horasInicialesArray);
+    console.log(horasRestantes); // Muestra el arreglo de horas restantes
+    
+    // Ejecuta esta función nuevamente cada 30 minutos
+    setTimeout(actualizarHoraCada30Minutos, 30 * 60 * 1000); // 30 minutos en milisegundos
+}
+
+// Llama a la función por primera vez
+actualizarHoraCada30Minutos();
+
 
 
 // Función para mostrar el modal
