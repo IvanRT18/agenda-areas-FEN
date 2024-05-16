@@ -23,15 +23,20 @@ class LaboratorioController extends Controller
         $usuario = Usuario::where('clave', session('user'))->first();
         $reservacion = new LaboratorioModel();
         $reservacion->rpe = $usuario->getRpe();
-        $reservacion->nombre_completo = $usuario->getNombreCompleto();
+        // $reservacion->nombre_completo = $usuario->getNombreCompleto();
         $reservacion->numero_equipos = $request->numero_equipos;
         $reservacion->fecha_reservada = $request->fecha_reservada;
         $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio;
         $reservacion->hora_reserva_final = $request->hora_reserva_final;
         if ($request->usa_proyector == 'true') //Si es 1 (osea si se selecciono)
+        {
             $reservacion->usa_proyector = true;
-        else
+            $reservacion->ubicacion = 'enfrente';
+        }
+        else{
             $reservacion->usa_proyector = false;
+            $reservacion->ubicacion = 'detrás';
+        }
         $reservacion->req_adicionales = $request->req_adicionales;
         $reservacion->materia = $request->materia;
         $reservacion->actividad = $request->actividad;
