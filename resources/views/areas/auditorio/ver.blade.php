@@ -17,5 +17,5 @@
 @endsection
 
 @section('scripts')
-    <script src={{asset("js/reservaciones_auditorio.js")}}></script>
+    <script src={{asset("js/HorasAgendadas.js")}}></script>
 @endsection

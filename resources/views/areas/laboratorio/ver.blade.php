@@ -11,7 +11,7 @@
 
 @section('content-reservaciones')
  {{-- Horarios reservados del laboratorio --}}
- <div id="horasContainer" class="flex flex-col">
+ <div id="horasContainer" class="flex flex-col" data-area="laboratorio">
     <!-- Contenido específico de las horas agendadas para el área 1 -->
 </div>
 
@@ -47,5 +47,5 @@
 @endsection
 
 @section('scripts')
-    <script src={{asset("js/reservasLab.js")}}></script>
+    <script src={{asset("js/HorasAgendadas.js")}}></script>
 @endsection

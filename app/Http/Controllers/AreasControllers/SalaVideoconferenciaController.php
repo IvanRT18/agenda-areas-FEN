@@ -46,7 +46,7 @@ class SalaVideoconferenciaController extends Controller
     //Muestra las horas reservadas del día
     public function showHorasDia(Request $request)
     {
-        return view('areas.sala_videoconferencia_reservaciones');
+        return view('areas.sala-videoconferencias.ver');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día

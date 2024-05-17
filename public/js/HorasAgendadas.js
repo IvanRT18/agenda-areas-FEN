@@ -29,8 +29,10 @@ class HoraClass {
     }
 }
 
+// Determinar el endpoint dinámicamente según la página
+let endpoint = window.location.pathname.split('/').pop(); // Extrae el nombre de la página actual
 // Obtener las horas reservadas del servidor para el día actual
-$.get(`laboratorio/${fullDiaActual}`, function (data) {
+$.get(`${endpoint}/${fullDiaActual}`, function (data) {
     disabledHoras = data.map(hora => {
         if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
             mediaHoras = true;
@@ -122,8 +124,18 @@ function filtrarHorasSegunHoraActual(horasArray) {
 
 // Función para inicializar el scroll automático
 function inicializarScroll() {
-    $('#horasContainer').css({ 'overflow-y': 'hidden', 'height': '400px' });
-    let intervalo = setInterval(scrollDown, 50);
+    const alturaVentana = window.innerHeight;
+    const alturaScroll = alturaVentana * 0.5; // 70% de la altura de la ventana
+    $('#horasContainer').css({
+        'overflow-y': 'hidden',
+        'height': `${alturaScroll}px`
+    });
+
+    let intervalo = null;
+
+    function iniciarScroll() {
+        intervalo = setInterval(scrollDown, 50);
+    }
 
     function scrollDown() {
         const $contenedor = $('#horasContainer');
@@ -131,15 +143,22 @@ function inicializarScroll() {
         const alturaScroll = $contenedor.prop('scrollHeight');
         const scrollTop = $contenedor.scrollTop();
 
-        if (scrollTop >= alturaScroll - alturaContenedor - 60) {
+        if (scrollTop >= alturaScroll - alturaContenedor) {
             clearInterval(intervalo);
-            setTimeout(() => intervalo = setInterval(scrollDown, 50), 1000);
-            $contenedor.scrollTop(0);
+            setTimeout(() => {
+                $contenedor.scrollTop(0);
+                setTimeout(iniciarScroll, 1000); // Espera de 1 segundo antes de iniciar el scroll nuevamente
+            }, 1000); // Espera de 1 segundo al final antes de reiniciar el scroll
         } else {
             $contenedor.scrollTop(scrollTop + 3);
         }
     }
+
+    // Espera inicial de 1 segundo antes de comenzar el scroll
+    setTimeout(iniciarScroll, 1000);
 }
+
+
 
 // Función para verificar si hay una reservación próxima y mostrar un modal de alerta
 function verificarReservacionProxima() {
