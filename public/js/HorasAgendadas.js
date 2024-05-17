@@ -37,7 +37,12 @@ $.get(`${endpoint}/${fullDiaActual}`, function (data) {
         if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
             mediaHoras = true;
         }
-        return [hora.hora_reserva_inicio, hora.hora_reserva_final];
+        return {
+            inicio: hora.hora_reserva_inicio,
+            fin: hora.hora_reserva_final,
+            materia: hora.materia,
+            actividad: hora.actividad
+        };
     });
 
     console.log('horas reservadas ese día', disabledHoras);
@@ -68,7 +73,7 @@ function manejarHorasMedias(disabledHoras, horasArray) {
     const horasReservadas = obtenerHorasFinalesSeleccionables(disabledHoras, horasDate); // Obtener horas reservadas
     const horasString = dateToString(horasReservadas).flat(); // Convertir a string
 
-    dibujarHoras(horasFiltradas, horasString); // Dibujar las horas
+    dibujarHoras(horasFiltradas, horasString, disabledHoras); // Dibujar las horas
 }
 
 // Función para manejar la vista cuando no hay medias horas
@@ -78,15 +83,15 @@ function manejarHorasEnteras(disabledHoras, horasArray) {
     const horasReservadas = obtenerHorasFinalesSeleccionables(disabledHoras, horasDate); // Obtener horas reservadas
     const horasString = dateToString(horasReservadas).flat(); // Convertir a string
 
-    dibujarHoras(horasFiltradas, horasString); // Dibujar las horas
+    dibujarHoras(horasFiltradas, horasString, disabledHoras); // Dibujar las horas
 }
 
 // Función para obtener las horas seleccionables finales
 function obtenerHorasFinalesSeleccionables(disabledHoras, horasDate) {
     let horasFinalesSeleccionable = [];
     disabledHoras.forEach(rango => {
-        const inicioRango = stringToDate(rango[0]);
-        const finRango = stringToDate(rango[1]);
+        const inicioRango = stringToDate(rango.inicio);
+        const finRango = stringToDate(rango.fin);
         let rangoHorasReservadas = horasDate.filter(horaD => horaD >= inicioRango && horaD <= finRango);
         rangoHorasReservadas.splice(-1,1); // Eliminar el último elemento del rango
         horasFinalesSeleccionable.push(rangoHorasReservadas);
@@ -95,15 +100,31 @@ function obtenerHorasFinalesSeleccionables(disabledHoras, horasDate) {
 }
 
 // Función para dibujar las horas en el contenedor
-function dibujarHoras(horasArray, horasString) {
+function dibujarHoras(horasArray, horasString, disabledHoras) {
     $('#horasContainer').empty(); // Limpiar el contenedor antes de dibujar las horas
     horasArray.forEach((hora, index) => {
         const reservada = horasString.includes(hora); // Verificar si la hora está reservada
         const claseHora = reservada ? 'bg-danger' : 'bg-success';
         const horaFinal = index === horasArray.length - 1 ? '22:00' : horasArray[index + 1];
+
+        // Encontrar la reserva que incluye esta hora
+        const reserva = disabledHoras.find(r => {
+            const inicioRango = stringToDate(r.inicio);
+            const finRango = stringToDate(r.fin);
+            const horaDate = stringToDate(hora);
+            return horaDate >= inicioRango && horaDate < finRango;
+        });
+
+        const materia = reserva ? reserva.materia : '';
+        const actividad = reserva ? reserva.actividad : '';
+
         $('#horasContainer').append(
-            `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between' id='horaLab-${index}'>
+            `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
                 <div>${hora} - ${horaFinal} hrs</div>
+                <div class=''>
+                ${reservada ? `<div>${actividad}</div>` : ''}
+                ${reservada ? `<div>${materia}</div>` : ''}
+                <div/>
             </div>`
         );
     });

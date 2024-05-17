@@ -64,7 +64,7 @@ class LaboratorioController extends Controller
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = LaboratorioModel::where('fecha_reservada', $fecha)->get(['hora_reserva_inicio', 'materia', 'actividad']);
+        $horasAgendadas = LaboratorioModel::where('fecha_reservada', $fecha)->get(['hora_reserva_inicio', 'hora_reserva_final', 'materia', 'actividad']);
         return response()->json($horasAgendadas);
     }
 
