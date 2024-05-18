@@ -96,7 +96,7 @@ class AuditorioController extends Controller
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = AuditorioModel::where('fecha_reservada', $fecha)->get(['hora_reserva_inicio', 'hora_reserva_final', 'materia', 'actividad']);
+        $horasAgendadas = AuditorioModel::where('fecha_reservada', $fecha)->get();
         return response()->json($horasAgendadas);
     }
 

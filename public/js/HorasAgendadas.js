@@ -10,9 +10,12 @@ let disabledHoras = [];
 let mediaHoras = false;
 
 // Obtener la fecha y el día actual
-const date = new Date();
-const fullDiaActual = date.toISOString().slice(0, 10);
-const diaActual = diasArray[date.getDay()];
+const hoy = new Date();
+const dia = String(hoy.getDate()).padStart(2, '0');
+const mes = String(hoy.getMonth() + 1).padStart(2, '0'); // Enero es 0!
+const año = hoy.getFullYear();
+const fullDiaActual = `${año}-${mes}-${dia}`;
+const diaActual = diasArray[hoy.getDay()];
 $('#diaReservaLab').text(diaActual);
 
 // Clase para manejar las horas de reserva
@@ -30,20 +33,30 @@ class HoraClass {
 }
 
 // Determinar el endpoint dinámicamente según la página
-let endpoint = window.location.pathname.split('/').pop(); // Extrae el nombre de la página actual
+const endpoint = getEndpoint(); // Obtiene el endpoint
 // Obtener las horas reservadas del servidor para el día actual
-$.get(`${endpoint}/${fullDiaActual}`, function (data) {
-    disabledHoras = data.map(hora => {
-        if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
-            mediaHoras = true;
-        }
-        return {
-            inicio: hora.hora_reserva_inicio,
-            fin: hora.hora_reserva_final,
-            materia: hora.materia,
-            actividad: hora.actividad
-        };
-    });
+$.get(endpoint, function (data) {
+    if (endpoint.includes('laboratorio')) {
+        disabledHoras = data.map(hora => {
+            if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
+                mediaHoras = true;
+            }
+            return {
+                inicio: hora.hora_reserva_inicio,
+                fin: hora.hora_reserva_final,
+                materia: hora.materia,
+                actividad: hora.actividad
+            };
+        });
+    }
+    else{
+        disabledHoras = data.map(hora => {
+            if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
+                mediaHoras = true;
+            }
+            return [hora.hora_reserva_inicio, hora.hora_reserva_final];
+        });
+    }
 
     console.log('horas reservadas ese día', disabledHoras);
 
@@ -76,6 +89,21 @@ function manejarHorasMedias(disabledHoras, horasArray) {
     dibujarHoras(horasFiltradas, horasString, disabledHoras); // Dibujar las horas
 }
 
+
+ // Obtener el endpoint según la página
+ function getEndpoint() {
+    const path = window.location.pathname;
+    if (path.includes('auditorio')) {
+        return `../${fullDiaActual}`;
+    } else if (path.includes('aula-magna')) {
+        return `aula-magna/${fullDiaActual}`;
+    } else if (path.includes('laboratorio')) {
+        return `laboratorio/${fullDiaActual}`;
+    } else if (path.includes('sala-videoconferencias')) {
+        return `sala-videoconferencias/${fullDiaActual}`;
+    }
+}
+
 // Función para manejar la vista cuando no hay medias horas
 function manejarHorasEnteras(disabledHoras, horasArray) {
     const horasFiltradas = filtrarHorasSegunHoraActual(horasArray); // Filtrar según la hora actual
@@ -89,13 +117,26 @@ function manejarHorasEnteras(disabledHoras, horasArray) {
 // Función para obtener las horas seleccionables finales
 function obtenerHorasFinalesSeleccionables(disabledHoras, horasDate) {
     let horasFinalesSeleccionable = [];
-    disabledHoras.forEach(rango => {
-        const inicioRango = stringToDate(rango.inicio);
-        const finRango = stringToDate(rango.fin);
-        let rangoHorasReservadas = horasDate.filter(horaD => horaD >= inicioRango && horaD <= finRango);
-        rangoHorasReservadas.splice(-1,1); // Eliminar el último elemento del rango
-        horasFinalesSeleccionable.push(rangoHorasReservadas);
-    });
+
+    if (endpoint.includes('laboratorio')) {
+        disabledHoras.forEach(rango => {
+            const inicioRango = stringToDate(rango.inicio);
+            const finRango = stringToDate(rango.fin);
+            let rangoHorasReservadas = horasDate.filter(horaD => horaD >= inicioRango && horaD <= finRango);
+            rangoHorasReservadas.splice(-1,1); // Eliminar el último elemento del rango
+            horasFinalesSeleccionable.push(rangoHorasReservadas);
+        });
+    }
+    else{
+        disabledHoras.forEach(rango => {
+            const inicioRango = stringToDate(rango[0]);
+            const finRango = stringToDate(rango[1]);
+            let rangoHorasReservadas = horasDate.filter(horaD => horaD >= inicioRango && horaD <= finRango);
+            rangoHorasReservadas.splice(-1,1); // Eliminar el último elemento del rango
+            horasFinalesSeleccionable.push(rangoHorasReservadas);
+        });
+    }
+    
     return horasFinalesSeleccionable;
 }
 
@@ -107,15 +148,16 @@ function dibujarHoras(horasArray, horasString, disabledHoras) {
         const claseHora = reservada ? 'bg-danger' : 'bg-success';
         const horaFinal = index === horasArray.length - 1 ? '22:00' : horasArray[index + 1];
 
-        // Encontrar la reserva que incluye esta hora
-        const reserva = disabledHoras.find(r => {
-            const inicioRango = stringToDate(r.inicio);
-            const finRango = stringToDate(r.fin);
-            const horaDate = stringToDate(hora);
-            return horaDate >= inicioRango && horaDate < finRango;
-        });
+        if (endpoint.includes('laboratorio')) {
+            // Encontrar la reserva que incluye esta hora
+            const reserva = disabledHoras.find(r => {
+                const inicioRango = stringToDate(r.inicio);
+                const finRango = stringToDate(r.fin);
+                const horaDate = stringToDate(hora);
+                return horaDate >= inicioRango && horaDate < finRango;
+            });
 
-        const materia = reserva ? reserva.materia : '';
+            const materia = reserva ? reserva.materia : '';
         const actividad = reserva ? reserva.actividad : '';
 
         $('#horasContainer').append(
@@ -127,6 +169,21 @@ function dibujarHoras(horasArray, horasString, disabledHoras) {
                 <div/>
             </div>`
         );
+        }
+        else{
+            horasArray.forEach((hora, index) => {
+                const reservada = horasString.includes(hora); // Verificar si la hora está reservada
+                const claseHora = reservada ? 'bg-danger' : 'bg-success';
+                const horaFinal = index === horasArray.length - 1 ? '22:00' : horasArray[index + 1];
+                $('#horasContainer').append(
+                    `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-row justify-content-between' id='horaLab-${index}'>
+                        <div>${hora} - ${horaFinal} hrs</div>
+                    </div>`
+                );
+            });
+        }
+
+        
     });
 }
 
@@ -184,23 +241,36 @@ function inicializarScroll() {
 // Función para verificar si hay una reservación próxima y mostrar un modal de alerta
 function verificarReservacionProxima() {
     const horaAlerta = new Date(Date.now() + 10 * 60000);
-    disabledHoras.forEach(rango => {
-        const inicioRango = stringToDate(rango[0]);
-        if (horaAlerta.getHours() === inicioRango.getHours() && horaAlerta.getMinutes() === inicioRango.getMinutes()) {
-            mostrarModal();
-        }
-    });
+
+    if (endpoint.includes('laboratorio')) {
+        disabledHoras.forEach(rango => {
+            const inicioRango = stringToDate(rango.inicio);
+            if (horaAlerta.getHours() === inicioRango.getHours() && horaAlerta.getMinutes() === inicioRango.getMinutes()) {
+                mostrarModal();
+            }
+        });
+    }
+    else{
+        disabledHoras.forEach(rango => {
+            const inicioRango = stringToDate(rango[0]);
+            if (horaAlerta.getHours() === inicioRango.getHours() && horaAlerta.getMinutes() === inicioRango.getMinutes()) {
+                mostrarModal();
+            }
+        });
+    }
+
+   
 }
 
 // Función para convertir una cadena de hora a un objeto Date
 function stringToDate(hourString) {
     const [hours, minutes] = hourString.split(':').map(Number);
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes);
+    return new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate(), hours, minutes);
 }
 
 // Función para convertir un arreglo de objetos Date a cadenas de hora
 function dateToString(hourDate) {
-    return hourDate.map(arr => arr.map(date => date.toTimeString().slice(0, 5)));
+    return hourDate.map(arr => arr.map(hoy => hoy.toTimeString().slice(0, 5)));
 }
 
 // Función para ordenar las horas en un arreglo bidimensional
