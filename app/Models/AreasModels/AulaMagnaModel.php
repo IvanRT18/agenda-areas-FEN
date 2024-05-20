@@ -2,6 +2,7 @@
 
 namespace App\Models\AreasModels;
 
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,4 +22,9 @@ class AulaMagnaModel extends Model
         'usa_computadora',
         'usa_bocinas',
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'rpe', 'clave');
+    }
 }

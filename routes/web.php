@@ -40,7 +40,7 @@ Route::group(['middleware'=>['auth']], function(){
         return view('home');
     })->name('inicio');
     
-    //Ruta para ver las horas reservadas
+    //Rutas para ver las horas reservadas
     Route::prefix('horas-reservadas')->group(function () {
         Route::get('/', function () {
             // Redirije al usuario a las horas agendadas del laboratorio por default
@@ -80,13 +80,13 @@ Route::group(['middleware'=>['auth']], function(){
         });
     });
 
-    //Rutas para ver las reservaciones de las áreas
+    //Rutas de administrador
     Route::middleware('admin')->prefix('administrador')->group(function(){
         Route::get('/', [LaboratorioController::class, 'showAll']);
 
-        //Muestra las horas reservaciones en una tabla con scroll automatico
+        //Muestra las horas reservadas en una tabla con scroll automatico
         Route::prefix('reservaciones')->group(function(){
-            Route::get('/', [LaboratorioController::class, 'showAll']);
+            Route::get('/', [LaboratorioController::class, 'showAll']); //Por defecto, al entrar al panel de administrador carga las reservacion del laboratorio
             Route::get('auditorio/', [AuditorioController::class, 'showAll']);
             Route::get('aula-magna/', [AulaMagnaController::class, 'showAll']);
             Route::get('laboratorio/', [LaboratorioController::class, 'showAll']);
@@ -158,37 +158,13 @@ Route::get(('/logout'), function(){
     return redirect('index');
 });
 
-
-
 Route::get('index', [LoginController::class, 'index'])->name('login');
+
 Route::get('/public/index', [LoginController::class, 'index']);
+
 Route::get('public/index', [LoginController::class, 'index']);
 
 Route::get('/horas-reservadas/{fecha}', [LaboratorioController::class, 'horasAgendadas']);
-
-// Route::get('edita-cita-laboratorio/{id}', [LaboratorioController::class, 'edit']);
-
-// Route::put('update-cita-laboratoria/{id}', [LaboratorioController::class, 'update']);
-
-// Route::get('borra-cita-laboratorio/{id}', [LaboratorioController::class, 'borrarCita']);
-
-// Route::post('agrega-dia-inhabilitado-laboratorio', [DiaDeshabilitadoController::class, 'store']);
-
-// Route::get('all-dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'allDiasDeshabilitados']);
-
-// Route::get('dias-inhabilitados-laboratorio', [DiaDeshabilitadoController::class, 'index']);
-
-// Route::get('elimina-dia-deshabilitado-laboratorio/{id}', [DiaDeshabilitadoController::class, 'eliminaDiaDeshabilitado']);
-
-// Route::get('elimina-all-dias-deshabilitados-laboratorio/', [DiaDeshabilitadoController::class, 'eliminaAllDiasDeshabilitados']);
-
-// Route::get('email', function () {
-//     $correo = new AreaReservadaMail();
-//     Mail::to('ivan18rt@outlook.com')->send($correo);
-//     // Log::info();
-//     return "Mensaje enviado.";
-//     // return view('home');
-// })->name('contactanos.index');
 
 Route::get('usuario-no-registrado', [UsuariosController::class, 'isUserRegistered'])->name('no-access');
 

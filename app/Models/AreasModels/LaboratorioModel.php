@@ -2,6 +2,7 @@
 
 namespace App\Models\AreasModels;
 
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,4 +25,9 @@ class LaboratorioModel extends Model
         'actividad',
         'nombre_curso'
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'rpe', 'clave');
+    }
 }

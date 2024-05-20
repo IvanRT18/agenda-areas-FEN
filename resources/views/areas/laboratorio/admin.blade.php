@@ -26,7 +26,13 @@
             <tr>
                 <td>{{$reservacion->id}}</td>
                 <td>{{$reservacion->rpe}}</td>
-                <td>{{$reservacion->nombre_completo}}</td>
+                <td>
+                    @if($reservacion->usuario)
+                        {{ $reservacion->usuario->getNombreCompleto() }}
+                    @else
+                        Usuario no encontrado
+                    @endif
+                </td>
                 <td>{{$reservacion->fecha_reservada}}</td>
                 <td>{{$reservacion->hora_reserva_inicio}}</td>
                 <td>{{$reservacion->hora_reserva_final}}</td>
