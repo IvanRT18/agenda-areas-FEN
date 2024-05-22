@@ -63,6 +63,17 @@
                         <button id="close-btn">X</button>
                     </div>
                 @endif
+
+                {{-- Alerta de errores --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
     
                 @yield('form-update')
             </div>

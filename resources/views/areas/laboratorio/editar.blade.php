@@ -26,7 +26,7 @@
             </div>
             <div class="form-group mb-3">
                 <label for="">Nombre Completo</label>
-                <input type="text" name="nombre_completo" value="{{$reservacion->nombre_completo}}" class="form-control">
+                <input type="text" name="nombre_completo" value="{{$reservacion->usuario->getNombreCompleto()}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">Fecha reservada</label>
