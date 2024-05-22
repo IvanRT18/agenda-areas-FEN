@@ -119,6 +119,8 @@ $(function() {
 
     //Si el usuario cambia a otro día, se hace el fetch de las hora reservadas de ese día, y la misma configuracion de los inputs
     $('#editFechaReservada').on('change', function () {
+        $('#hora_reserva_inicio').val("");
+        $('#hora_reserva_final').val("");
         endpoint =  '/horas-reservadas/' + area + "/" + $('#editFechaReservada').val();
         // Realizar la llamada AJAX
     $.get(endpoint, function (data) {
