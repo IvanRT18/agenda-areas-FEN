@@ -14,7 +14,7 @@
     <link href='https://serviciosenlinea.uaslp.mx/LoginGateway/Content/UASLP.css' rel="stylesheet" />
     <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}> 
 
-    <style>
+    {{-- <style>
         .sortable-header {
             cursor: pointer;
         }
@@ -43,7 +43,9 @@
             border-bottom: none;
             border-left: 4px solid transparent;
         }
-    </style>
+    </style> --}}
+
+    @livewireStyles
 </head>
 <body>
     <div class="container">
@@ -200,9 +202,16 @@
         </div>
 
     </div>
+    @livewireScripts
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="js/adminLab.js"></script>
-<script src="{{asset('js/editCita.js')}}"></script>
+<script>
+    // Botón para cerrar la alerta que aparece cuando se edita una reservación
+    $('#close-btn').on('click', function (e) {
+        $(this).parent().remove();
+    });
+</script>
+{{-- <script src="js/adminLab.js"></script>
+<script src="{{asset('js/editCita.js')}}"></script> --}}
 
 </html>

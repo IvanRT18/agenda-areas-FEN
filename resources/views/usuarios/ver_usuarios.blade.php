@@ -3,7 +3,7 @@
 @section('title', 'Usuarios registrados')
 
 @section('table')
-    <table class="table table-bordered table-striped mt-3">
+    {{-- <table class="table table-bordered table-striped mt-3">
         <thead>
             <tr>
                 <th>ID</th>
@@ -33,7 +33,11 @@
                 </tr>
             @endforeach
         </tbody>
-    </table>
+    </table> --}}
+
+    <div class="container mt-3">
+        <livewire:UsuariosTable theme="bootstrap-4" />
+    </div>
 @endsection
 
 
