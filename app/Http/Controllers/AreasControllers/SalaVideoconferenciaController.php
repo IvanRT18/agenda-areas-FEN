@@ -5,6 +5,8 @@ namespace App\Http\Controllers\AreasControllers;
 use App\Http\Controllers\Controller;
 use App\Models\AreasModels\SalaVideoConferenciaModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class SalaVideoconferenciaController extends Controller
 {
@@ -65,6 +67,47 @@ class SalaVideoconferenciaController extends Controller
     // Actualiza la reservación
     public function update(Request $request, $id)
     {
+        $errors = [];
+
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'fecha_reservada' => 'required|date',
+            'hora_reserva_inicio' => 'required|date_format:H:i',
+            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos' => 'required|integer|min:0',
+        ]);
+
+        // Si la validación falla, lanzar una excepción
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        // Verificar solapamiento de horarios
+        $fechaReservada = $request->fecha_reservada;
+        $horaInicio = $request->hora_reserva_inicio;
+        $horaFinal = $request->hora_reserva_final;
+
+        $overlap = SalaVideoConferenciaModel::where('fecha_reservada', $fechaReservada)
+            ->where(function($query) use ($horaInicio, $horaFinal) {
+                $query->where(function($q) use ($horaInicio, $horaFinal) {
+                    $q->where('hora_reserva_inicio', '<', $horaFinal)
+                    ->where('hora_reserva_final', '>', $horaInicio);
+                });
+            })
+            ->where('id', '<>', $id) // Excluir la reservación actual
+            ->exists();
+
+        if ($overlap) {
+            $errors['hora_reserva'] = 'El rango de horas seleccionado ya esta reservado para esta fecha.';
+            $validator->errors()->add('general', collect($errors)->flatten());
+            throw new ValidationException($validator);
+        }
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+
         $reservacion = SalaVideoConferenciaModel::find($id);
         $reservacion->id = $request->input('id');
         $reservacion->rpe = session('user');

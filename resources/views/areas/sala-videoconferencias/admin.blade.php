@@ -3,7 +3,7 @@
 @section('title', 'Reservaciones Sala videoconferencias')
 
 @section('table')
-    <table class="table table-bordered table-striped mt-3">
+    {{-- <table class="table table-bordered table-striped mt-3">
         <thead>
             <tr>
                 <th>ID</th>
@@ -45,7 +45,11 @@
                 </tr>
             @endforeach
         </tbody>
-    </table>
+    </table> --}}
+
+    <div class="container mt-3">
+        <livewire:SalaVideoTable theme="bootstrap-5" />
+    </div>
 @endsection
 
 

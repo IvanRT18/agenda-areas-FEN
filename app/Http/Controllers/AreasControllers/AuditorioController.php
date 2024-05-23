@@ -112,7 +112,7 @@ class AuditorioController extends Controller
 
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
-            'fecha_reservada' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'fecha_reservada' => 'required|date',
             'hora_reserva_inicio' => 'required|date_format:H:i',
             'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
             'numero_microfonos' => 'required|integer|min:0|max:2',
