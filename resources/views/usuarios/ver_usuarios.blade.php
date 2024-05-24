@@ -36,7 +36,7 @@
     </table> --}}
 
     <div class="container mt-3">
-        <livewire:UsuariosTable theme="bootstrap-4" />
+        <livewire:UsuariosTable theme="bootstrap-5" />
     </div>
 @endsection
 

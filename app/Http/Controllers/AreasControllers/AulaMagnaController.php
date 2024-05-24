@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\AreasControllers;
 
-use App\Models\AreasModels\LaboratorioModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -21,6 +20,42 @@ class AulaMagnaController extends Controller
 
     public function store(Request $request)
     {
+        $errors = [];
+
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'fecha_reservada' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'hora_reserva_inicio' => 'required|date_format:H:i',
+            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos' => 'required|integer|min:0|max:2',
+        ]);
+
+        // Verificar si la fecha seleccionada está deshabilitada
+        $fechaReservada = $request->fecha_reservada;
+        if (DiaDeshabilitado::where('diaDeshabiliado', $fechaReservada)->exists()) {
+            $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
+        }
+
+        // Verificar si la hora de inicio no está reservada
+        $horaInicio = $request->hora_reserva_inicio;
+        if (AulaMagnaModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
+            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
+        }
+
+        // Verificar si la hora de finalización no está reservada
+        $horaFinal = $request->hora_reserva_final;
+        if (AulaMagnaModel::where('hora_reserva_final', $horaFinal)->exists()) {
+            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
+        }
+
+        // Combinar los errores de validación
+        $validator->errors()->add('general', collect($errors)->flatten());
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
         $reservacion = new AulaMagnaModel();
         $reservacion->rpe = session('user');
         $reservacion->fecha_reservada = $request->fecha_reservada_magna;

@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AreaReservadaMail;
+use App\Models\DiaDeshabilitado;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -22,6 +23,42 @@ class LaboratorioController extends Controller
 
     public function store(Request $request)
     {
+        $errors = [];
+
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'fecha_reservada' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'hora_reserva_inicio' => 'required|date_format:H:i',
+            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_equipos' => 'required|integer|min:0|max:40',
+        ]);
+
+        // Verificar si la fecha seleccionada está deshabilitada
+        $fechaReservada = $request->fecha_reservada;
+        if (DiaDeshabilitado::where('diaDeshabiliado', $fechaReservada)->exists()) {
+            $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
+        }
+
+        // Verificar si la hora de inicio no está reservada
+        $horaInicio = $request->hora_reserva_inicio;
+        if (LaboratorioModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
+            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
+        }
+
+        // Verificar si la hora de finalización no está reservada
+        $horaFinal = $request->hora_reserva_final;
+        if (LaboratorioModel::where('hora_reserva_final', $horaFinal)->exists()) {
+            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
+        }
+
+        // Combinar los errores de validación
+        $validator->errors()->add('general', collect($errors)->flatten());
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
         $usuario = Usuario::where('clave', session('user'))->first();
         $reservacion = new LaboratorioModel();
         $reservacion->rpe = $usuario->getRpe();
@@ -44,8 +81,6 @@ class LaboratorioController extends Controller
         $reservacion->actividad = $request->actividad;
         $reservacion->nombre_curso = $request->nombre_curso;
         $reservacion->save();
-
-        // Mail::to('ivan18rt@outlook.com')->send(new AreaReservadaMail);
 
         return redirect()->back()->with('status', 'Se ha reservado el laboratorio correctamente');
     }

@@ -40,30 +40,31 @@
 <body>
     <div class="container">
         {{-- Header --}}
-        <div class="Encabezado">
-            <div class="escudos">
-                <div class="escudo escudoUASLP">
-                    <a href={{url('http://www.uaslp.mx')}}>
-                        <img id="UASLPLogo" src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/UASLP.png' class="img-responsive">
-                        <img id="UASLPLogoMobile" src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/UASLPVertical.png' class="img-responsive">
-                    </a>
-                </div>
-                <div class="lineaEscudo"></div>
-                <div class="titulo">
-                    <a href="/">
-                        <span id="Titulo">Horarios de áreas reservadas - FEN</span>
-                        <span id="TituloMobile">Agenda de áreas</span>
-                    </a>
-                </div>
-            </div>
-            <div class="foto"></div>
-        </div>
-
-        <div class="Idioma" style="display:block"></div>
-
-        <div class="Lema">
-            <div class="LemaAzul"><img src='https://serviciosenlinea.uaslp.mx/LoginGateway/Imagenes/amarillo_azul.png'></div>
-            <div class="LemaAmarillo">"Siempre autónoma. Por mi patria educaré."</div>
+        <div class="header">
+            <table width="1170px" align="center" border="0">
+            <tbody><tr>
+                <td width="293px" style="background-color:#1B3257" align="center">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_uaslp_blanco.png">
+                </td>
+                <td width="292px" style="background-color:#1B3257" align="center">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_fe_blanco.png" style="margin">
+                </td>
+                <td width="585px" style="background-color:#1B3257">
+                    <img src="https://cuan.uaslp.mx/comunes/imagenes/banner_der.png" width="585px" height="150">
+                </td>
+            </tr>
+            <tr>
+                <td bgcolor="#FFF" colspan="3">
+                    <table width="100%" style="margin-top:10px" align="center">
+                    <tbody><tr>
+                        <td style="height:32px; background-color:#1B3257" width="58.6%"><div style="color:#fff; margin-left:20px">Reservación de áreas comúnes</div></td>
+                        <td style="background-color:#FCC200"><img src="https://cuan.uaslp.mx/comunes/imagenes/amarillo_azul.png"></td>
+                        <td align="right" style="background-color:#FCC200; font-size:16px">"HUMANISMI ET SCIENTIA" &nbsp;</td>
+                    </tr>
+                    </tbody></table>
+                </td>
+            
+            </tr></tbody></table>
         </div>
 
         {{-- Contenido específico --}}

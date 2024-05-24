@@ -31,7 +31,7 @@ class LaboratorioTable extends DataTableComponent
             // Column::make("Nombre completo", "nombre_completo")
             //     ->sortable(),
             Column::make("Fecha reservada", "fecha_reservada")
-                ->sortable(),
+                ->sortable()->searchable(),
             Column::make("Hora inicio", "hora_reserva_inicio")
                 ->sortable(),
             Column::make("Hora final", "hora_reserva_final")
@@ -49,6 +49,9 @@ class LaboratorioTable extends DataTableComponent
             Column::make("Nombre curso", "nombre_curso")
                 ->sortable()->searchable(),
             Column::make('Acciones')->label(function($row) use ($area) {
+                if ($area === null) {
+                    $area = 'laboratorio';
+                }
                 return view('livewire.areas-actions-buttons', [
                     'usuarioId' => $row->id,
                     'area' => $area,
