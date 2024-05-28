@@ -72,7 +72,6 @@
                     </tr>
                     </tbody></table>
                 </td>
-            
             </tr></tbody></table>
         </div>
 
@@ -87,7 +86,7 @@
         </div>
 
         {{-- Contenido  --}}
-        <div class="container-fluid d-inline-flex justify-content-between mt-3">
+        <div class="container-fluid d-inline-flex justify-content-between mt-3 flex-column flex-md-row gap-3  ">
             <a href="{{ url('administrador/deshabilitar-dias') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
 
             {{-- Modal de usuarios --}}

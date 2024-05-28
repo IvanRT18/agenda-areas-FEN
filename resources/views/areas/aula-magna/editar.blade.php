@@ -5,7 +5,7 @@
 @section('form-update')
 <div class="card">
     <div class="card-header">
-        <h4>Editar reservacion aula magna
+        <h4>Editar reservación - Aula magna
             <a href="/administrador/reservaciones/aula-magna" class="btn btn-danger float-end">Regresar</a>
         </h4>
     </div>
@@ -18,6 +18,14 @@
             <div class="form-group mb-3">
                 <label for="">ID Reservación</label>
                 <input type="text" name="id" value="{{$reservacion->id}}" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">RPE</label>
+                <input type="text" name="rpe" value="{{$reservacion->rpe}}" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Nombre Completo</label>
+                <input type="text" name="nombre_completo" disabled value="{{App\Models\Usuario::obtenerNombreCompletoPorClave($reservacion->rpe)}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">Fecha reservada</label>

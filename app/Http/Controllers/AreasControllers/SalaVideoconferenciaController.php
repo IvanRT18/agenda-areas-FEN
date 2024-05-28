@@ -148,7 +148,7 @@ class SalaVideoconferenciaController extends Controller
 
         $reservacion = SalaVideoConferenciaModel::find($id);
         $reservacion->id = $request->input('id');
-        $reservacion->rpe = session('user');
+        $reservacion->rpe = $request->input('rpe');
         $reservacion->fecha_reservada = $request->input('fecha_reservada');
         $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
         $reservacion->hora_reserva_final = $request->input('hora_reserva_final');

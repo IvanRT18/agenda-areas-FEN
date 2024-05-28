@@ -7,6 +7,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\AreasModels\LaboratorioModel;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 
 class LaboratorioTable extends DataTableComponent
 {
@@ -17,6 +18,13 @@ class LaboratorioTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSearchPlaceholder('Buscar reservación...');
         $this->setSingleSortingDisabled();
+        $this->setColumnSelectStatus(false);
+        $this->setDefaultSort('fecha_reservada', 'desc');
+    }
+
+    public function query()
+    {
+        return LaboratorioModel::with('usuario'); // Asegúrate de cargar la relación 'usuario'
     }
 
     public function columns(): array
@@ -30,6 +38,7 @@ class LaboratorioTable extends DataTableComponent
                 ->sortable()->searchable(),
             // Column::make("Nombre completo", "nombre_completo")
             //     ->sortable(),
+             Column::make('Nombre', 'usuario.nombres')->sortable()->searchable(),
             Column::make("Fecha reservada", "fecha_reservada")
                 ->sortable()->searchable(),
             Column::make("Hora inicio", "hora_reserva_inicio")
@@ -38,7 +47,7 @@ class LaboratorioTable extends DataTableComponent
                 ->sortable(),
             Column::make("Numero equipos", "numero_equipos")
                 ->sortable(),
-            Column::make("Usa proyector", "usa_proyector")
+            BooleanColumn::make("Usa proyector", "usa_proyector")
                 ->sortable(),
             Column::make("Req. adicionales", "req_adicionales")
                 ->sortable(),

@@ -74,6 +74,12 @@ class Usuario extends Model implements Authenticatable
         return $this->apellido_paterno . " " . $this->apellido_materno . " ". $this->nombres;
     }
 
+    public static function obtenerNombreCompletoPorClave($clave)
+    {
+        $usuario = self::where('clave', $clave)->first();
+        return $usuario ? $usuario->getNombreCompleto() : 'Usuario no encontrado';
+    }
+
     /**
      * Devuelve el rpe del usuario
      *

@@ -119,85 +119,62 @@ $(function() {
 
     //Si el usuario cambia a otro día, se hace el fetch de las hora reservadas de ese día, y la misma configuracion de los inputs
     $('#editFechaReservada').on('change', function () {
+        //Mensaje de carga
+        $("#pantallaCarga").removeClass("hidden");
+        //Se deshabilitan los inputs hasta que cargue las horas reservadas de ese día
+        $("#hora_reserva_inicio").prop("disabled", true);
+        $("#hora_reserva_final").prop("disabled", true);
+
         $('#hora_reserva_inicio').val("");
         $('#hora_reserva_final').val("");
         endpoint =  '/horas-reservadas/' + area + "/" + $('#editFechaReservada').val();
         // Realizar la llamada AJAX
-    $.get(endpoint, function (data) {
-        let disabledHoras = [];
+        $.get(endpoint, function (data) {
+            let disabledHoras = [];
 
-        //Obtiene las horas reservadas de ese día
-        data.forEach((hora) => {
-            // Se agrega cada rango de hora reservada al arreglo (excepto el rango de horas que se van a editar)
-            if (hora.hora_reserva_inicio !== $('#hora_reserva_inicio').val() && hora.hora_reserva_final !== $('#hora_reserva_final').val() ) {
-                disabledHoras.push([hora.hora_reserva_inicio, hora.hora_reserva_final]);
-            }
-        });
+            //Obtiene las horas reservadas de ese día
+            data.forEach((hora) => {
+                // Se agrega cada rango de hora reservada al arreglo (excepto el rango de horas que se van a editar)
+                if (hora.hora_reserva_inicio !== $('#hora_reserva_inicio').val() && hora.hora_reserva_final !== $('#hora_reserva_final').val() ) {
+                    disabledHoras.push([hora.hora_reserva_inicio, hora.hora_reserva_final]);
+                }
+            });
 
-        horasReservadas = [...disabledHoras];
-        console.log(horasReservadas);
+            horasReservadas = [...disabledHoras];
+            console.log(horasReservadas);
 
-        let finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene las horas para el segundo input
-
-        //Obtiene las horas pasadas dependiedo de la hora inical elegida
-        let horasPastTemp = generarHorasPasadas($('#hora_reserva_inicio').val());
-        horasPastTemp.push(obtenerSiguienteMediaHora($('#hora_reserva_inicio').val())); //Agrega la hora seleccionada para que no se pueda usar como hora final
-        finalDisablesHours.push(firstAndLast(horasPastTemp)); //Agrega el arreglo de horas pasadas
-
-        //Se deshabilitan las horas ya agendadas para ese día en el input de hora inicial
-        $("#hora_reserva_inicio").timepicker({
-            minTime: "7:00am",
-            maxTime: "9:01pm",
-            step: 30,
-            timeFormat: "H:i",
-            disableTimeRanges: disabledHoras,
-        });
-
-        // finalDisablesHours.push(firstAndLast(generarHorasPasadas($('#hora_reserva_inicio').val())));
-        //Deshabilita las horas siguientes de una hora reservada
-        horasReservadas.forEach(horaPair => {
-            if (horaPair[0] > $('#hora_reserva_inicio').val()) {
-                finalDisablesHours.push(firstAndLast(generarHorasSiguientes(horaPair[1])));
-            }
-        });
-
-        //Se deshabilitan las horas ya agendadas para ese día en el input de hora final
-        $("#hora_reserva_final").timepicker({
-            minTime: "7:00am",
-            maxTime: "9:01pm",
-            step: 30,
-            timeFormat: "H:i",
-            showDuration: true,
-            durationTime: $("#hora_reserva_inicio").val(),
-            scrollDefault: $("#hora_reserva_inicio").val(),
-            disableTimeRanges: finalDisablesHours,
-        });
-
-        //Cuando se edita la nueva hora de inicio
-        $("#hora_reserva_inicio").on("change", function () {
-            //Reinicia las horas de finalizacion de reservas
-            finalDisablesHours = [];
-            horasPastTemp = [];
-
-            finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene denuevo las horas reservadas del dia para el segundo input
+            let finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene las horas para el segundo input
 
             //Obtiene las horas pasadas dependiedo de la hora inical elegida
-            horasPastTemp = generarHorasPasadas($('#hora_reserva_inicio').val());
+            let horasPastTemp = generarHorasPasadas($('#hora_reserva_inicio').val());
             horasPastTemp.push(obtenerSiguienteMediaHora($('#hora_reserva_inicio').val())); //Agrega la hora seleccionada para que no se pueda usar como hora final
-            //Añade el rango de horas al arreglo total de horas deshabilitadas
-            finalDisablesHours.push(firstAndLast(horasPastTemp));
+            finalDisablesHours.push(firstAndLast(horasPastTemp)); //Agrega el arreglo de horas pasadas
 
+            //Se quita el mensaje de carga
+            $("#pantallaCarga").addClass("hidden");
 
-             //Deshabilita las horas siguientes de una hora reservada
+            //Habilita de nuevo el input de hora inicio
+            $("#hora_reserva_inicio").prop("disabled", false);
+
+            //Se deshabilitan las horas ya agendadas para ese día en el input de hora inicial
+            $("#hora_reserva_inicio").timepicker({
+                minTime: "7:00am",
+                maxTime: "9:01pm",
+                step: 30,
+                timeFormat: "H:i",
+                disableTimeRanges: disabledHoras,
+            });
+
+            // finalDisablesHours.push(firstAndLast(generarHorasPasadas($('#hora_reserva_inicio').val())));
+            //Deshabilita las horas siguientes de una hora reservada
             horasReservadas.forEach(horaPair => {
                 if (horaPair[0] > $('#hora_reserva_inicio').val()) {
                     finalDisablesHours.push(firstAndLast(generarHorasSiguientes(horaPair[1])));
                 }
             });
 
-            $("#hora_reserva_final").val("");
-             //Se configura el input y las horas en las que el usuario puede terminar su reservación
-             $("#hora_reserva_final").timepicker({
+            //Se deshabilitan las horas ya agendadas para ese día en el input de hora final
+            $("#hora_reserva_final").timepicker({
                 minTime: "7:00am",
                 maxTime: "9:01pm",
                 step: 30,
@@ -207,8 +184,46 @@ $(function() {
                 scrollDefault: $("#hora_reserva_inicio").val(),
                 disableTimeRanges: finalDisablesHours,
             });
+
+            //Cuando se edita la nueva hora de inicio
+            $("#hora_reserva_inicio").on("change", function () {
+                //Reinicia las horas de finalizacion de reservas
+                finalDisablesHours = [];
+                horasPastTemp = [];
+
+                finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene denuevo las horas reservadas del dia para el segundo input
+
+                //Obtiene las horas pasadas dependiedo de la hora inical elegida
+                horasPastTemp = generarHorasPasadas($('#hora_reserva_inicio').val());
+                horasPastTemp.push(obtenerSiguienteMediaHora($('#hora_reserva_inicio').val())); //Agrega la hora seleccionada para que no se pueda usar como hora final
+                //Añade el rango de horas al arreglo total de horas deshabilitadas
+                finalDisablesHours.push(firstAndLast(horasPastTemp));
+
+
+                //Deshabilita las horas siguientes de una hora reservada
+                horasReservadas.forEach(horaPair => {
+                    if (horaPair[0] > $('#hora_reserva_inicio').val()) {
+                        finalDisablesHours.push(firstAndLast(generarHorasSiguientes(horaPair[1])));
+                    }
+                });
+
+                //Habilita de nuevo la hora reservación final
+                $("#hora_reserva_final").prop("disabled", false);
+                
+                $("#hora_reserva_final").val("");
+                //Se configura el input y las horas en las que el usuario puede terminar su reservación
+                $("#hora_reserva_final").timepicker({
+                    minTime: "7:00am",
+                    maxTime: "9:01pm",
+                    step: 30,
+                    timeFormat: "H:i",
+                    showDuration: true,
+                    durationTime: $("#hora_reserva_inicio").val(),
+                    scrollDefault: $("#hora_reserva_inicio").val(),
+                    disableTimeRanges: finalDisablesHours,
+                });
+            });
         });
-    });
     })
 
     // Obtiene los rangos deshabilitados para el input 2 (hora final reservacion)
