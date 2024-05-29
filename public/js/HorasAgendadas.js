@@ -15,20 +15,6 @@ const fullDiaActual = date.toISOString().slice(0, 10);
 const diaActual = diasArray[date.getDay()];
 $('#diaReservaLab').text(diaActual);
 
-// Clase para manejar las horas de reserva
-class HoraClass {
-    constructor(horas, actividad, localizacion, ocupado) {
-        this.horas = horas;
-        this.actividad = actividad;
-        this.localizacion = localizacion;
-        this.ocupado = ocupado;
-    }
-
-    getRangoHoras(arrayHoras) {
-        return obtenerRangoHoras(this.horas[0], this.horas[1], arrayHoras);
-    }
-}
-
 // Determinar el endpoint dinámicamente según la página
 let endpoint = window.location.pathname.split('/').pop(); // Extrae el nombre de la página actual
 // Obtener las horas reservadas del servidor para el día actual
@@ -49,7 +35,7 @@ $.get(`${endpoint}/${fullDiaActual}`, function (data) {
 
     // Manejar la vista según si hay medias horas o no
     if (mediaHoras) {
-        manejarHorasMedias(disabledHoras, horasInicialesMediasArray);
+        manejarHorasMedias(disabledHoras, horasIznicialesMediasArray);
     } else {
         manejarHorasEnteras(disabledHoras, horasInicialesArray);
     }
@@ -58,6 +44,7 @@ $.get(`${endpoint}/${fullDiaActual}`, function (data) {
     setInterval(verificarReservacionProxima, 60000); // Verificar cada minuto
     setInterval(() => {
         const horasArray = mediaHoras ? horasInicialesMediasArray : horasInicialesArray;
+        refreshHours();
         if (mediaHoras) {
             manejarHorasMedias(disabledHoras, horasArray);
         } else {
@@ -65,6 +52,26 @@ $.get(`${endpoint}/${fullDiaActual}`, function (data) {
         }
     }, 60000); // Actualizar cada minuto
 });
+
+
+function refreshHours() {
+    $.get(`${endpoint}/${fullDiaActual}`, function (data) {
+        disabledHoras = data.map(hora => {
+            if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
+                mediaHoras = true;
+            }
+            else{
+                mediaHoras = false;
+            }
+            return {
+                inicio: hora.hora_reserva_inicio,
+                fin: hora.hora_reserva_final,
+                materia: hora.materia,
+                actividad: hora.actividad
+            };
+        });
+    });
+}
 
 // Función para manejar la vista cuando hay medias horas
 function manejarHorasMedias(disabledHoras, horasArray) {

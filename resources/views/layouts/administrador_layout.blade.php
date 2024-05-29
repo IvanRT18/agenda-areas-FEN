@@ -89,22 +89,22 @@
         <div class="container-fluid d-inline-flex justify-content-between mt-3 flex-column flex-md-row gap-3  ">
             <a href="{{ url('administrador/deshabilitar-dias') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
 
-            {{-- Modal de usuarios --}}
+            {{-- Boton de usuarios --}}
             <button type="button" class="btn btn-success fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">
                 Usuarios
             </button>
 
-            {{-- Modal ver horas reservadas de área --}}
-            <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+            {{-- Boton ver reservaciones de área --}}
+            <button type="button" class="btn btn-secondary fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
                 Reservaciones
             </button>
 
-            <!-- Modal selecciona área horas reservadas -->
+            <!-- Boton muestra área horas reservadas -->
             <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 Mostrar horas reservadas
             </button>
 
-            {{-- Cerrar sesión --}}
+            {{-- Boton cerrar sesión --}}
             <form action="{{url('logout')}}">
                 <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
             </form>
