@@ -9,11 +9,13 @@
     <p class="text-center fs-2">Laboratorio</p>
 @endsection
 
+{{-- Horarios reservados del laboratorio --}}
 @section('content-reservaciones')
- {{-- Horarios reservados del laboratorio --}}
- <div id="horasContainer" class="flex flex-col" data-area="laboratorio">
-    <!-- Contenido específico de las horas agendadas para el área 1 -->
-</div>
+ <!-- Horas agendadas para el área de enfrente -->
+ <div id="horasContainer" class="flex flex-fill" data-area="laboratorio"></div>
+
+   <!-- Horas agendadas para el área de atras -->
+ <div id="horasContainerAtras" class="flex flex-fill" data-area="laboratorio-atras"></div>
 
   {{-- <div class="modal fade" id="alertaModalReservacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertaModalReservacionLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-fullscreen">

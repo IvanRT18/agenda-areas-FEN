@@ -23,12 +23,17 @@ $.get(`${endpoint}/${fullDiaActual}`, function (data) {
         if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
             mediaHoras = true;
         }
-        return {
-            inicio: hora.hora_reserva_inicio,
-            fin: hora.hora_reserva_final,
-            materia: hora.materia,
-            actividad: hora.actividad
-        };
+        if (endpoint === 'laboratorio') {
+            return {
+                inicio: hora.hora_reserva_inicio,
+                fin: hora.hora_reserva_final,
+                materia: hora.materia,
+                actividad: hora.actividad
+            };
+        }
+        else{
+            return [hora.hora_reserva_inicio, hora.hora_reserva_final];
+        }
     });
 
     console.log('horas reservadas ese día', disabledHoras);
@@ -96,44 +101,87 @@ function manejarHorasEnteras(disabledHoras, horasArray) {
 // Función para obtener las horas seleccionables finales
 function obtenerHorasFinalesSeleccionables(disabledHoras, horasDate) {
     let horasFinalesSeleccionable = [];
-    disabledHoras.forEach(rango => {
-        const inicioRango = stringToDate(rango.inicio);
-        const finRango = stringToDate(rango.fin);
-        let rangoHorasReservadas = horasDate.filter(horaD => horaD >= inicioRango && horaD <= finRango);
-        rangoHorasReservadas.splice(-1,1); // Eliminar el último elemento del rango
-        horasFinalesSeleccionable.push(rangoHorasReservadas);
-    });
+
+    if (endpoint === 'laboratorio') {
+        disabledHoras.forEach(rango => {
+            const inicioRango = stringToDate(rango.inicio);
+            const finRango = stringToDate(rango.fin);
+            let rangoHorasReservadas = horasDate.filter(horaD => horaD >= inicioRango && horaD <= finRango);
+            rangoHorasReservadas.splice(-1,1); // Eliminar el último elemento del rango
+            horasFinalesSeleccionable.push(rangoHorasReservadas);
+        });
+    }
+    else{
+        disabledHoras.forEach(rango => {
+            const inicioRango = stringToDate(rango[0]);
+            const finRango = stringToDate(rango[1]);
+            let rangoHorasReservadas = horasDate.filter(horaD => horaD >= inicioRango && horaD <= finRango);
+            rangoHorasReservadas.splice(-1,1); // Eliminar el último elemento del rango
+            horasFinalesSeleccionable.push(rangoHorasReservadas);
+        });
+    }
+
+    
     return horasFinalesSeleccionable;
 }
 
 // Función para dibujar las horas en el contenedor
 function dibujarHoras(horasArray, horasString, disabledHoras) {
     $('#horasContainer').empty(); // Limpiar el contenedor antes de dibujar las horas
+    $('#horasContainerAtras').empty(); // Limpiar el contenedor antes de dibujar las horas
     horasArray.forEach((hora, index) => {
         const reservada = horasString.includes(hora); // Verificar si la hora está reservada
         const claseHora = reservada ? 'bg-danger' : 'bg-success';
         const horaFinal = index === horasArray.length - 1 ? '22:00' : horasArray[index + 1];
 
         // Encontrar la reserva que incluye esta hora
-        const reserva = disabledHoras.find(r => {
-            const inicioRango = stringToDate(r.inicio);
-            const finRango = stringToDate(r.fin);
-            const horaDate = stringToDate(hora);
-            return horaDate >= inicioRango && horaDate < finRango;
-        });
+        let reserva;
+        if (endpoint === 'laboratorio') {
+            reserva = disabledHoras.find(r => {
+                const inicioRango = stringToDate(r.inicio);
+                const finRango = stringToDate(r.fin);
+                const horaDate = stringToDate(hora);
+                return horaDate >= inicioRango && horaDate < finRango;
+            });
 
-        const materia = reserva ? reserva.materia : '';
-        const actividad = reserva ? reserva.actividad : '';
+            const materia = reserva ? reserva.materia : '';
+            const actividad = reserva ? reserva.actividad : '';
 
-        $('#horasContainer').append(
-            `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                <div>${hora} - ${horaFinal} hrs</div>
-                <div class=''>
-                ${reservada ? `<div>${actividad}</div>` : ''}
-                ${reservada ? `<div>${materia}</div>` : ''}
-                <div/>
-            </div>`
-        );
+            $('#horasContainer').append(
+                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                    <div>${hora} - ${horaFinal} hrs</div>
+                    <div class=''>
+                    ${reservada ? `<div>${actividad}</div>` : ''}
+                    ${reservada ? `<div>${materia}</div>` : ''}
+                    <div/>
+                </div>`
+            );
+            $('#horasContainerAtras').append(
+                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                    <div>${hora} - ${horaFinal} hrs</div>
+                    <div class=''>
+                    ${reservada ? `<div>${actividad}</div>` : ''}
+                    ${reservada ? `<div>${materia}</div>` : ''}
+                    <div/>
+                </div>`
+            );
+        }
+        else{
+            reserva = disabledHoras.find(r => {
+                const inicioRango = stringToDate(r[0]);
+                const finRango = stringToDate(r[1]);
+                const horaDate = stringToDate(hora);
+                return horaDate >= inicioRango && horaDate < finRango;
+            });
+
+            $('#horasContainer').append(
+                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                    <div>${hora} - ${horaFinal} hrs</div>
+                    <div class=''>
+                    <div/>
+                </div>`
+            );
+        }
     });
 }
 
@@ -159,10 +207,20 @@ function inicializarScroll() {
         'height': `${alturaScroll}px`
     });
 
+    $('#horasContainerAtras').css({
+        'overflow-y': 'hidden',
+        'height': `${alturaScroll}px`
+    });
+
     let intervalo = null;
+    let intervalo2 = null;
 
     function iniciarScroll() {
         intervalo = setInterval(scrollDown, 50);
+    }
+
+    function iniciarScrollAtras() {
+        intervalo2 = setInterval(scrollDownAtras, 50);
     }
 
     function scrollDown() {
@@ -182,8 +240,26 @@ function inicializarScroll() {
         }
     }
 
+    function scrollDownAtras() {
+        const $contenedor = $('#horasContainerAtras');
+        const alturaContenedor = $contenedor.outerHeight();
+        const alturaScroll = $contenedor.prop('scrollHeight');
+        const scrollTop = $contenedor.scrollTop();
+
+        if (scrollTop >= alturaScroll - alturaContenedor) {
+            clearInterval(intervalo2);
+            setTimeout(() => {
+                $contenedor.scrollTop(0);
+                setTimeout(iniciarScrollAtras, 1000); // Espera de 1 segundo antes de iniciar el scroll nuevamente
+            }, 1000); // Espera de 1 segundo al final antes de reiniciar el scroll
+        } else {
+            $contenedor.scrollTop(scrollTop + 3);
+        }
+    }
+
     // Espera inicial de 1 segundo antes de comenzar el scroll
     setTimeout(iniciarScroll, 1000);
+    setTimeout(iniciarScrollAtras, 1000);
 }
 
 

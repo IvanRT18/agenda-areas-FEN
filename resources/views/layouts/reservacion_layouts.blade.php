@@ -67,12 +67,13 @@
             </tr></tbody></table>
         </div>
 
+        @yield('title-area')
         {{-- Contenido específico --}}
-        <div class="container-fluid">
-            @yield('title-area')
+        <div class="d-flex">
+            @yield('content-reservaciones')
+
         </div>
 
-         @yield('content-reservaciones')
     </div>
     {{-- Scripts --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
