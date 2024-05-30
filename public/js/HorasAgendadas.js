@@ -35,7 +35,7 @@ $.get(`${endpoint}/${fullDiaActual}`, function (data) {
 
     // Manejar la vista según si hay medias horas o no
     if (mediaHoras) {
-        manejarHorasMedias(disabledHoras, horasIznicialesMediasArray);
+        manejarHorasMedias(disabledHoras, horasInicialesMediasArray);
     } else {
         manejarHorasEnteras(disabledHoras, horasInicialesArray);
     }

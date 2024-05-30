@@ -31,6 +31,7 @@
                 <label for="">Fecha reservada</label>
                 <input id="editFechaReservada" type="date" name="fecha_reservada" value="{{$reservacion->fecha_reservada}}" class="form-control">
             </div>
+            <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
             <div class="form-group mb-3">
                 <label for="">Hora de inicio de reservación</label>
                 <input type="text" name="hora_reserva_inicio" id="hora_reserva_inicio" value="{{$reservacion->hora_reserva_inicio}}" class="form-control">

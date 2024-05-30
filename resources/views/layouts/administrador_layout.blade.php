@@ -83,95 +83,84 @@
                     <button id="close-btn">X</button>
                 </div>
             @endif
+            <div id="livewire-alert" style="display: none;" class="flex flex-row justify-arnd alert alert-success">
+                <h6>Reservación eliminada con éxito</h6>
+                <button id="close-btn-livewire">X</button>
+            </div>
         </div>
 
         {{-- Contenido  --}}
-        <div class="container-fluid d-inline-flex justify-content-between mt-3 flex-column flex-md-row gap-3  ">
-            <a href="{{ url('administrador/deshabilitar-dias') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
+        <nav class="navbar navbar-expand-lg navbar-dark fs-6" style="background-color: #1B3257;">
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url('inicio') }}">Inicio</a>
+                  </li>
+          
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Usuarios
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{ url('administrador/usuarios/registrar') }}">Registrar usuario</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/usuarios') }}">Ver usuarios</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Editar reservaciones
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/auditorio') }}">Auditorio</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/aula-magna') }}">Aula Magna</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/laboratorio') }}">Laboratorio</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Mostrar horas reservadas
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/auditorio') }}">Auditorio</a></li>
+                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/aula-magna') }}">Aula Magna</a></li>
+                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/laboratorio') }}">Laboratorio</a></li>
+                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url('administrador/deshabilitar-dias') }}">Deshabilitar días</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/logout') }}">Cerrar sesión</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
 
-            {{-- Boton de usuarios --}}
-            <button type="button" class="btn btn-success fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">
-                Usuarios
-            </button>
-
-            {{-- Boton ver reservaciones de área --}}
-            <button type="button" class="btn btn-secondary fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
-                Reservaciones
-            </button>
-
-            <!-- Boton muestra área horas reservadas -->
-            <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Mostrar horas reservadas
-            </button>
-
-            {{-- Boton cerrar sesión --}}
-            <form action="{{url('logout')}}">
-                <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
-            </form>
-
-            <!-- Modal -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Seleccione el área</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="flex flex-column">
-                                <a href="{{ url('horas-reservadas/auditorio') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Auditorio</a>
-                                <a href="{{ url('horas-reservadas/aula-magna') }}" class="btn btn-success btn-sm fs-6 mb-3">Aula Magna</a>
-                                <a href="{{ url('horas-reservadas/laboratorio') }}" class="btn btn-success btn-sm fs-6 mb-3">Laboratorio de cómputo</a>
-                                <a href="{{ url('horas-reservadas/sala-videoconferencias') }}" class="btn btn-success btn-sm fs-6 mb-3">Sala de videoconferencia</a>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        {{-- Modal 2 --}}
+        <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel2">Seleccione el área</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="flex flex-column">
+                            <a href="{{ url('administrador/reservaciones/auditorio') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Auditorio</a>
+                            <a href="{{ url('administrador/reservaciones/aula-magna') }}" class="btn btn-success btn-sm fs-6 mb-3">Aula Magna</a>
+                            <a href="{{ url('administrador/reservaciones/laboratorio') }}" class="btn btn-success btn-sm fs-6 mb-3">Laboratorio de cómputo</a>
+                            <a href="{{ url('administrador/reservaciones/sala-videoconferencias') }}" class="btn btn-success btn-sm fs-6 mb-3">Sala de videoconferencia</a>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            {{-- Modal 2 --}}
-            <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel2">Seleccione el área</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="flex flex-column">
-                                <a href="{{ url('administrador/reservaciones/auditorio') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Auditorio</a>
-                                <a href="{{ url('administrador/reservaciones/aula-magna') }}" class="btn btn-success btn-sm fs-6 mb-3">Aula Magna</a>
-                                <a href="{{ url('administrador/reservaciones/laboratorio') }}" class="btn btn-success btn-sm fs-6 mb-3">Laboratorio de cómputo</a>
-                                <a href="{{ url('administrador/reservaciones/sala-videoconferencias') }}" class="btn btn-success btn-sm fs-6 mb-3">Sala de videoconferencia</a>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- Modal 3 --}}
-            <div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel3">Selecciona la opción:</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="flex flex-column">
-                                <a href="{{ url('administrador/usuarios/registrar') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Registrar</a>
-                                <a href="{{ url('administrador/usuarios/') }}" class="btn btn-success btn-sm fs-6 mb-3">Ver usuarios</a>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -207,6 +196,16 @@
     // Botón para cerrar la alerta que aparece cuando se edita una reservación
     $('#close-btn').on('click', function (e) {
         $(this).parent().remove();
+    });
+
+    // Escucha el evento emitido por Livewire
+    Livewire.on('reservacionEliminada', () => {
+        $('#livewire-alert').show();
+    });
+
+    // Botón para cerrar la alerta de Livewire
+    $('#close-btn-livewire').on('click', function (e) {
+        $(this).parent().hide();
     });
 </script>
 {{-- <script src="js/adminLab.js"></script>

@@ -74,7 +74,8 @@ class LaboratorioTable extends DataTableComponent
         $reservacion = LaboratorioModel::find($id);
         if ($reservacion) {
             $reservacion->delete();
-            Session::flash('status', 'Reservacion eliminada con éxito');
+            Session::flash('status', 'Reservaci
+            on eliminada con éxito Session');
         }
     }
 }

@@ -130,7 +130,7 @@ Route::group(['middleware'=>['auth']], function(){
             Route::put('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'update']);
         });
 
-        //Rutas para ver las reservaciones de las áreas
+        //Rutas para borrar reservaciones
         Route::prefix('borrar-reservacion')->group(function(){
             Route::get('/', [LaboratorioController::class, 'showAll']);
             Route::get('auditorio/{id}', [AuditorioController::class, 'delete']);
