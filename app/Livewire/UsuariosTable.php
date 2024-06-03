@@ -6,6 +6,7 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Session;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class UsuariosTable extends DataTableComponent
 {
@@ -17,6 +18,23 @@ class UsuariosTable extends DataTableComponent
         $this->setSearchPlaceholder('Buscar usuario...');
         $this->setSearchEnabled();
         $this->setSingleSortingDisabled();
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('Tipo usuario')
+                ->options([
+                    '' => 'Todos',
+                    'administrador' => 'Administradores',
+                    'docente' => 'Docentes',
+                ])
+                ->filter(function($query, $value) {
+                    if ($value) {
+                        $query->where('tipo', $value);
+                    }
+                }),
+        ];
     }
 
     public function columns(): array

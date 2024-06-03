@@ -66,6 +66,12 @@
                 <input type="text" name="nombre_curso" value="{{$reservacion->nombre_curso}}" class="form-control">
             </div>
             <div class="form-group mb-3">
+                <select class="form-select" aria-label="ubicacion reservacion laboratorio" name="ubicacion">
+                    <option value="Adelante" {{ $reservacion->ubicacion == 'Adelante' ? 'selected' : '' }} >Adelante</option>
+                    <option value="Atrás" {{ $reservacion->ubicacion == 'Atrás' ? 'selected' : '' }}>Atrás</option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary">Actualizar reservación</button>
             </div>
         </form>

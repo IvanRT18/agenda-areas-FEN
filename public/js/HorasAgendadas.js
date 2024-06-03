@@ -28,7 +28,8 @@ $.get(`${endpoint}/${fullDiaActual}`, function (data) {
                 inicio: hora.hora_reserva_inicio,
                 fin: hora.hora_reserva_final,
                 materia: hora.materia,
-                actividad: hora.actividad
+                actividad: hora.actividad,
+                ubicacion: hora.ubicacion
             };
         }
         else{
@@ -72,7 +73,8 @@ function refreshHours() {
                 inicio: hora.hora_reserva_inicio,
                 fin: hora.hora_reserva_final,
                 materia: hora.materia,
-                actividad: hora.actividad
+                actividad: hora.actividad,
+                ubicacion: hora.ubicacion
             };
         });
     });
@@ -147,24 +149,46 @@ function dibujarHoras(horasArray, horasString, disabledHoras) {
             const materia = reserva ? reserva.materia : '';
             const actividad = reserva ? reserva.actividad : '';
 
-            $('#horasContainer').append(
-                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                    <div>${hora} - ${horaFinal} hrs</div>
-                    <div class=''>
-                    ${reservada ? `<div>${actividad}</div>` : ''}
-                    ${reservada ? `<div>${materia}</div>` : ''}
-                    <div/>
-                </div>`
-            );
-            $('#horasContainerAtras').append(
-                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                    <div>${hora} - ${horaFinal} hrs</div>
-                    <div class=''>
-                    ${reservada ? `<div>${actividad}</div>` : ''}
-                    ${reservada ? `<div>${materia}</div>` : ''}
-                    <div/>
-                </div>`
-            );
+            let ubicacionLab = reserva ? reserva.ubicacion : '';
+
+
+            if (ubicacionLab === 'Adelante') {
+                $('#horasContainer').append(
+                    `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                        <div>${hora} - ${horaFinal} hrs</div>
+                        <div class=''>
+                        ${reservada ? `<div>${actividad}</div>` : ''}
+                        ${reservada ? `<div>${materia}</div>` : ''}
+                        <div/>
+                    </div>`
+                );
+                $('#horasContainerAtras').append(
+                    `<div class='bg-success p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                        <div>${hora} - ${horaFinal} hrs</div>
+                        <div class=''>
+                        <div/>
+                    </div>`
+                );
+            }
+            else
+            {
+                $('#horasContainer').append(
+                    `<div class='bg-success p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                        <div>${hora} - ${horaFinal} hrs</div>
+                        <div class=''>
+                        <div/>
+                    </div>`
+                );
+                $('#horasContainerAtras').append(
+                    `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                        <div>${hora} - ${horaFinal} hrs</div>
+                        <div class=''>
+                        ${reservada ? `<div>${actividad}</div>` : ''}
+                        ${reservada ? `<div>${materia}</div>` : ''}
+                        <div/>
+                    </div>`
+                );
+            }
         }
         else{
             reserva = disabledHoras.find(r => {

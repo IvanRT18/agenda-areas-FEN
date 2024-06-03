@@ -8,6 +8,7 @@ use App\Models\AreasModels\LaboratorioModel;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 
 class LaboratorioTable extends DataTableComponent
 {
@@ -20,6 +21,18 @@ class LaboratorioTable extends DataTableComponent
         $this->setSingleSortingDisabled();
         $this->setColumnSelectStatus(false);
         $this->setDefaultSort('fecha_reservada', 'desc');
+    }
+
+    public function filters(): array
+    {
+        return [
+            DateFilter::make('Fecha reservada')
+                ->filter(function($query, $value) {
+                    if ($value) {
+                        $query->whereDate('fecha_reservada', $value);
+                    }
+                }),
+        ];
     }
 
     public function query()
@@ -57,6 +70,8 @@ class LaboratorioTable extends DataTableComponent
                 ->sortable()->searchable(),
             Column::make("Nombre curso", "nombre_curso")
                 ->sortable()->searchable(),
+            Column::make("Ubicación", "ubicacion")
+                ->sortable(),
             Column::make('Acciones')->label(function($row) use ($area) {
                 if ($area === null) {
                     $area = 'laboratorio';

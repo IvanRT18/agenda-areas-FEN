@@ -70,11 +70,11 @@ class LaboratorioController extends Controller
         if ($request->usa_proyector == 'true') //Si es 1 (osea si se selecciono)
         {
             $reservacion->usa_proyector = true;
-            $reservacion->ubicacion = 'enfrente';
+            $reservacion->ubicacion = 'Adelante';
         }
         else{
             $reservacion->usa_proyector = false;
-            $reservacion->ubicacion = 'detrás';
+            $reservacion->ubicacion = 'Atrás';
         }
         $reservacion->req_adicionales = $request->req_adicionales;
         $reservacion->materia = $request->materia;
@@ -101,7 +101,7 @@ class LaboratorioController extends Controller
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = LaboratorioModel::where('fecha_reservada', $fecha)->get(['hora_reserva_inicio', 'hora_reserva_final', 'materia', 'actividad']);
+        $horasAgendadas = LaboratorioModel::where('fecha_reservada', $fecha)->get(['hora_reserva_inicio', 'hora_reserva_final', 'materia', 'actividad', 'ubicacion']);
         return response()->json($horasAgendadas);
     }
 
@@ -174,12 +174,11 @@ class LaboratorioController extends Controller
         $reservacion->materia = $request->input('materia');
         $reservacion->actividad = $request->input('actividad');
         $reservacion->nombre_curso = $request->input('nombre_curso');
+        $reservacion->ubicacion = $request->input('ubicacion');
         $reservacion->update();
 
         return redirect()->back()->with('status', 'Reservación actualizada correctamente');
     }
-
-
 
     public function delete($id)
     {
@@ -191,5 +190,10 @@ class LaboratorioController extends Controller
     public function diasInhabiles()
     {
         return view('dias_deshabilitados');
+    }
+
+    public function configure()
+    {
+        return view('areas.laboratorio.configure');
     }
 }

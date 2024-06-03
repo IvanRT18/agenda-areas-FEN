@@ -47,8 +47,8 @@ class Usuario extends Model implements Authenticatable
 
     protected $fillable = [
         'clave',
-        'apellido_materno',
         'apellido_paterno',
+        'apellido_materno',
         'nombres',
         'tipo',
         'correo',

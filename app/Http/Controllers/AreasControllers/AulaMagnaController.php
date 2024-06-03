@@ -172,4 +172,9 @@ class AulaMagnaController extends Controller
     {
         return view('dias_deshabilitados');
     }
+
+    public function configure()
+    {
+        return view('areas.aula-magna.configure');
+    }
 }

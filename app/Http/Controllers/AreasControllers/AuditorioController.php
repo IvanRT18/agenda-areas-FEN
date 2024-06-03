@@ -169,4 +169,14 @@ class AuditorioController extends Controller
     {
         return view('dias_deshabilitados');
     }
+
+    public function configure()
+    {
+        return view('areas.auditorio.configure');
+    }
+
+    public function updateConfiguration()
+    {
+
+    }
 }

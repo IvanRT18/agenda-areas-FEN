@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('rpe');
-            $table->string('nombre_completo');
             $table->string('fecha_reservada');
             $table->string('hora_reserva_inicio');
             $table->string('hora_reserva_final');
@@ -25,6 +24,7 @@ return new class extends Migration
             $table->string('materia');
             $table->string('actividad');
             $table->string('nombre_curso')->nullable();
+            $table->string('ubicacion');
         });
     }
 

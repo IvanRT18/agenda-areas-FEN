@@ -139,13 +139,29 @@ Route::group(['middleware'=>['auth']], function(){
             Route::get('sala-videoconferencias/{id}', [SalaVideoconferenciaController::class, 'delete']);
         });
 
-         //Rutas deshabilitar días
+        //Rutas deshabilitar días
          Route::prefix('deshabilitar-dias')->group(function(){
             Route::get('/', [DiaDeshabilitadoController::class, 'index']);
             Route::post('agregar-dia', [DiaDeshabilitadoController::class, 'store']);
             Route::get('habilita-dia/{id}', [DiaDeshabilitadoController::class, 'habilitaDia']);
             Route::get('habilita-todos-dias', [DiaDeshabilitadoController::class, 'habilitaTodosDias']);
             Route::get('obtener-dias-deshabilitados', [DiaDeshabilitadoController::class, 'getAllDisabledDays']);
+        });
+
+        //Rutas para configurar las áreas
+        // Route::prefix('actualizar-area')->group(function(){
+        //     Route::put('auditorio', [AuditorioController::class, 'configure']);
+        //     Route::put('aula-magna', [AulaMagnaController::class, 'configure']);
+        //     Route::put('laboratorio', [LaboratorioController::class, 'configure']);
+        //     Route::put('sala-videoconferencias', [SalaVideoconferenciaController::class, 'configure']);
+        // });
+
+        // //Rutas para configurar las áreas
+        Route::prefix('configurar-area')->group(function(){
+            Route::get('auditorio', [AuditorioController::class, 'configure']);
+            Route::get('aula-magna', [AulaMagnaController::class, 'configure']);
+            Route::get('laboratorio', [LaboratorioController::class, 'configure']);
+            Route::get('sala-videoconferencias', [SalaVideoconferenciaController::class, 'configure']);
         });
     });
 });

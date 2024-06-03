@@ -17,28 +17,28 @@ class SalaVideoconferenciaController extends Controller
 
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
-            'fecha_reservada' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
-            'hora_reserva_inicio' => 'required|date_format:H:i',
-            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
-            'numero_microfonos' => 'required|integer|min:0|max:2',
+            'fecha_reservada_sala_video' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'hora_reserva_inicio_sala_video' => 'required|date_format:H:i',
+            'hora_reserva_final_sala_video' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos_sala_video' => 'required|integer|min:0|max:2',
         ]);
 
         // Verificar si la fecha seleccionada está deshabilitada
         $fechaReservada = $request->fecha_reservada;
         if (DiaDeshabilitado::where('diaDeshabiliado', $fechaReservada)->exists()) {
-            $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
+            $errors['fecha_reservada_sala_video'] = 'La fecha seleccionada no está disponible para reservaciones.';
         }
 
         // Verificar si la hora de inicio no está reservada
         $horaInicio = $request->hora_reserva_inicio;
         if (SalaVideoConferenciaModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
-            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
+            $errors['hora_reserva_inicio_sala_video'] = 'La hora seleccionada de inicio ya está reservada.';
         }
 
         // Verificar si la hora de finalización no está reservada
         $horaFinal = $request->hora_reserva_final;
         if (SalaVideoConferenciaModel::where('hora_reserva_final', $horaFinal)->exists()) {
-            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
+            $errors['hora_reserva_final_sala_video'] = 'La hora seleccionada de finalización ya está reservada.';
         }
 
         // Combinar los errores de validación
@@ -109,10 +109,10 @@ class SalaVideoconferenciaController extends Controller
 
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
-            'fecha_reservada' => 'required|date',
-            'hora_reserva_inicio' => 'required|date_format:H:i',
-            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
-            'numero_microfonos' => 'required|integer|min:0',
+            'fecha_reservada_sala_video' => 'required|date',
+            'hora_reserva_inicio_sala_video' => 'required|date_format:H:i',
+            'hora_reserva_final_sala_video' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos_sala_video' => 'required|integer|min:0',
         ]);
 
         // Si la validación falla, lanzar una excepción
@@ -125,18 +125,18 @@ class SalaVideoconferenciaController extends Controller
         $horaInicio = $request->hora_reserva_inicio;
         $horaFinal = $request->hora_reserva_final;
 
-        $overlap = SalaVideoConferenciaModel::where('fecha_reservada', $fechaReservada)
+        $overlap = SalaVideoConferenciaModel::where('fecha_reservada_sala_video', $fechaReservada)
             ->where(function($query) use ($horaInicio, $horaFinal) {
                 $query->where(function($q) use ($horaInicio, $horaFinal) {
-                    $q->where('hora_reserva_inicio', '<', $horaFinal)
-                    ->where('hora_reserva_final', '>', $horaInicio);
+                    $q->where('hora_reserva_inicio_sala_video', '<', $horaFinal)
+                    ->where('hora_reserva_final_sala_video', '>', $horaInicio);
                 });
             })
             ->where('id', '<>', $id) // Excluir la reservación actual
             ->exists();
 
         if ($overlap) {
-            $errors['hora_reserva'] = 'El rango de horas seleccionado ya esta reservado para esta fecha.';
+            $errors['hora_reserva_sala_video'] = 'El rango de horas seleccionado ya esta reservado para esta fecha.';
             $validator->errors()->add('general', collect($errors)->flatten());
             throw new ValidationException($validator);
         }
@@ -166,5 +166,10 @@ class SalaVideoconferenciaController extends Controller
         $reservacion = SalaVideoConferenciaModel::find($id);
         $reservacion->delete();
         return redirect()->back()->with('status', 'Reservación borrada correctamente');
+    }
+
+    public function configure()
+    {
+        return view('areas.sala-videoconferencias.configure');
     }
 }

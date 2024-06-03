@@ -69,7 +69,7 @@
 
         @yield('title-area')
         {{-- Contenido específico --}}
-        <div class="d-flex">
+        <div class="flex-fill">
             @yield('content-reservaciones')
 
         </div>
