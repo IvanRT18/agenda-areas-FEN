@@ -109,10 +109,10 @@ class SalaVideoconferenciaController extends Controller
 
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
-            'fecha_reservada_sala_video' => 'required|date',
-            'hora_reserva_inicio_sala_video' => 'required|date_format:H:i',
-            'hora_reserva_final_sala_video' => 'required|date_format:H:i|after:hora_reserva_inicio',
-            'numero_microfonos_sala_video' => 'required|integer|min:0',
+            'fecha_reservada' => 'required|date',
+            'hora_reserva_inicio' => 'required|date_format:H:i',
+            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos' => 'required|integer|min:0',
         ]);
 
         // Si la validación falla, lanzar una excepción
@@ -125,18 +125,18 @@ class SalaVideoconferenciaController extends Controller
         $horaInicio = $request->hora_reserva_inicio;
         $horaFinal = $request->hora_reserva_final;
 
-        $overlap = SalaVideoConferenciaModel::where('fecha_reservada_sala_video', $fechaReservada)
+        $overlap = SalaVideoConferenciaModel::where('fecha_reservada', $fechaReservada)
             ->where(function($query) use ($horaInicio, $horaFinal) {
                 $query->where(function($q) use ($horaInicio, $horaFinal) {
-                    $q->where('hora_reserva_inicio_sala_video', '<', $horaFinal)
-                    ->where('hora_reserva_final_sala_video', '>', $horaInicio);
+                    $q->where('hora_reserva_inicio', '<', $horaFinal)
+                    ->where('hora_reserva_final', '>', $horaInicio);
                 });
             })
             ->where('id', '<>', $id) // Excluir la reservación actual
             ->exists();
 
         if ($overlap) {
-            $errors['hora_reserva_sala_video'] = 'El rango de horas seleccionado ya esta reservado para esta fecha.';
+            $errors['hora_reserva'] = 'El rango de horas seleccionado ya esta reservado para esta fecha.';
             $validator->errors()->add('general', collect($errors)->flatten());
             throw new ValidationException($validator);
         }

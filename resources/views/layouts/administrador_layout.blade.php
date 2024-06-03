@@ -129,7 +129,7 @@
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/auditorio') }}">Auditorio</a></li>
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/aula-magna') }}">Aula Magna</a></li>
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/laboratorio') }}">Laboratorio</a></li>
-                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
+                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/sala-videoconferencias') }}">Sala de videoconferencias</a></li>
                     </ul>
                   </li>
                   <li class="nav-item dropdown">

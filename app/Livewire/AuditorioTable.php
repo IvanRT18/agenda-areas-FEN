@@ -8,6 +8,7 @@ use App\Models\AreasModels\AuditorioModel;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 
 class AuditorioTable extends DataTableComponent
 {
@@ -19,6 +20,18 @@ class AuditorioTable extends DataTableComponent
         $this->setSearchPlaceholder('Buscar reservación...');
         $this->setSingleSortingDisabled();
         $this->setDefaultSort('fecha_reservada', 'desc');
+    }
+
+    public function filters(): array
+    {
+        return [
+            DateFilter::make('Fecha reservada')
+                ->filter(function($query, $value) {
+                    if ($value) {
+                        $query->whereDate('fecha_reservada', $value);
+                    }
+                }),
+        ];
     }
 
     public function columns(): array
