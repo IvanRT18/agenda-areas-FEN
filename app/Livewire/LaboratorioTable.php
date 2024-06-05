@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
+use Illuminate\Database\Eloquent\Builder;
 
 class LaboratorioTable extends DataTableComponent
 {
@@ -49,9 +50,36 @@ class LaboratorioTable extends DataTableComponent
                 ->sortable(),
             Column::make("RPE", "rpe")
                 ->sortable()->searchable(),
-            // Column::make("Nombre completo", "nombre_completo")
-            //     ->sortable(),
-             Column::make('Nombre', 'usuario.nombres')->sortable()->searchable(),
+        //    Column::make("Nombre completo", )->format(function($value, $column, $row) {
+        //         return $row->usuarios ? $row->usuarios->getNombreCompleto() : 'N/A';
+        //     }),
+        //    Column::make("Nombre completo", )->label(fn ($row, Column $column) =>  'usuario.nombres' ),
+
+        // Column::make("Nombre completo")
+        //         ->format(function ($value, $column, $row) {
+        //             // Obtener el usuario relacionado
+        //             $usuario = $row->usuario;
+        //             return $usuario ? $usuario->getNombreCompleto() : 'N/A';
+        //         })
+        //         ->sortable(),
+        // Column::make("Nombre completo")
+        //         ->label(fn($row) => $row->nombre_completo)
+        //         ->sortable()->searchable(),
+                // Column::make("Nombre completo")
+                // ->label(fn($row) => $row->nombre_completo)
+                // ->sortable()
+                // ->searchable(),
+                Column::make("Nombre completo")
+                ->label(fn($row) => $row->nombre_completo)
+                ->sortable()
+                ->searchable(function(Builder $query, $searchTerm) {
+                    $query->orWhereHas('usuario', function($query) use ($searchTerm) {
+                        $query->where('apellido_paterno', 'like', "%{$searchTerm}%")
+                              ->orWhere('apellido_materno', 'like', "%{$searchTerm}%")
+                              ->orWhere('nombres', 'like', "%{$searchTerm}%");
+                    });
+                }),
+            //  Column::make('Nombre', 'usuario.nombres')->sortable()->searchable(),
             Column::make("Fecha reservada", "fecha_reservada")
                 ->sortable()->searchable(),
             Column::make("Hora inicio", "hora_reserva_inicio")

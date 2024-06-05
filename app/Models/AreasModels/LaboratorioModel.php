@@ -14,7 +14,6 @@ class LaboratorioModel extends Model
 
     protected $fillable = [
         'rpe',
-        'nombre_completo',
         'fecha_reservada',
         'hora_reserva_inicio',
         'hora_reserva_final',
@@ -30,4 +29,10 @@ class LaboratorioModel extends Model
     {
         return $this->belongsTo(Usuario::class, 'rpe', 'clave');
     }
+
+     // Accesor para obtener el nombre completo del usuario
+     public function getNombreCompletoAttribute()
+     {
+         return $this->usuario ? $this->usuario->getNombreCompleto() : 'N/A';
+     }
 }
