@@ -69,16 +69,16 @@ class LaboratorioTable extends DataTableComponent
                 // ->label(fn($row) => $row->nombre_completo)
                 // ->sortable()
                 // ->searchable(),
-                Column::make("Nombre completo")
-                ->label(fn($row) => $row->nombre_completo)
-                ->sortable()
-                ->searchable(function(Builder $query, $searchTerm) {
-                    $query->orWhereHas('usuario', function($query) use ($searchTerm) {
-                        $query->where('apellido_paterno', 'like', "%{$searchTerm}%")
-                              ->orWhere('apellido_materno', 'like', "%{$searchTerm}%")
-                              ->orWhere('nombres', 'like', "%{$searchTerm}%");
-                    });
-                }),
+            Column::make("Nombre completo")
+            ->label(fn($row) => $row->nombre_completo)
+            ->sortable()
+            ->searchable(function(Builder $query, $searchTerm) {
+                $query->orWhereHas('usuario', function($query) use ($searchTerm) {
+                    $query->where('apellido_paterno', 'like', "%{$searchTerm}%")
+                            ->orWhere('apellido_materno', 'like', "%{$searchTerm}%")
+                            ->orWhere('nombres', 'like', "%{$searchTerm}%");
+                });
+            }),
             //  Column::make('Nombre', 'usuario.nombres')->sortable()->searchable(),
             Column::make("Fecha reservada", "fecha_reservada")
                 ->sortable()->searchable(),

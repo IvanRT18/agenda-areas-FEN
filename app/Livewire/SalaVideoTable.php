@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\AreasModels\SalaVideoConferenciaModel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
@@ -43,7 +44,16 @@ class SalaVideoTable extends DataTableComponent
                 ->sortable(),
             Column::make("RPE", "rpe")
                 ->sortable()->searchable(),
-             Column::make('Nombre', 'usuario.nombres')->sortable()->searchable(),
+            Column::make("Nombre completo")
+            ->label(fn($row) => $row->nombre_completo)
+            ->sortable()
+            ->searchable(function(Builder $query, $searchTerm) {
+                $query->orWhereHas('usuario', function($query) use ($searchTerm) {
+                    $query->where('apellido_paterno', 'like', "%{$searchTerm}%")
+                            ->orWhere('apellido_materno', 'like', "%{$searchTerm}%")
+                            ->orWhere('nombres', 'like', "%{$searchTerm}%");
+                });
+            }),
             Column::make("Fecha reservada", "fecha_reservada")
                 ->sortable()->searchable(),
             Column::make("Hora inicio", "hora_reserva_inicio")
