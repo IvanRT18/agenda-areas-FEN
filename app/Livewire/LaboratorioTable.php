@@ -22,6 +22,7 @@ class LaboratorioTable extends DataTableComponent
         $this->setSingleSortingDisabled();
         $this->setColumnSelectStatus(false);
         $this->setDefaultSort('fecha_reservada', 'desc');
+        // $this->setRefreshTime(15000);
     }
 
     public function filters(): array
@@ -50,36 +51,41 @@ class LaboratorioTable extends DataTableComponent
                 ->sortable(),
             Column::make("RPE", "rpe")
                 ->sortable()->searchable(),
-        //    Column::make("Nombre completo", )->format(function($value, $column, $row) {
-        //         return $row->usuarios ? $row->usuarios->getNombreCompleto() : 'N/A';
-        //     }),
-        //    Column::make("Nombre completo", )->label(fn ($row, Column $column) =>  'usuario.nombres' ),
+            // Column::make("Nombre completo")
+            // ->label(fn($row) => $row->nombre_completo)
+            // ->sortable()
+            // ->searchable(function(Builder $query, $searchTerm) {
+            //     $query->orWhereHas('usuario', function($query) use ($searchTerm) {
+            //         $query->where('apellido_paterno', 'like', "%{$searchTerm}%")
+            //                 ->orWhere('apellido_materno', 'like', "%{$searchTerm}%")
+            //                 ->orWhere('nombres', 'like', "%{$searchTerm}%");
+            //     });
+            // }),
+            // Column::make("Nombre completo")
+            //     ->label(fn($row) => $row->nombre_completo)
+            //     ->sortable()
+            //     ->searchable(function(Builder $query, $searchTerm) {
+            //         $terms = explode(' ', $searchTerm);
 
-        // Column::make("Nombre completo")
-        //         ->format(function ($value, $column, $row) {
-        //             // Obtener el usuario relacionado
-        //             $usuario = $row->usuario;
-        //             return $usuario ? $usuario->getNombreCompleto() : 'N/A';
-        //         })
-        //         ->sortable(),
-        // Column::make("Nombre completo")
-        //         ->label(fn($row) => $row->nombre_completo)
-        //         ->sortable()->searchable(),
-                // Column::make("Nombre completo")
-                // ->label(fn($row) => $row->nombre_completo)
-                // ->sortable()
-                // ->searchable(),
+            //         $query->orWhereHas('usuario', function($query) use ($terms) {
+            //             foreach ($terms as $term) {
+            //                 $query->where(function($query) use ($term) {
+            //                     $query->where('apellido_paterno', 'like', "%{$term}%")
+            //                           ->orWhere('apellido_materno', 'like', "%{$term}%")
+            //                           ->orWhere('nombres', 'like', "%{$term}%");
+            //                 });
+            //             }
+            //         });
+            //     }),
             Column::make("Nombre completo")
-            ->label(fn($row) => $row->nombre_completo)
+            ->label(fn($row) => $row->usuario->getNombreCompleto())
             ->sortable()
             ->searchable(function(Builder $query, $searchTerm) {
                 $query->orWhereHas('usuario', function($query) use ($searchTerm) {
-                    $query->where('apellido_paterno', 'like', "%{$searchTerm}%")
-                            ->orWhere('apellido_materno', 'like', "%{$searchTerm}%")
-                            ->orWhere('nombres', 'like', "%{$searchTerm}%");
+                    $query->whereRaw("CONCAT(nombres, ' ', apellido_paterno, ' ', apellido_materno) LIKE ?", ["%{$searchTerm}%"])
+                            ->orWhereRaw("CONCAT(apellido_paterno, ' ', apellido_materno, ' ', nombres) LIKE ?", ["%{$searchTerm}%"]);;
                 });
             }),
-            //  Column::make('Nombre', 'usuario.nombres')->sortable()->searchable(),
             Column::make("Fecha reservada", "fecha_reservada")
                 ->sortable()->searchable(),
             Column::make("Hora inicio", "hora_reserva_inicio")

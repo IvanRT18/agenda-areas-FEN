@@ -45,13 +45,12 @@ class AulaMagnaTable extends DataTableComponent
             Column::make("RPE", "rpe")
                 ->sortable()->searchable(),
             Column::make("Nombre completo")
-            ->label(fn($row) => $row->nombre_completo)
+            ->label(fn($row) => $row->usuario->getNombreCompleto())
             ->sortable()
             ->searchable(function(Builder $query, $searchTerm) {
                 $query->orWhereHas('usuario', function($query) use ($searchTerm) {
-                    $query->where('apellido_paterno', 'like', "%{$searchTerm}%")
-                            ->orWhere('apellido_materno', 'like', "%{$searchTerm}%")
-                            ->orWhere('nombres', 'like', "%{$searchTerm}%");
+                    $query->whereRaw("CONCAT(nombres, ' ', apellido_paterno, ' ', apellido_materno) LIKE ?", ["%{$searchTerm}%"])
+                            ->orWhereRaw("CONCAT(apellido_paterno, ' ', apellido_materno, ' ', nombres) LIKE ?", ["%{$searchTerm}%"]);;
                 });
             }),
             Column::make("Fecha reservada", "fecha_reservada")
