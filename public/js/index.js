@@ -83,7 +83,7 @@ $(function() {
     //
     $.get("obtener-dias-deshabilitados", function (data) {
         data.forEach((dias) => {
-            disabledDays.push(dias.diaDeshabiliado);
+            disabledDays.push(dias.dias_deshabilitado);
         });
 
         console.log(disabledDays);

@@ -34,7 +34,7 @@ class AuditorioController extends Controller
 
         // Verificar si la fecha seleccionada está deshabilitada
         $fechaReservada = $request->fecha_reservada_auditorio;
-        if (DiaDeshabilitado::where('diaDeshabiliado', $fechaReservada)->exists()) {
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
             $errors['fecha_reservada_auditorio'] = 'La fecha seleccionada no está disponible para reservaciones.';
         }
 
@@ -120,7 +120,7 @@ class AuditorioController extends Controller
 
         // Verificar si la fecha seleccionada está deshabilitada
         $fechaReservada = $request->fecha_reservada_auditorio;
-        if (DiaDeshabilitado::where('diaDeshabiliado', $fechaReservada)->exists()) {
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
             $errors['fecha_reservada_auditorio'] = 'La fecha seleccionada no está disponible para reservaciones.';
         }
 

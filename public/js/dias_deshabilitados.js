@@ -1,24 +1,8 @@
 let disabledDays = [];
-flatpickr("#diasDeshabilitadosInput", {
-    // mode: "multiple",
-    inline: true,
-    disable: [
-        "2024-03-18", "2024-03-21", "2025-03-08",
-        {
-            from: "2024-04-01",
-            to: "2024-04-20"
-        },
-        {
-            from: "2024-09-01",
-            to: "2024-12-01"
-        }
-    ]
-  });
-
 
 $.get('deshabilitar-dias/obtener-dias-deshabilitados', function(data){
     data.forEach(dias => {
-        disabledDays.push(dias.diaDeshabiliado);
+        disabledDays.push(dias.dias_deshabilitado);
     });
     
     console.log(disabledDays);
@@ -28,7 +12,3 @@ $.get('deshabilitar-dias/obtener-dias-deshabilitados', function(data){
         defaultDate: disabledDays,
     });
 });
-
-
-
-

@@ -18,7 +18,7 @@
 
     {{-- Timepicker css --}}
     <link rel="stylesheet" href="{{ asset('js/timepicker/jquery.timepicker.css') }}">
-    <link rel="stylesheet" href={{asset('css/agendaLabs.css')}}>
+    <link rel="stylesheet" href={{ asset('css/agendaLabs.css') }}>
 </head>
 <body>
     <div class="container">
@@ -105,32 +105,28 @@
             </div>
           </nav>
 
-          @if (session('status'))
-            <h6 class="alert alert-success">{{ session('status') }}</h6>
-        @endif
-        <div class="d-flex my-4 justify-content-end ">
+        {{-- Alerta --}}
+        <div class="container">
+            @if (session('status'))
+                <div class="flex flex-row justify-arnd alert alert-success">
+                    <h6 class="">{{ session('status') }}</h6>
+                    <button id="close-btn">X</button>
+                </div>
+            @endif
+            <div id="livewire-alert" style="display: none;" class="flex flex-row justify-arnd alert alert-success">
+                <h6>Reservación eliminada con éxito</h6>
+                <button id="close-btn-livewire">X</button>
+            </div>
+        </div>
+
+        <div class="d-flex my-2 justify-content-end ">
             <a href="{{ url('administrador') }}" class="btn btn-danger float-end">Regresar</a>
         </div>
         <div class="d-flex flex-column flex-lg-row justify-content-around">
-            <div class="flex-fill mb-3 mb-lg-0">
-              <div class="d-flex justify-content-around">
-                <p class="fs-4 text-center">Días deshabilitados</p>
-                <a href="{{ url('administrador/deshabilitar-dias/habilita-todos-dias') }}" class="btn bg-success btn-sm text-white fs-6" style="width: 50%; height: min-content;">Habilitar todos</a>
-              </div>
-              <div>
-                @foreach ($diasDeshabilitados as $diaDeshabilitado)
-                  <div class="bg-secondary p-2 text-white bg-opacity-75 mb-2 d-flex justify-content-around align-items-center rounded-2">
-                    <div class="">
-                      <p class="fs-6" style="margin-bottom: 0px;">
-                        {{$diaDeshabilitado->diaDeshabiliado}}
-                      </p>
-                    </div>
-                    <a href="{{ url('administrador/deshabilitar-dias/habilita-dia/'. $diaDeshabilitado->id) }}" class="btn bg-success btn-sm text-white fs-6">Habilitar</a>
-                  </div>
-                @endforeach
-              </div>
+            <div class="col-lg-6 col-md-12 mb-3 mb-lg-0">
+              <livewire:DiaDeshabilitadoTable theme="bootstrap-4" />
             </div>
-            <div class="flex-fill">
+            <div class="col-lg-6 col-md-12">
               <p class="fs-4 text-center">Deshabilitar nuevo día</p>
               <form action="{{ url('administrador/deshabilitar-dias/agregar-dia') }}" method="POST" class="d-flex flex-column align-items-center">
                 @csrf
@@ -140,11 +136,33 @@
             </div>
           </div>
           
+          <div id="Creditos" style="margin-top: 200px">          
+              <h4>Universidad Autónoma de San Luis Potosí</h4>
+                  Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
+              San Luis Potosí, S.L.P. México                <br>
+              Tel.  (444) 826 2300<br>
+              ©<span id="lbAño">2024</span> © Todos los derechos reservados.           
+        </div>
     </div>
-   
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
 <script src="{{ asset('js/dias_deshabilitados.js') }}"></script>
+<script>
+  // Botón para cerrar la alerta que aparece cuando se edita una reservación
+  $('#close-btn').on('click', function (e) {
+      $(this).parent().remove();
+  });
+
+  // Escucha el evento emitido por Livewire
+  Livewire.on('reservacionEliminada', () => {
+      $('#livewire-alert').show();
+  });
+
+  // Botón para cerrar la alerta de Livewire
+  $('#close-btn-livewire').on('click', function (e) {
+      $(this).parent().hide();
+  });
+</script>
 </html>

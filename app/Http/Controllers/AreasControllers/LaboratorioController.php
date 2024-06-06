@@ -35,7 +35,7 @@ class LaboratorioController extends Controller
 
         // Verificar si la fecha seleccionada está deshabilitada
         $fechaReservada = $request->fecha_reservada;
-        if (DiaDeshabilitado::where('diaDeshabiliado', $fechaReservada)->exists()) {
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
             $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
         }
 
