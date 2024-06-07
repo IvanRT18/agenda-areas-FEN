@@ -118,6 +118,13 @@
 
             </div>
         </div>
+        <div id="Creditos" style="margin-top: 200px">          
+            <h4>Universidad Autónoma de San Luis Potosí</h4>
+                Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
+            San Luis Potosí, S.L.P. México                <br>
+            Tel.  (444) 826 2300<br>
+            ©<span id="lbAño">2024</span> © Todos los derechos reservados.           
+        </div>
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

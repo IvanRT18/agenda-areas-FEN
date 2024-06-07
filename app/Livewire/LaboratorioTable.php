@@ -37,6 +37,19 @@ class LaboratorioTable extends DataTableComponent
         ];
     }
 
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Eliminar',
+        ];
+    }
+
+    public function deleteSelected()
+    {
+        LaboratorioModel::whereIn('id', $this->selected)->delete();
+        $this->selected = [];
+    }
+
     public function query()
     {
         return LaboratorioModel::with('usuario'); // Asegúrate de cargar la relación 'usuario'
@@ -47,36 +60,10 @@ class LaboratorioTable extends DataTableComponent
         $area = Request::segment(3);
 
         return [
-            Column::make("ID", "id")
-                ->sortable(),
+            // Column::make("ID", "id")
+            //     ->sortable(),
             Column::make("RPE", "rpe")
                 ->sortable()->searchable(),
-            // Column::make("Nombre completo")
-            // ->label(fn($row) => $row->nombre_completo)
-            // ->sortable()
-            // ->searchable(function(Builder $query, $searchTerm) {
-            //     $query->orWhereHas('usuario', function($query) use ($searchTerm) {
-            //         $query->where('apellido_paterno', 'like', "%{$searchTerm}%")
-            //                 ->orWhere('apellido_materno', 'like', "%{$searchTerm}%")
-            //                 ->orWhere('nombres', 'like', "%{$searchTerm}%");
-            //     });
-            // }),
-            // Column::make("Nombre completo")
-            //     ->label(fn($row) => $row->nombre_completo)
-            //     ->sortable()
-            //     ->searchable(function(Builder $query, $searchTerm) {
-            //         $terms = explode(' ', $searchTerm);
-
-            //         $query->orWhereHas('usuario', function($query) use ($terms) {
-            //             foreach ($terms as $term) {
-            //                 $query->where(function($query) use ($term) {
-            //                     $query->where('apellido_paterno', 'like', "%{$term}%")
-            //                           ->orWhere('apellido_materno', 'like', "%{$term}%")
-            //                           ->orWhere('nombres', 'like', "%{$term}%");
-            //                 });
-            //             }
-            //         });
-            //     }),
             Column::make("Nombre completo")
             ->label(fn($row) => $row->usuario->getNombreCompleto())
             ->sortable()

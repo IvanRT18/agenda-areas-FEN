@@ -62,8 +62,7 @@ class DiaDeshabilitadoTable extends DataTableComponent
     {
         $dia = DiaDeshabilitado::find($id);
         if ($dia) {
-            // Lógica para habilitar el día
-            $dia->delete(); // Por ejemplo, eliminar el registro para habilitar el día
+            $dia->delete();
         }
     }
 

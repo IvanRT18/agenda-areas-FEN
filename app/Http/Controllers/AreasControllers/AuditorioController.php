@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
 use App\Mail\AreaReservadaMail;
+use App\Models\AreasModels\AuditorioConfiguracion;
 use App\Models\DiaDeshabilitado;
 use Illuminate\Support\Facades\Mail;
 
@@ -172,11 +173,15 @@ class AuditorioController extends Controller
 
     public function configure()
     {
-        return view('areas.auditorio.configure');
+        $configuracion = AuditorioConfiguracion::first();
+        return view('areas.auditorio.configure', compact('configuracion'));
     }
 
-    public function updateConfiguration()
+    public function updateConfiguration(Request $request)
     {
-
+        $configuracion = new AuditorioConfiguracion();
+        $configuracion->numero_microfonos = $request->input('numero_microfonos');
+        $configuracion->update();
+        return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }

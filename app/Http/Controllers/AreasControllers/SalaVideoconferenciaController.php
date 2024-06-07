@@ -4,6 +4,7 @@ namespace App\Http\Controllers\AreasControllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\AreasModels\SalaVideoConferenciaModel;
+use App\Models\AreasModels\SalaVideoconferenciasConfiguracion;
 use App\Models\DiaDeshabilitado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -170,6 +171,32 @@ class SalaVideoconferenciaController extends Controller
 
     public function configure()
     {
-        return view('areas.sala-videoconferencias.configure');
+        if (SalaVideoconferenciasConfiguracion::first()) {
+            $configuracion = SalaVideoconferenciasConfiguracion::first();
+            return view('areas.sala-videoconferencias.configure', compact('configuracion'));
+        }
+        else
+        {
+            return view('areas.sala-videoconferencias.configure');
+        }
+    }
+
+    public function updateConfiguration(Request $request)
+    {
+        if (SalaVideoconferenciasConfiguracion::first()) 
+        {
+            $configuracion = SalaVideoconferenciasConfiguracion::first();
+            $configuracion->numero_microfonos = $request->input('numero_microfonos');
+            $configuracion->save();
+            return redirect()->back()->with('status','Configuración actualizada correctamente');
+        }
+        else
+        {
+            $configuracion = new SalaVideoconferenciasConfiguracion();
+            $configuracion->numero_microfonos = $request->input('numero_microfonos');
+            $configuracion->save();
+            return redirect()->back()->with('status','Configuración actualizada correctamente');
+        }
+        
     }
 }

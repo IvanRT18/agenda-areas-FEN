@@ -63,11 +63,11 @@
                 </td>
             </tr>
             <tr>
-                <td bgcolor="#FFF" colspan="3">
+                <td bgcolor="#FFF" colspan="3" style="padding: 0px">
                     <table width="100%" style="margin-top:10px" align="center">
                     <tbody><tr>
                         <td style="height:32px; background-color:#1B3257" width="58.6%"><div style="color:#fff; margin-left:20px">Reservación de áreas comúnes</div></td>
-                        <td style="background-color:#FCC200"><img src="https://cuan.uaslp.mx/comunes/imagenes/amarillo_azul.png"></td>
+                        <td style="background-color:#FCC200; padding: 0;"><img src="https://cuan.uaslp.mx/comunes/imagenes/amarillo_azul.png"></td>
                         <td align="right" style="background-color:#FCC200; font-size:16px">"HUMANISMI ET SCIENTIA" &nbsp;</td>
                     </tr>
                     </tbody></table>

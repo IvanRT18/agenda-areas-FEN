@@ -149,12 +149,12 @@ Route::group(['middleware'=>['auth']], function(){
         });
 
         //Rutas para configurar las áreas
-        // Route::prefix('actualizar-area')->group(function(){
-        //     Route::put('auditorio', [AuditorioController::class, 'configure']);
-        //     Route::put('aula-magna', [AulaMagnaController::class, 'configure']);
-        //     Route::put('laboratorio', [LaboratorioController::class, 'configure']);
-        //     Route::put('sala-videoconferencias', [SalaVideoconferenciaController::class, 'configure']);
-        // });
+        Route::prefix('actualizar-area')->group(function(){
+            Route::put('auditorio', [AuditorioController::class, 'updateConfiguration']);
+            Route::put('aula-magna', [AulaMagnaController::class, 'updateConfiguration']);
+            Route::put('laboratorio', [LaboratorioController::class, 'updateConfiguration']);
+            Route::put('sala-videoconferencias', [SalaVideoconferenciaController::class, 'updateConfiguration']);
+        });
 
         // //Rutas para configurar las áreas
         Route::prefix('configurar-area')->group(function(){

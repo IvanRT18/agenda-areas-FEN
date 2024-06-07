@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use App\Models\AreasModels\AulaMagnaConfiguracion;
 use App\Models\AreasModels\AulaMagnaModel;
 use App\Models\DiaDeshabilitado;
 use Illuminate\Support\Facades\Validator;
@@ -175,6 +176,15 @@ class AulaMagnaController extends Controller
 
     public function configure()
     {
-        return view('areas.aula-magna.configure');
+        $configuracion = AulaMagnaConfiguracion::first();
+        return view('areas.aula-magna.configure', compact('configuracion'));
+    }
+
+    public function updateConfiguration(Request $request)
+    {
+        $configuracion = AulaMagnaConfiguracion::first();
+        $configuracion->numero_microfonos = $request->input('numero_microfonos');
+        $configuracion->save();
+        return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }
