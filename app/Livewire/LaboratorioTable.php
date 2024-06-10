@@ -60,8 +60,8 @@ class LaboratorioTable extends DataTableComponent
         $area = Request::segment(3);
 
         return [
-            // Column::make("ID", "id")
-            //     ->sortable(),
+            Column::make("ID", "id")
+                ->sortable(),
             Column::make("RPE", "rpe")
                 ->sortable()->searchable(),
             Column::make("Nombre completo")

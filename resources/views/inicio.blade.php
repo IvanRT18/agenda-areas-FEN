@@ -115,7 +115,7 @@
             Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
         San Luis Potosí, S.L.P. México                <br>
         Tel.  (444) 826 2300<br>
-        ©<span id="lbAño">2024</span> © Todos los derechos reservados.           
+        ©<span id="lbAño"></span> © Todos los derechos reservados.           
    </div>
 </body>
 

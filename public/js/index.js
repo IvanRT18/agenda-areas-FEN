@@ -51,6 +51,12 @@ let pastHours = []; //Horas pasadas de la hora inicial de reserva que selecciono
 let disabledDays = [];
 
 $(function() {
+    // Obtener el año actual
+    var añoActual = new Date().getFullYear();
+    
+    // Actualizar el contenido del span con el año actual
+    $("#lbAño").text(añoActual);
+
     $("#formularioLabComp").addClass("hidden");
 
     checkLabComp.on("click", function () {

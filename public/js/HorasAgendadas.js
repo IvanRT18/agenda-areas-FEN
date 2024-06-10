@@ -292,7 +292,14 @@ function inicializarScroll() {
 function verificarReservacionProxima() {
     const horaAlerta = new Date(Date.now() + 10 * 60000);
     disabledHoras.forEach(rango => {
-        const inicioRango = stringToDate(rango[0]);
+        let inicioRango;
+        if (endpoint === 'laboratorio') {
+            inicioRango = stringToDate(rango.inicio);   
+        }
+        else
+        {
+            inicioRango = stringToDate(rango[0]);
+        }
         if (horaAlerta.getHours() === inicioRango.getHours() && horaAlerta.getMinutes() === inicioRango.getMinutes()) {
             mostrarModal();
         }
