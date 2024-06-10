@@ -57,6 +57,7 @@ $(function() {
     // Actualizar el contenido del span con el año actual
     $("#lbAño").text(añoActual);
 
+
     $("#formularioLabComp").addClass("hidden");
 
     checkLabComp.on("click", function () {
@@ -679,7 +680,16 @@ $(function() {
         });
     });
 
-
+    $('#usa_proyector').on('click', function(){
+        // Verificar si el checkbox está marcado
+        if ($(this).is(":checked")) {
+            // Si está marcado, establecer el valor de la ubicación en "Adelante"
+            $("#ubicacion").val("Adelante");
+        } else {
+            // Si no está marcado, deshabilitar la selección y establecer el valor de la ubicación en ""
+            $("#ubicacion").val("Atrás");
+        }
+    });
 
     // Muestra el formulario seleccionado y esconde los demás
     $("#radioContainer").on("click", function (event) {

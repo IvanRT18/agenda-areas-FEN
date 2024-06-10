@@ -102,6 +102,7 @@
                         <input type="text" name="nombres" id="nombres" class="form-control" value="{{ old('nombres') }}">
                     </div>
                     <div class="form-group mb-3">
+                        <label for="tipo">Tipo de usuario</label>
                         <select class="form-select" aria-label="Default select example" name="tipo">
                             <option value="docente" {{ old('tipo') == 'docente' ? 'selected' : '' }} >Docente</option>
                             <option value="administrador" {{ old('tipo') == 'administrador' ? 'selected' : '' }}>Administrador</option>

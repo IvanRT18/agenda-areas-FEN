@@ -108,14 +108,14 @@
         
 
         {{-- Radios de areas para reservar --}}
-       <div class="flex flex-col contenido gap align-center">
-        <h1>Área para reservar:</h1>
-        <div class="radio-container col-md-6" id="radioContainer">
-            <label for="radioAuditorio"><input type="radio" name="radioItem" id="radioAuditorio">Auditorio</label>
-            <label for="radioAulaMagna"><input type="radio" name="radioItem" id="radioAulaMagna">Aula magna (propedéutico)</label>
-            <label for="radioLab"><input type="radio" name="radioItem" id="radioLab">Laboratorio de cómputo</label>
-            <label for="radioSalaV"><input type="radio" name="radioItem" id="radioSalaV">Sala de videoconferencia</label>
-       </div>
+        <div class="flex flex-col contenido gap align-center">
+            <h1>Área para reservar:</h1>
+            <div class="radio-container col-md-6" id="radioContainer">
+                <label for="radioAuditorio"><input type="radio" name="radioItem" id="radioAuditorio">Auditorio</label>
+                <label for="radioAulaMagna"><input type="radio" name="radioItem" id="radioAulaMagna">Aula magna (propedéutico)</label>
+                <label for="radioLab"><input type="radio" name="radioItem" id="radioLab">Laboratorio de cómputo</label>
+                <label for="radioSalaV"><input type="radio" name="radioItem" id="radioSalaV">Sala de videoconferencia</label>
+            </div>
 
 
        {{-- Formulario Laboratorio de cómputo--}}
@@ -154,7 +154,16 @@
             </div>
             
             <div>
-                <label for="usa_proyector"><input type="checkbox" name="usa_proyector" id="usa_proyector" value="true">¿Usará el proyector del laboratorio? (Opcional)</label>
+                <label for="usa_proyector">
+                <input type="checkbox" name="usa_proyector" id="usa_proyector" value="true">¿Usará el proyector del laboratorio? (Opcional)</label>
+            </div>
+
+            <div class="flex flex-col">
+                <label for="ubicacion">Ubicación</label>
+                <select class="form-select" aria-label="Ubicación de reservación laboratorio" name="ubicacion" disabled id="ubicacion">
+                    <option value="Atrás">Atrás</option>
+                    <option value="Adelante">Adelante</option>
+                </select>
             </div>
 
             <div class="flex flex-col">
