@@ -113,13 +113,13 @@
             <div class="radio-container col-md-6" id="radioContainer">
                 <label for="radioAuditorio"><input type="radio" name="radioItem" id="radioAuditorio">Auditorio</label>
                 <label for="radioAulaMagna"><input type="radio" name="radioItem" id="radioAulaMagna">Aula magna (propedéutico)</label>
-                <label for="radioLab"><input type="radio" name="radioItem" id="radioLab">Laboratorio de cómputo</label>
+                <label for="radioLaboratorio"><input type="radio" name="radioItem" id="radioLaboratorio">Laboratorio de cómputo</label>
                 <label for="radioSalaV"><input type="radio" name="radioItem" id="radioSalaV">Sala de videoconferencia</label>
             </div>
 
 
        {{-- Formulario Laboratorio de cómputo--}}
-       <form name="formularioLabComp" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/laboratorio')}}" id="formularioLabComp">
+       <form name="formLaboratorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/laboratorio')}}" id="formLaboratorio">
            @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">

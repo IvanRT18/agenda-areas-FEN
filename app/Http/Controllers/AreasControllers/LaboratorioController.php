@@ -105,6 +105,28 @@ class LaboratorioController extends Controller
         return response()->json($horasAgendadas);
     }
 
+    // Recibe una fecha (string) y devuelve las horas que se han agendado ese día solo en la parte de Adelante*
+    public function horasAgendadasAdelante($fecha)
+    {
+        // Consulta para obtener las horas agendadas en la fecha especificada con ubicación 'Adelante'
+        $horasAgendadas = LaboratorioModel::where('fecha_reservada', $fecha)
+            ->where('ubicacion', 'Adelante')
+            ->get(['hora_reserva_inicio', 'hora_reserva_final', 'materia', 'actividad', 'ubicacion']);
+
+        return response()->json($horasAgendadas);
+    }
+
+    // Recibe una fecha (string) y devuelve las horas que se han agendado ese día solo en la parte de Atrás*
+    public function horasAgendadasAtras($fecha)
+    {
+        // Consulta para obtener las horas agendadas en la fecha especificada con ubicación 'Adelante'
+        $horasAgendadas = LaboratorioModel::where('fecha_reservada', $fecha)
+            ->where('ubicacion', 'Atrás')
+            ->get(['hora_reserva_inicio', 'hora_reserva_final', 'materia', 'actividad', 'ubicacion']);
+
+        return response()->json($horasAgendadas);
+    }
+
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día (solo horas)
     public function horasDisabled($fecha)
     {
