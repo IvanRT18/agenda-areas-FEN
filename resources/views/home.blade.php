@@ -123,6 +123,14 @@
            @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">
+                <label for="ubicacion">Ubicación</label>
+                <select class="form-select" aria-label="Ubicación de reservación laboratorio" name="ubicacion" id="ubicacion">
+                    <option value="Atrás">Atrás</option>
+                    <option value="Adelante">Adelante</option>
+                </select>
+            </div>
+
+            <div class="flex flex-col">
                 <label for="fecha_reservada">Fecha para reservar:</label>
                 <input type="date" id="fecha_reservada" name="fecha_reservada" min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+14 days')) }}" required>
                 <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
@@ -156,14 +164,6 @@
             <div>
                 <label for="usa_proyector">
                 <input type="checkbox" name="usa_proyector" id="usa_proyector" value="true">¿Usará el proyector del laboratorio? (Opcional)</label>
-            </div>
-
-            <div class="flex flex-col">
-                <label for="ubicacion">Ubicación</label>
-                <select class="form-select" aria-label="Ubicación de reservación laboratorio" name="ubicacion" disabled id="ubicacion">
-                    <option value="Atrás">Atrás</option>
-                    <option value="Adelante">Adelante</option>
-                </select>
             </div>
 
             <div class="flex flex-col">

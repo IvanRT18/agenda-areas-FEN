@@ -94,6 +94,17 @@
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
                     </ul>
                   </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Configurar áreas
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/auditorio') }}">Auditorio</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/aula-magna') }}">Aula Magna</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/laboratorio') }}">Laboratorio</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/sala-videoconferencias') }}">Sala de videoconferencias</a></li>
+                    </ul>
+                  </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url('administrador/deshabilitar-dias') }}">Deshabilitar días</a>
                   </li>
@@ -124,7 +135,7 @@
         </div>
         <div class="d-flex flex-column flex-lg-row justify-content-around">
             <div class="col-lg-6 col-md-12 mb-3 mb-lg-0">
-              <livewire:DiaDeshabilitadoTable theme="bootstrap-4" />
+              <livewire:DiaDeshabilitadoTable theme="bootstrap-5" />
             </div>
             <div class="col-lg-6 col-md-12">
               <p class="fs-4 text-center">Deshabilitar nuevo día</p>
