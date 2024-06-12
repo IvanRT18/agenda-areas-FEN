@@ -70,10 +70,15 @@ class LaboratorioController extends Controller
         if ($request->usa_proyector == 'true') //Si es 1 (osea si se selecciono)
         {
             $reservacion->usa_proyector = true;
-            $reservacion->ubicacion = 'Adelante';
         }
         else{
             $reservacion->usa_proyector = false;
+        }
+
+        if ($request->numero_equipos > 30 ) {
+            $reservacion->ubicacion = 'Adelante';
+        }
+        else{
             $reservacion->ubicacion = 'Atrás';
         }
         $reservacion->req_adicionales = $request->req_adicionales;

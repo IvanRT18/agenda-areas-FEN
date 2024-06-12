@@ -38,6 +38,13 @@ $(function () {
         $("#ubicacion").val($(this).is(":checked") ? "Adelante" : "Atrás");
     });
 
+    //Determina la ubicacion en las reservaciones del auditorio
+    $('#ubicacion').on('change', function () {
+        let endpoint = "";
+        $("#ubicacion").val() === "Adelante" ? endpoint = '/horas-reservadas/laboratorio/adelante' : "/horas-reservadas/laboratorio/atras";
+        handleDayChange("#fecha_reservada", "#hora_reserva_inicio", "#hora_reserva_final", "#pantallaCarga", endpoint);
+    });
+
     //Muestra el formulario correspondiente dependiendo de lo que se eligio y oculta los otros formularios
     $("#radioContainer").on("click", function (event) {
         hideAllForms();

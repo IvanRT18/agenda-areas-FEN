@@ -122,13 +122,13 @@
        <form name="formLaboratorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/laboratorio')}}" id="formLaboratorio">
            @csrf
         <div class="flex flex-col col-xs-12 gap">
-            <div class="flex flex-col">
+            {{-- <div class="flex flex-col">
                 <label for="ubicacion">Ubicación</label>
                 <select class="form-select" aria-label="Ubicación de reservación laboratorio" name="ubicacion" id="ubicacion">
                     <option value="Atrás">Atrás</option>
                     <option value="Adelante">Adelante</option>
                 </select>
-            </div>
+            </div> --}}
 
             <div class="flex flex-col">
                 <label for="fecha_reservada">Fecha para reservar:</label>
