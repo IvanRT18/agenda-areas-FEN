@@ -2,6 +2,7 @@
 
 namespace App\Models\AreasModels;
 
+use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -21,4 +22,14 @@ class SalaVideoConferenciaModel extends Model
         'usa_computadora',
         'usa_bocinas',
     ];
+
+    public function usuario()
+    {
+        return $this->belongsTo(Usuario::class, 'rpe', 'clave');
+    }
+
+    public function getNombreCompletoAttribute()
+    {
+        return $this->usuario ? $this->usuario->getNombreCompleto() : 'N/A';
+    }
 }

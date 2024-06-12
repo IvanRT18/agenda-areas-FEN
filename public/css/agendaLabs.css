@@ -114,9 +114,9 @@ padding-left: 5px;
     font-weight: bold;
 }
 
-.container {
+/* .container {
     overflow-x: auto !important;
-}
+} */
 
 #close-btn{
     appearance: none;

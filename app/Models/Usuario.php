@@ -47,8 +47,8 @@ class Usuario extends Model implements Authenticatable
 
     protected $fillable = [
         'clave',
-        'apellido_materno',
         'apellido_paterno',
+        'apellido_materno',
         'nombres',
         'tipo',
         'correo',
@@ -72,6 +72,12 @@ class Usuario extends Model implements Authenticatable
     public function getNombreCompleto()
     {
         return $this->apellido_paterno . " " . $this->apellido_materno . " ". $this->nombres;
+    }
+
+    public static function obtenerNombreCompletoPorClave($clave)
+    {
+        $usuario = self::where('clave', $clave)->first();
+        return $usuario ? $usuario->getNombreCompleto() : 'Usuario no encontrado';
     }
 
     /**

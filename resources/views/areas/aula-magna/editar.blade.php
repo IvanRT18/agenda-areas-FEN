@@ -5,7 +5,7 @@
 @section('form-update')
 <div class="card">
     <div class="card-header">
-        <h4>Editar reservacion aula magna
+        <h4>Editar reservación - Aula magna
             <a href="/administrador/reservaciones/aula-magna" class="btn btn-danger float-end">Regresar</a>
         </h4>
     </div>
@@ -20,9 +20,18 @@
                 <input type="text" name="id" value="{{$reservacion->id}}" class="form-control">
             </div>
             <div class="form-group mb-3">
+                <label for="">RPE</label>
+                <input type="text" name="rpe" value="{{$reservacion->rpe}}" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Nombre Completo</label>
+                <input type="text" name="nombre_completo" disabled value="{{App\Models\Usuario::obtenerNombreCompletoPorClave($reservacion->rpe)}}" class="form-control">
+            </div>
+            <div class="form-group mb-3">
                 <label for="">Fecha reservada</label>
                 <input id="editFechaReservada" type="date" name="fecha_reservada" value="{{$reservacion->fecha_reservada}}" class="form-control">
             </div>
+            <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
             <div class="form-group mb-3">
                 <label for="">Hora de inicio de reservación</label>
                 <input type="text" name="hora_reserva_inicio" id="hora_reserva_inicio" value="{{$reservacion->hora_reserva_inicio}}" class="form-control">

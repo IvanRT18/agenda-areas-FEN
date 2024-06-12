@@ -51,8 +51,8 @@ class UsuariosController extends Controller
     
     // Muestra vista para editar usuario
     public function edit($id){
-        $usuario = Usuario::find($id);
-        return view('usuarios.editar_usuario', compact('usuario'));
+        $usuarioEdit = Usuario::find($id);
+        return view('usuarios.editar_usuario', compact('usuarioEdit'));
     }
 
     //Actualiza usuario

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
 use App\Mail\AreaReservadaMail;
+use App\Models\AreasModels\AuditorioConfiguracion;
 use App\Models\DiaDeshabilitado;
 use Illuminate\Support\Facades\Mail;
 
@@ -34,7 +35,7 @@ class AuditorioController extends Controller
 
         // Verificar si la fecha seleccionada está deshabilitada
         $fechaReservada = $request->fecha_reservada_auditorio;
-        if (DiaDeshabilitado::where('diaDeshabiliado', $fechaReservada)->exists()) {
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
             $errors['fecha_reservada_auditorio'] = 'La fecha seleccionada no está disponible para reservaciones.';
         }
 
@@ -108,9 +109,45 @@ class AuditorioController extends Controller
 
     public function update(Request $request, $id)
     {
+        $errors = [];
+
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'fecha_reservada' => 'required|date',
+            'hora_reserva_inicio' => 'required|date_format:H:i',
+            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos' => 'required|integer|min:0|max:2',
+        ]);
+
+        // Verificar si la fecha seleccionada está deshabilitada
+        $fechaReservada = $request->fecha_reservada_auditorio;
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+            $errors['fecha_reservada_auditorio'] = 'La fecha seleccionada no está disponible para reservaciones.';
+        }
+
+        // Verificar si la hora de inicio no está reservada
+        $horaInicio = $request->hora_reserva_inicio_auditorio;
+        if (AuditorioModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
+            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
+        }
+
+        // Verificar si la hora de finalización no está reservada
+        $horaFinal = $request->hora_reserva_final_auditorio;
+        if (AuditorioModel::where('hora_reserva_final', $horaFinal)->exists()) {
+            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
+        }
+
+        // Combinar los errores de validación
+        $validator->errors()->add('general', collect($errors)->flatten());
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
         $reservacion = AuditorioModel::find($id);
         $reservacion->id = $request->input('id');
-        $reservacion->rpe = session('user');
+        $reservacion->rpe = $request->input('rpe');
         $reservacion->fecha_reservada = $request->input('fecha_reservada');
         $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
         $reservacion->hora_reserva_final = $request->input('hora_reserva_final');
@@ -132,5 +169,19 @@ class AuditorioController extends Controller
     public function diasInhabiles()
     {
         return view('dias_deshabilitados');
+    }
+
+    public function configure()
+    {
+        $configuracion = AuditorioConfiguracion::first();
+        return view('areas.auditorio.configure', compact('configuracion'));
+    }
+
+    public function updateConfiguration(Request $request)
+    {
+        $configuracion = new AuditorioConfiguracion();
+        $configuracion->numero_microfonos = $request->input('numero_microfonos');
+        $configuracion->update();
+        return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }

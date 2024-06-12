@@ -3,13 +3,13 @@
 @section('title', 'Usuarios registrados')
 
 @section('table')
-    <table class="table table-bordered table-striped mt-3">
+    {{-- <table class="table table-bordered table-striped mt-3">
         <thead>
             <tr>
                 <th>ID</th>
                 <th class="sortable-header" data-sort>Clave<span class="sort-icon"></span></th>
-                <th>Apellido materno</th>
                 <th>Apellido paterno</th>
+                <th>Apellido materno</th>
                 <th>Nombres</th>
                 <th>Tipo</th>
                 <th>Correo</th>
@@ -21,8 +21,8 @@
                 <tr>
                     <td>{{$usuario->id}}</td>
                     <td>{{$usuario->clave}}</td>
-                    <td>{{$usuario->apellido_materno}}</td>
                     <td>{{$usuario->apellido_paterno}}</td>
+                    <td>{{$usuario->apellido_materno}}</td>
                     <td>{{$usuario->nombres}}</td>
                     <td>{{$usuario->tipo}}</td>
                     <td>{{$usuario->correo}}</td>
@@ -33,7 +33,11 @@
                 </tr>
             @endforeach
         </tbody>
-    </table>
+    </table> --}}
+
+    <div class="container mt-3">
+        <livewire:UsuariosTable theme="bootstrap-5" />
+    </div>
 @endsection
 
 

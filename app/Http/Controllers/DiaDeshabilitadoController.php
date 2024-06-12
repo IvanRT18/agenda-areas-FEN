@@ -24,7 +24,7 @@ class DiaDeshabilitadoController extends Controller
                 $diaDeshabilitadoFecha = new DiaDeshabilitado();
         
                 // Asignar la fecha al modelo
-                $diaDeshabilitadoFecha->diaDeshabiliado = $fecha;
+                $diaDeshabilitadoFecha->dias_deshabilitado = $fecha;
         
                 // Guardar el modelo
                 $diaDeshabilitadoFecha->save();

@@ -3,7 +3,7 @@
 @section('title', 'Reservaciones Sala videoconferencias')
 
 @section('table')
-    <table class="table table-bordered table-striped mt-3">
+    {{-- <table class="table table-bordered table-striped mt-3">
         <thead>
             <tr>
                 <th>ID</th>
@@ -24,7 +24,13 @@
                 <tr>
                     <td>{{$reservacion->id}}</td>
                     <td>{{$reservacion->rpe}}</td>
-                    <td>{{$reservacion->nombre_completo}}</td>
+                    <td>
+                        @if($reservacion->usuario)
+                            {{ $reservacion->usuario->getNombreCompleto() }}
+                        @else
+                            Usuario no encontrado
+                        @endif
+                    </td>
                     <td>{{$reservacion->fecha_reservada}}</td>
                     <td>{{$reservacion->hora_reserva_inicio}}</td>
                     <td>{{$reservacion->hora_reserva_final}}</td>
@@ -39,7 +45,11 @@
                 </tr>
             @endforeach
         </tbody>
-    </table>
+    </table> --}}
+
+    <div class="container mt-3">
+        <livewire:SalaVideoTable theme="bootstrap-5" />
+    </div>
 @endsection
 
 
