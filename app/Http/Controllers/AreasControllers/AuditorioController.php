@@ -6,8 +6,13 @@ use App\Models\AreasModels\AuditorioModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Controller;
-
+use App\Mail\AreaReservadaMail;
+use App\Models\AreasModels\AuditorioConfiguracion;
+use App\Models\DiaDeshabilitado;
+use Illuminate\Support\Facades\Mail;
 
 class AuditorioController extends Controller
 {
@@ -18,29 +23,60 @@ class AuditorioController extends Controller
 
     public function store(Request $request)
     {
+        $errors = [];
+
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'fecha_reservada_auditorio' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'hora_reserva_inicio_auditorio' => 'required|date_format:H:i',
+            'hora_reserva_final_auditorio' => 'required|date_format:H:i|after:hora_reserva_inicio_auditorio',
+            'numero_microfonos_auditorio' => 'required|integer|min:0|max:2',
+        ]);
+
+        // Verificar si la fecha seleccionada está deshabilitada
+        $fechaReservada = $request->fecha_reservada_auditorio;
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+            $errors['fecha_reservada_auditorio'] = 'La fecha seleccionada no está disponible para reservaciones.';
+        }
+
+        // Verificar si la hora de inicio no está reservada
+        $horaInicio = $request->hora_reserva_inicio_auditorio;
+        if (AuditorioModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
+            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
+        }
+
+        // Verificar si la hora de finalización no está reservada
+        $horaFinal = $request->hora_reserva_final_auditorio;
+        if (AuditorioModel::where('hora_reserva_final', $horaFinal)->exists()) {
+            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
+        }
+
+        // Combinar los errores de validación
+        $validator->errors()->add('general', collect($errors)->flatten());
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        // Crear una nueva instancia de la reserva
         $reservacion = new AuditorioModel();
         $reservacion->rpe = session('user');
-        $reservacion->fecha_reservada = $request->fecha_reservada_auditorio;
-        $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio_auditorio;
-        $reservacion->hora_reserva_final = $request->hora_reserva_final_auditorio;
+        $reservacion->fecha_reservada = $fechaReservada;
+        $reservacion->hora_reserva_inicio = $horaInicio;
+        $reservacion->hora_reserva_final = $horaFinal;
         $reservacion->numero_microfonos = $request->numero_microfonos_auditorio;
 
-        if ($request->usa_proyector_auditorio == 'true') //Si es 1 (osea si se selecciono)
-            $reservacion->usa_proyector = true;
-        else
-            $reservacion->usa_proyector = false;
+        // Establecer los valores booleanos basados en las entradas del formulario
+        $reservacion->usa_proyector = $request->has('usa_proyector_auditorio');
+        $reservacion->usa_computadora = $request->has('usa_computadora_auditorio');
+        $reservacion->usa_bocinas = $request->has('usa_bocinas_auditorio');
 
-        if ($request->usa_computadora_auditorio == 'true') //Si es 1 (osea si se selecciono)
-            $reservacion->usa_computadora = true;
-        else
-            $reservacion->usa_computadora = false;
-
-        if ($request->usa_bocinas_auditorio == 'true') //Si es 1 (osea si se selecciono)
-            $reservacion->usa_bocinas = true;
-        else
-            $reservacion->usa_bocinas = false;
-
+        // Guardar la reserva
         $reservacion->save();
+
+        $correo = new AreaReservadaMail($reservacion->rpe, 'Iván', $reservacion->fecha_reservada, $reservacion->hora_reserva_inicio, $reservacion->hora_reserva_final);
+        Mail::to('ivan18rt@outlook.com')->send($correo);
 
         return redirect()->back()->with('status', 'Se ha reservado el auditorio correctamente');
     }
@@ -49,13 +85,13 @@ class AuditorioController extends Controller
     {
         $reservaciones = AuditorioModel::all();
 
-        return view('AdminPanel', compact('reservaciones'));
+        return view('areas.auditorio.admin', compact('reservaciones'));
     }
 
     public function showHorasDia(Request $request)
     {
         // $reservaciones = AuditorioModel::where('fechaReservada', $fecha)->get();
-        return view('reservaciones_auditorio');
+        return view('areas.auditorio.ver');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
@@ -65,40 +101,87 @@ class AuditorioController extends Controller
         return response()->json($horasAgendadas);
     }
 
-    // Edita una cita
-    public function editaCita($idCita){
-        $cita = AuditorioModel::find($idCita);
-        return view('editCitaLaboratorio', compact('cita'));
+    // Edita una reservacion
+    public function edit($id){
+        $reservacion = AuditorioModel::find($id);
+        return view('areas.auditorio.editar', compact('reservacion'));
     }
 
-    public function updateCita(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $cita = AuditorioModel::find($id);
-        $cita->id = $request->input('id');
-        $cita->numEquipos = $request->input('numEquipos');
-        $cita->fechaReservada = $request->input('fechaReservada');
-        $cita->horaReservaInicio = $request->input('horaReservaInicio');
-        $cita->horaReservaFinal = $request->input('horaReservaFinal');
-        $cita->usaProyector = $request->input('usaProyector');
-        $cita->reqAdicionales = $request->input('reqAdicionales');
-        $cita->Rpe = $request->input('Rpe');
-        $cita->nombreCompleto = $request->input('nombreCompleto');
-        $cita->materia = $request->input('materia');
-        $cita->actividad = $request->input('actividad');
-        $cita->nombreCurso = $request->input('nombreCurso');
-        $cita->update();
-        return redirect()->back()->with('status','Cita actualizada correctamente');
+        $errors = [];
+
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'fecha_reservada' => 'required|date',
+            'hora_reserva_inicio' => 'required|date_format:H:i',
+            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos' => 'required|integer|min:0|max:2',
+        ]);
+
+        // Verificar si la fecha seleccionada está deshabilitada
+        $fechaReservada = $request->fecha_reservada_auditorio;
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+            $errors['fecha_reservada_auditorio'] = 'La fecha seleccionada no está disponible para reservaciones.';
+        }
+
+        // Verificar si la hora de inicio no está reservada
+        $horaInicio = $request->hora_reserva_inicio_auditorio;
+        if (AuditorioModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
+            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
+        }
+
+        // Verificar si la hora de finalización no está reservada
+        $horaFinal = $request->hora_reserva_final_auditorio;
+        if (AuditorioModel::where('hora_reserva_final', $horaFinal)->exists()) {
+            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
+        }
+
+        // Combinar los errores de validación
+        $validator->errors()->add('general', collect($errors)->flatten());
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        $reservacion = AuditorioModel::find($id);
+        $reservacion->id = $request->input('id');
+        $reservacion->rpe = $request->input('rpe');
+        $reservacion->fecha_reservada = $request->input('fecha_reservada');
+        $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
+        $reservacion->hora_reserva_final = $request->input('hora_reserva_final');
+        $reservacion->usa_proyector = $request->input('usa_proyector');
+        $reservacion->numero_microfonos = $request->input('numero_microfonos');
+        $reservacion->usa_computadora = $request->input('usa_computadora');
+        $reservacion->usa_bocinas = $request->input('usa_bocinas');
+        $reservacion->update();
+        return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
-    public function borrarCita($idCita)
+    public function delete($id)
     {
-        $citaLab = AuditorioModel::find($idCita);
-        $citaLab->delete();
-        return redirect()->back()->with('status', 'Cita borrada correctamente');
+        $reservacion = AuditorioModel::find($id);
+        $reservacion->delete();
+        return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
     public function diasInhabiles()
     {
-        return view('diasDesactivados');
+        return view('dias_deshabilitados');
+    }
+
+    public function configure()
+    {
+        $configuracion = AuditorioConfiguracion::first();
+        return view('areas.auditorio.configure', compact('configuracion'));
+    }
+
+    public function updateConfiguration(Request $request)
+    {
+        $configuracion = new AuditorioConfiguracion();
+        $configuracion->numero_microfonos = $request->input('numero_microfonos');
+        $configuracion->update();
+        return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }

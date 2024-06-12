@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('clave')->unique();
-            $table->string('apellido_materno');
             $table->string('apellido_paterno');
+            $table->string('apellido_materno');
             $table->string('nombres');
             $table->string('tipo');
             $table->string('correo')->unique();

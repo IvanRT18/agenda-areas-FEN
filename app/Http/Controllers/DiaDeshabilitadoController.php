@@ -10,12 +10,12 @@ class DiaDeshabilitadoController extends Controller
     public function index()
     {
         $diasDeshabilitados = DiaDeshabilitado::all();
-        return view('diasDesactivados', compact('diasDeshabilitados'));
+        return view('dias_deshabilitados', compact('diasDeshabilitados'));
     }
 
     public function store(Request $request)
     {
-        $this->eliminaAllDiasDeshabilitados();
+        $this->habilitaTodosDias();
         if ($request->input('agregarDiaDesactivadoInput') !== null) {
             $diasdata = $request->input('agregarDiaDesactivadoInput');
             $fechas = $this->extraerFechas($diasdata);
@@ -24,7 +24,7 @@ class DiaDeshabilitadoController extends Controller
                 $diaDeshabilitadoFecha = new DiaDeshabilitado();
         
                 // Asignar la fecha al modelo
-                $diaDeshabilitadoFecha->diaDeshabiliado = $fecha;
+                $diaDeshabilitadoFecha->dias_deshabilitado = $fecha;
         
                 // Guardar el modelo
                 $diaDeshabilitadoFecha->save();
@@ -35,19 +35,18 @@ class DiaDeshabilitadoController extends Controller
         
     }
 
-    public function allDiasDeshabilitados(){
+    public function getAllDisabledDays(){
         $diasDeshabilitados = DiaDeshabilitado::all();
-
         return response()->json($diasDeshabilitados);
     }
 
-    public function eliminaDiaDeshabilitado($idDia){
-        $diaDisabled = DiaDeshabilitado::find($idDia);
-        $diaDisabled->delete();
+    public function habilitaDia($id){
+        $diaDeshabilitado = DiaDeshabilitado::find($id);
+        $diaDeshabilitado->delete();
         return redirect()->back()->with('status', 'Día nuevamente habilitado para agendar');
     }
 
-    public function eliminaAllDiasDeshabilitados(){
+    public function habilitaTodosDias(){
         DiaDeshabilitado::truncate();
         return redirect()->back()->with('status', 'Se han borrado todos los dias deshabilitados');
     }

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\AreasControllers;
 
-use App\Models\AreasModels\LaboratorioCita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use App\Http\Controllers\Controller;
+use App\Models\AreasModels\AulaMagnaConfiguracion;
 use App\Models\AreasModels\AulaMagnaModel;
+use App\Models\DiaDeshabilitado;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class AulaMagnaController extends Controller
 {
@@ -18,6 +21,42 @@ class AulaMagnaController extends Controller
 
     public function store(Request $request)
     {
+        $errors = [];
+
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'fecha_reservada_magna' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'hora_reserva_inicio_magna' => 'required|date_format:H:i',
+            'hora_reserva_final_magna' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos_magna' => 'required|integer|min:0|max:2',
+        ]);
+
+        // Verificar si la fecha seleccionada está deshabilitada
+        $fechaReservada = $request->fecha_reservada;
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+            $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
+        }
+
+        // Verificar si la hora de inicio no está reservada
+        $horaInicio = $request->hora_reserva_inicio;
+        if (AulaMagnaModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
+            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
+        }
+
+        // Verificar si la hora de finalización no está reservada
+        $horaFinal = $request->hora_reserva_final;
+        if (AulaMagnaModel::where('hora_reserva_final', $horaFinal)->exists()) {
+            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
+        }
+
+        // Combinar los errores de validación
+        $validator->errors()->add('general', collect($errors)->flatten());
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
         $reservacion = new AulaMagnaModel();
         $reservacion->rpe = session('user');
         $reservacion->fecha_reservada = $request->fecha_reservada_magna;
@@ -47,59 +86,105 @@ class AulaMagnaController extends Controller
 
     public function showAll(Request $request)
     {
-        $reservaciones = LaboratorioCita::all();
-
-        return view('AdminPanel', compact('reservaciones'));
+        $reservaciones = AulaMagnaModel::all();
+        return view('areas.aula-magna.admin', compact('reservaciones'));
     }
 
     public function showHorasDia(Request $request)
     {
-        // $reservaciones = LaboratorioCita::where('fechaReservada', $fecha)->get();
-        return view('areas.reservaciones_aula_magna');
+        // $reservaciones = LaboratorioModel::where('fechaReservada', $fecha)->get();
+        return view('areas.aula-magna.ver');
     }
 
     // Recibe una fecha (string) y devuelve las horas que se han agendado ese día
     public function horasAgendadas($fecha)
     {
-        $horasAgendadas = LaboratorioCita::where('fechaReservada', $fecha)->get();
+        $horasAgendadas = AulaMagnaModel::where('fecha_reservada', $fecha)->get();
 
         return response()->json($horasAgendadas);
     }
 
-    // Edita una cita
-    public function editaCita($idCita){
-        $cita = LaboratorioCita::find($idCita);
-        return view('editCitaLaboratorio', compact('cita'));
+    // Edita una reservación
+    public function edit($id){
+        $reservacion = AulaMagnaModel::find($id);
+        return view('areas.aula-magna.editar', compact('reservacion'));
     }
 
-    public function updateCita(Request $request, $id)
+    public function update(Request $request, $id)
     {
-        $cita = LaboratorioCita::find($id);
-        $cita->id = $request->input('id');
-        $cita->numEquipos = $request->input('numEquipos');
-        $cita->fechaReservada = $request->input('fechaReservada');
-        $cita->horaReservaInicio = $request->input('horaReservaInicio');
-        $cita->horaReservaFinal = $request->input('horaReservaFinal');
-        $cita->usaProyector = $request->input('usaProyector');
-        $cita->reqAdicionales = $request->input('reqAdicionales');
-        $cita->Rpe = $request->input('Rpe');
-        $cita->nombreCompleto = $request->input('nombreCompleto');
-        $cita->materia = $request->input('materia');
-        $cita->actividad = $request->input('actividad');
-        $cita->nombreCurso = $request->input('nombreCurso');
-        $cita->update();
-        return redirect()->back()->with('status','Cita actualizada correctamente');
+        $errors = [];
+
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'fecha_reservada' => 'required|date',
+            'hora_reserva_inicio' => 'required|date_format:H:i',
+            'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
+            'numero_microfonos' => 'required|integer|min:0|max:2',
+        ]);
+
+        // Verificar si la fecha seleccionada está deshabilitada
+        $fechaReservada = $request->fecha_reservada;
+        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+            $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
+        }
+
+        // Verificar si la hora de inicio no está reservada
+        $horaInicio = $request->hora_reserva_inicio;
+        if (AulaMagnaModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
+            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
+        }
+
+        // Verificar si la hora de finalización no está reservada
+        $horaFinal = $request->hora_reserva_final;
+        if (AulaMagnaModel::where('hora_reserva_final', $horaFinal)->exists()) {
+            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
+        }
+
+        // Combinar los errores de validación
+        $validator->errors()->add('general', collect($errors)->flatten());
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
+        $reservacion = AulaMagnaModel::find($id);
+        $reservacion->id = $request->input('id');
+        $reservacion->rpe = $request->input('rpe');
+        $reservacion->fecha_reservada = $request->input('fecha_reservada');
+        $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
+        $reservacion->hora_reserva_final = $request->input('hora_reserva_final');
+        $reservacion->usa_proyector = $request->input('usa_proyector');
+        $reservacion->numero_microfonos = $request->input('numero_microfonos');
+        $reservacion->usa_computadora = $request->input('usa_computadora');
+        $reservacion->usa_bocinas = $request->input('usa_bocinas');
+        $reservacion->update();
+        return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
-    public function borrarCita($idCita)
+    public function delete($id)
     {
-        $citaLab = LaboratorioCita::find($idCita);
-        $citaLab->delete();
-        return redirect()->back()->with('status', 'Cita borrada correctamente');
+        $reservacion = AulaMagnaModel::find($id);
+        $reservacion->delete();
+        return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
     public function diasInhabiles()
     {
-        return view('diasDesactivados');
+        return view('dias_deshabilitados');
+    }
+
+    public function configure()
+    {
+        $configuracion = AulaMagnaConfiguracion::first();
+        return view('areas.aula-magna.configure', compact('configuracion'));
+    }
+
+    public function updateConfiguration(Request $request)
+    {
+        $configuracion = AulaMagnaConfiguracion::first();
+        $configuracion->numero_microfonos = $request->input('numero_microfonos');
+        $configuracion->save();
+        return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }

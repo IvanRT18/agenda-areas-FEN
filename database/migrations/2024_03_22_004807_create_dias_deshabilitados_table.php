@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('dias_deshabilitados', function (Blueprint $table) {
             $table->id();
-            $table->string('diaDeshabiliado');
+            $table->string('dias_deshabilitado');
             $table->timestamps();
         });
     }

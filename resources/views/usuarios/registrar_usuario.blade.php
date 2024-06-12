@@ -82,7 +82,7 @@
             </div>
             <div class="card-body">
 
-                <form action="{{ url('registrar-usuario') }}" method="POST">
+                <form action="{{ url('administrador/usuarios/registrar') }}" method="POST">
                     @csrf
 
                     <div class="form-group mb-3">
@@ -102,6 +102,7 @@
                         <input type="text" name="nombres" id="nombres" class="form-control" value="{{ old('nombres') }}">
                     </div>
                     <div class="form-group mb-3">
+                        <label for="tipo">Tipo de usuario</label>
                         <select class="form-select" aria-label="Default select example" name="tipo">
                             <option value="docente" {{ old('tipo') == 'docente' ? 'selected' : '' }} >Docente</option>
                             <option value="administrador" {{ old('tipo') == 'administrador' ? 'selected' : '' }}>Administrador</option>
@@ -117,6 +118,13 @@
                 </form>
 
             </div>
+        </div>
+        <div id="Creditos" style="margin-top: 200px">          
+            <h4>Universidad Autónoma de San Luis Potosí</h4>
+                Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
+            San Luis Potosí, S.L.P. México                <br>
+            Tel.  (444) 826 2300<br>
+            ©<span id="lbAño">2024</span> © Todos los derechos reservados.           
         </div>
     </div>
 </body>

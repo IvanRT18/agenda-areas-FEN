@@ -89,49 +89,81 @@
         <div class="container-fluid d-inline-flex justify-content-between mt-3">
             <a href="{{ url('dias-inhabilitados-laboratorio') }}" class="btn btn-info btn-sm fs-6">Días inhabilitados</a>
 
-            <a href="{{ url('registrar-usuario') }}" class="btn btn-success btn-sm fs-6">Registrar nuevo usuario</a>
+            <a href="{{ url('administrador/usuarios/registrar') }}" class="btn btn-success btn-sm fs-6">Registrar nuevo usuario</a>
+
+            {{-- Modal ver horas reservadas de área --}}
+            <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
+                Reservaciones
+            </button>
 
             <!-- Modal selecciona área horas reservadas -->
             <button type="button" class="btn btn-danger fs-6" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                Ver horas reservadas
+                Mostrar horas reservadas
             </button>
-        
-        <!-- Modal -->
-        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="staticBackdropLabel">Seleccione el área</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="flex flex-column">
-                        <a href="{{ url('horas-reservadas/auditorio') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Auditorio</a>
-                        <a href="{{ url('horas-reservadas/aula-magna') }}" class="btn btn-success btn-sm fs-6 mb-3">Aula Magna</a>
-                        <a href="{{ url('horas-reservadas/laboratorio') }}" class="btn btn-success btn-sm fs-6 mb-3">Laboratorio de cómputo</a>
-                        <a href="{{ url('horas-reservadas/sala-videoconferencias') }}" class="btn btn-success btn-sm fs-6 mb-3">Sala de videoconferencia</a>
+
+            {{-- Cerrar sesión --}}
+            <form action="{{url('/logout')}}">
+                <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
+            </form>
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Seleccione el área</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="flex flex-column">
+                                <a href="{{ url('horas-reservadas/auditorio') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Auditorio</a>
+                                <a href="{{ url('horas-reservadas/aula-magna') }}" class="btn btn-success btn-sm fs-6 mb-3">Aula Magna</a>
+                                <a href="{{ url('horas-reservadas/laboratorio') }}" class="btn btn-success btn-sm fs-6 mb-3">Laboratorio de cómputo</a>
+                                <a href="{{ url('horas-reservadas/sala-videoconferencias') }}" class="btn btn-success btn-sm fs-6 mb-3">Sala de videoconferencia</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+
+            <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel2">Seleccione el área</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="flex flex-column">
+                                <a href="{{ url('administrador/reservaciones/auditorio') }}" class="btn btn-success btn-sm fs-6 mb-3 ">Auditorio</a>
+                                <a href="{{ url('administrador/reservaciones/aula-magna') }}" class="btn btn-success btn-sm fs-6 mb-3">Aula Magna</a>
+                                <a href="{{ url('administrador/reservaciones/laboratorio') }}" class="btn btn-success btn-sm fs-6 mb-3">Laboratorio de cómputo</a>
+                                <a href="{{ url('administrador/reservaciones/sala-videoconferencias') }}" class="btn btn-success btn-sm fs-6 mb-3">Sala de videoconferencia</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
-        </div>
         </div>
 
         <table class="table table-bordered table-striped mt-3">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Número de equipos</th>
+                    <th>RPE</th>
+                    <th>Nombre Completo</th>
                     <th class="sortable-header" data-sort>Fecha Reservada<span class="sort-icon"></span></th>
                     <th>Empieza</th>
                     <th>Termina</th>
+                    <th>Número de equipos</th>
                     <th>Usa Proyector</th>
                     <th>Requerimientos adicionales</th>
-                    <th>RPE</th>
-                    <th>Nombre Completo</th>
                     <th>Materia</th>
                     <th>Actividad</th>
                     <th>Nombre Curso</th>
@@ -142,20 +174,20 @@
                 @foreach ($reservaciones as $reservacion)
                     <tr>
                         <td>{{$reservacion->id}}</td>
-                        <td>{{$reservacion->numEquipos}}</td>
-                        <td>{{$reservacion->fechaReservada}}</td>
-                        <td>{{$reservacion->horaReservaInicio}}</td>
-                        <td>{{$reservacion->horaReservaFinal}}</td>
-                        <td>{{$reservacion->usaProyector}}</td>
-                        <td>{{$reservacion->reqAdicionales}}</td>
-                        <td>{{$reservacion->Rpe}}</td>
-                        <td>{{$reservacion->nombreCompleto}}</td>
+                        <td>{{$reservacion->rpe}}</td>
+                        <td>{{$reservacion->nombre_completo}}</td>
+                        <td>{{$reservacion->fecha_reservada}}</td>
+                        <td>{{$reservacion->hora_reserva_inicio}}</td>
+                        <td>{{$reservacion->hora_reserva_final}}</td>
+                        <td>{{$reservacion->numero_equipos}}</td>
+                        <td>{{$reservacion->usa_proyector}}</td>
+                        <td>{{$reservacion->req_adicionales}}</td>
                         <td>{{$reservacion->materia}}</td>
                         <td>{{$reservacion->actividad}}</td>
-                        <td>{{$reservacion->nombreCurso}}</td>
+                        <td>{{$reservacion->nombre_curso}}</td>
                         <td>
-                            <a href="{{ url('/edita-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
-                            <a href="{{ url('borra-cita-laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{{ url('administrador/editar-reservacion/laboratorio/'.$reservacion->id) }}" class="btn btn-primary btn-sm">Edita</a>
+                            <a href="{{ url('administrador/borrar-reservacion/laboratorio/'.$reservacion->id) }}" class="btn btn-danger btn-sm">Delete</a>
                         </td>
                     </tr>
                 @endforeach

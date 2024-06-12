@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Área reservada - FEN</title>
+    <title>Confirmación de Reservación</title>
 </head>
 <body>
-    <h1>Se ha reservado el área correctamente</h1>
+
+    <p>Se ha realizado una nueva reservación en el auditorio:</p>
+
+    <p>Nombre completo: {{ $nombreCompleto }}</p>
+    <p>RPE: {{ $rpe }}</p>
+    <p>Fecha de Reservación: {{ $fechaReservada }}</p>
+    <p>Hora de Inicio: {{ $horaInicio }}</p>
+    <p>Hora de Finalización: {{ $horaFinal }}</p>
+
+    <p>¡Gracias!</p>
 </body>
 </html>
