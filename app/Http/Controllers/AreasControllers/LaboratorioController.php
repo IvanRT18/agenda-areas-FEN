@@ -9,6 +9,7 @@ use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AreaReservadaMail;
+use App\Models\AreasModels\LaboratorioConfiguracion;
 use App\Models\DiaDeshabilitado;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Validator;
@@ -213,6 +214,24 @@ class LaboratorioController extends Controller
 
     public function configure()
     {
-        return view('areas.laboratorio.configure');
+        $configuracion = LaboratorioConfiguracion::first();
+        return view('areas.laboratorio.configure', compact('configuracion'));
+    }
+
+    public function updateConfiguration(Request $request)
+    {
+        if ( LaboratorioConfiguracion::first()) 
+        {
+            $configuracion =  LaboratorioConfiguracion::first();
+            $configuracion->numero_computadoras = $request->input('numero_computadoras');
+            $configuracion->update();
+        }
+        else
+        {
+            $configuracion = new LaboratorioConfiguracion();
+            $configuracion->numero_computadoras = $request->input('numero_computadoras');
+            $configuracion->save();
+        }
+        return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }

@@ -179,9 +179,18 @@ class AulaMagnaController extends Controller
 
     public function updateConfiguration(Request $request)
     {
-        $configuracion = AulaMagnaConfiguracion::first();
-        $configuracion->numero_microfonos = $request->input('numero_microfonos');
-        $configuracion->save();
+        if ( AulaMagnaConfiguracion::first()) 
+        {
+            $configuracion =  AulaMagnaConfiguracion::first();
+            $configuracion->numero_microfonos = $request->input('numero_microfonos');
+            $configuracion->update();
+        }
+        else
+        {
+            $configuracion = new AulaMagnaConfiguracion();
+            $configuracion->numero_microfonos = $request->input('numero_microfonos');
+            $configuracion->save();
+        }
         return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }

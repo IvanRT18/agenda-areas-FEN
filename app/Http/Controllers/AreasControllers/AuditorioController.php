@@ -189,9 +189,18 @@ class AuditorioController extends Controller
 
     public function updateConfiguration(Request $request)
     {
-        $configuracion = new AuditorioConfiguracion();
-        $configuracion->numero_microfonos = $request->input('numero_microfonos');
-        $configuracion->update();
+        if ( AuditorioConfiguracion::first()) 
+        {
+            $configuracion =  AuditorioConfiguracion::first();
+            $configuracion->numero_microfonos = $request->input('numero_microfonos');
+            $configuracion->update();
+        }
+        else
+        {
+            $configuracion = new AuditorioConfiguracion();
+            $configuracion->numero_microfonos = $request->input('numero_microfonos');
+            $configuracion->save();
+        }
         return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }

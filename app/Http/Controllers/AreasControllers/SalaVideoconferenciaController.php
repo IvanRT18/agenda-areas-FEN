@@ -163,32 +163,24 @@ class SalaVideoconferenciaController extends Controller
 
     public function configure()
     {
-        if (SalaVideoconferenciasConfiguracion::first()) {
-            $configuracion = SalaVideoconferenciasConfiguracion::first();
-            return view('areas.sala-videoconferencias.configure', compact('configuracion'));
-        }
-        else
-        {
-            return view('areas.sala-videoconferencias.configure');
-        }
+        $configuracion = SalaVideoconferenciasConfiguracion::first();
+        return view('areas.sala-videoconferencias.configure', compact('configuracion'));
     }
 
     public function updateConfiguration(Request $request)
     {
-        if (SalaVideoconferenciasConfiguracion::first()) 
+        if ( SalaVideoconferenciasConfiguracion::first()) 
         {
             $configuracion = SalaVideoconferenciasConfiguracion::first();
             $configuracion->numero_microfonos = $request->input('numero_microfonos');
-            $configuracion->save();
-            return redirect()->back()->with('status','Configuración actualizada correctamente');
+            $configuracion->update();
         }
         else
         {
             $configuracion = new SalaVideoconferenciasConfiguracion();
             $configuracion->numero_microfonos = $request->input('numero_microfonos');
             $configuracion->save();
-            return redirect()->back()->with('status','Configuración actualizada correctamente');
         }
-        
+        return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
 }

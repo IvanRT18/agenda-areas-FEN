@@ -37,6 +37,19 @@ class UsuariosTable extends DataTableComponent
         ];
     }
 
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Eliminar',
+        ];
+    }
+
+    public function deleteSelected()
+    {
+        Usuario::whereIn('id', $this->selected)->delete();
+        $this->selected = [];
+    }
+
     public function columns(): array
     {
         return [

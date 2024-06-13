@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\AreasModels\AulaMagnaModel;
+use App\Models\AreasModels\SalaVideoConferenciaModel;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Session;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
@@ -33,6 +34,19 @@ class AulaMagnaTable extends DataTableComponent
                     }
                 }),
         ];
+    }
+
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Eliminar',
+        ];
+    }
+
+    public function deleteSelected()
+    {
+        SalaVideoConferenciaModel::whereIn('id', $this->selected)->delete();
+        $this->selected = [];
     }
 
     public function columns(): array
