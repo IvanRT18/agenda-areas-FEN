@@ -21,8 +21,6 @@ class AulaMagnaController extends Controller
 
     public function store(Request $request)
     {
-        $errors = [];
-
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
             'fecha_reservada_magna' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
@@ -31,54 +29,48 @@ class AulaMagnaController extends Controller
             'numero_microfonos_magna' => 'required|integer|min:0|max:2',
         ]);
 
-        // Verificar si la fecha seleccionada está deshabilitada
-        $fechaReservada = $request->fecha_reservada;
-        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
-            $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
-        }
+        // Agregar reglas de validación personalizadas usando after
+        $validator->after(function ($validator) use ($request) {
+            $fechaReservada = $request->fecha_reservada_magna;
 
-        // Verificar si la hora de inicio no está reservada
-        $horaInicio = $request->hora_reserva_inicio;
-        if (AulaMagnaModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
-            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
-        }
+            // Verificar si la fecha seleccionada está deshabilitada
+            if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+                $validator->errors()->add('fecha_reservada', 'La fecha seleccionada no está disponible para reservaciones.');
+            }
 
-        // Verificar si la hora de finalización no está reservada
-        $horaFinal = $request->hora_reserva_final;
-        if (AulaMagnaModel::where('hora_reserva_final', $horaFinal)->exists()) {
-            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
-        }
+            // Verificar si la hora de inicio/final no están reservadas y no se traslapen reservaciones 
+            $horaInicio = $request->hora_reserva_inicio_magna;
+            $horaFinal = $request->hora_reserva_final_magna;
+            
+            $overlap = AulaMagnaModel::where('fecha_reservada', $fechaReservada)
+            ->where(function($query) use ($horaInicio, $horaFinal) {
+                $query->where(function($q) use ($horaInicio, $horaFinal) {
+                    $q->where('hora_reserva_inicio', '<', $horaFinal)
+                    ->where('hora_reserva_final', '>', $horaInicio);
+                });
+            })
+            ->exists();
 
-        // Combinar los errores de validación
-        $validator->errors()->add('general', collect($errors)->flatten());
+            if ($overlap) {
+                $validator->errors()->add('hora_reservada', 'La hora seleccionada ya esta ocupada.');
+            }
+        });
 
         // Si hay errores, lanzar una excepción de validación
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
 
+        //Se guarda la reservacion si se valida que no hay confictos
         $reservacion = new AulaMagnaModel();
         $reservacion->rpe = session('user');
         $reservacion->fecha_reservada = $request->fecha_reservada_magna;
         $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio_magna;
         $reservacion->hora_reserva_final = $request->hora_reserva_final_magna;
         $reservacion->numero_microfonos = $request->numero_microfonos_magna;
-
-        if ($request->usa_proyector_magna == 'true') //Si es 1 (osea si se selecciono)
-            $reservacion->usa_proyector = true;
-        else
-            $reservacion->usa_proyector = false;
-
-        if ($request->usa_computadora_magna == 'true') //Si es 1 (osea si se selecciono)
-            $reservacion->usa_computadora = true;
-        else
-            $reservacion->usa_computadora = false;
-
-        if ($request->usa_bocinas_magna == 'true') //Si es 1 (osea si se selecciono)
-            $reservacion->usa_bocinas = true;
-        else
-            $reservacion->usa_bocinas = false;
-
+        $reservacion->usa_proyector = $request->usa_proyector_magna == 'true';
+        $reservacion->usa_computadora = $request->usa_computadora_magna == 'true';
+        $reservacion->usa_bocinas = $request->usa_bocinas_magna == 'true';
         $reservacion->save();
 
         return redirect()->back()->with('status', 'Se ha reservado el aula magna correctamente');
@@ -112,8 +104,6 @@ class AulaMagnaController extends Controller
 
     public function update(Request $request, $id)
     {
-        $errors = [];
-
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
             'fecha_reservada' => 'required|date',
@@ -122,26 +112,33 @@ class AulaMagnaController extends Controller
             'numero_microfonos' => 'required|integer|min:0|max:2',
         ]);
 
-        // Verificar si la fecha seleccionada está deshabilitada
-        $fechaReservada = $request->fecha_reservada;
-        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
-            $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
-        }
+        // Agregar reglas de validación personalizadas usando after
+        $validator->after(function ($validator) use ($request) {
+            $fechaReservada = $request->fecha_reservada;
 
-        // Verificar si la hora de inicio no está reservada
-        $horaInicio = $request->hora_reserva_inicio;
-        if (AulaMagnaModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
-            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
-        }
+            // Verificar si la fecha seleccionada está deshabilitada
+            if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+                $validator->errors()->add('fecha_reservada', 'La fecha seleccionada no está disponible para reservaciones.');
+            }
 
-        // Verificar si la hora de finalización no está reservada
-        $horaFinal = $request->hora_reserva_final;
-        if (AulaMagnaModel::where('hora_reserva_final', $horaFinal)->exists()) {
-            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
-        }
+            // Verificar si la hora de inicio/final no están reservadas y no se traslapen reservaciones 
+            $horaInicio = $request->hora_reserva_inicio;
+            $horaFinal = $request->hora_reserva_final;
+            
+            $overlap = AulaMagnaModel::where('fecha_reservada', $fechaReservada)
+            ->where(function($query) use ($horaInicio, $horaFinal) {
+                $query->where(function($q) use ($horaInicio, $horaFinal) {
+                    $q->where('hora_reserva_inicio', '<', $horaFinal)
+                    ->where('hora_reserva_final', '>', $horaInicio);
+                });
+            })
+            ->where('id', '<>', $request->id) // Excluir la reservación actual
+            ->exists();
 
-        // Combinar los errores de validación
-        $validator->errors()->add('general', collect($errors)->flatten());
+            if ($overlap) {
+                $validator->errors()->add('hora_reservada', 'La hora seleccionada ya esta ocupada.');
+            }
+        });
 
         // Si hay errores, lanzar una excepción de validación
         if ($validator->fails()) {

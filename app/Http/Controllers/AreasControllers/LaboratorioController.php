@@ -23,8 +23,6 @@ class LaboratorioController extends Controller
 
     public function store(Request $request)
     {
-        $errors = [];
-
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
             'fecha_reservada' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
@@ -33,54 +31,48 @@ class LaboratorioController extends Controller
             'numero_equipos' => 'required|integer|min:0|max:40',
         ]);
 
-        // Verificar si la fecha seleccionada está deshabilitada
-        $fechaReservada = $request->fecha_reservada;
-        if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
-            $errors['fecha_reservada'] = 'La fecha seleccionada no está disponible para reservaciones.';
-        }
+        // Agregar reglas de validación personalizadas usando after
+        $validator->after(function ($validator) use ($request) {
+            $fechaReservada = $request->fecha_reservada;
 
-        // Verificar si la hora de inicio no está reservada
-        $horaInicio = $request->hora_reserva_inicio;
-        if (LaboratorioModel::where('hora_reserva_inicio', $horaInicio)->exists()) {
-            $errors['hora_reserva_inicio'] = 'La hora seleccionada de inicio ya está reservada.';
-        }
+            // Verificar si la fecha seleccionada está deshabilitada
+            if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+                $validator->errors()->add('fecha_reservada', 'La fecha seleccionada no está disponible para reservaciones.');
+            }
 
-        // Verificar si la hora de finalización no está reservada
-        $horaFinal = $request->hora_reserva_final;
-        if (LaboratorioModel::where('hora_reserva_final', $horaFinal)->exists()) {
-            $errors['hora_reserva_final'] = 'La hora seleccionada de finalización ya está reservada.';
-        }
+            // Verificar si la hora de inicio/final no están reservadas y no se traslapen reservaciones 
+            $horaInicio = $request->hora_reserva_inicio;
+            $horaFinal = $request->hora_reserva_final;
+            
+            $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
+            ->where(function($query) use ($horaInicio, $horaFinal) {
+                $query->where(function($q) use ($horaInicio, $horaFinal) {
+                    $q->where('hora_reserva_inicio', '<', $horaFinal)
+                    ->where('hora_reserva_final', '>', $horaInicio);
+                });
+            })
+            ->exists();
 
-        // Combinar los errores de validación
-        $validator->errors()->add('general', collect($errors)->flatten());
+            if ($overlap) {
+                $validator->errors()->add('hora_reservada', 'La hora seleccionada ya esta ocupada.');
+            }
+        });
 
         // Si hay errores, lanzar una excepción de validación
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
 
+        //Se guarda la reservacion si se valida que no hay confictos
         $usuario = Usuario::where('clave', session('user'))->first();
         $reservacion = new LaboratorioModel();
         $reservacion->rpe = $usuario->getRpe();
-        // $reservacion->nombre_completo = $usuario->getNombreCompleto();
         $reservacion->numero_equipos = $request->numero_equipos;
         $reservacion->fecha_reservada = $request->fecha_reservada;
         $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio;
         $reservacion->hora_reserva_final = $request->hora_reserva_final;
-        if ($request->usa_proyector == 'true') //Si es 1 (osea si se selecciono)
-        {
-            $reservacion->usa_proyector = true;
-        }
-        else{
-            $reservacion->usa_proyector = false;
-        }
-
-        if ($request->numero_equipos > 30 ) {
-            $reservacion->ubicacion = 'Adelante';
-        }
-        else{
-            $reservacion->ubicacion = 'Atrás';
-        }
+        $reservacion->usa_proyector = $request->usa_proyector == 'true';
+        $reservacion->ubicacion = $request->numero_equipos > 30 ? 'Adelante' : 'Atrás';
         $reservacion->req_adicionales = $request->req_adicionales;
         $reservacion->materia = $request->materia;
         $reservacion->actividad = $request->actividad;
@@ -147,8 +139,6 @@ class LaboratorioController extends Controller
 
     public function update(Request $request, $id)
     {
-        $errors = [];
-
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
             'fecha_reservada' => 'required|date',
@@ -159,31 +149,33 @@ class LaboratorioController extends Controller
             'actividad' => 'required|string',
         ]);
 
-        // Si la validación falla, lanzar una excepción
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
+        // Agregar reglas de validación personalizadas usando after
+        $validator->after(function ($validator) use ($request) {
+            $fechaReservada = $request->fecha_reservada;
 
-        // Verificar solapamiento de horarios
-        $fechaReservada = $request->fecha_reservada;
-        $horaInicio = $request->hora_reserva_inicio;
-        $horaFinal = $request->hora_reserva_final;
+            // Verificar si la fecha seleccionada está deshabilitada
+            if (DiaDeshabilitado::where('dias_deshabilitado', $fechaReservada)->exists()) {
+                $validator->errors()->add('fecha_reservada', 'La fecha seleccionada no está disponible para reservaciones.');
+            }
 
-        $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
+            // Verificar si la hora de inicio/final no están reservadas y no se traslapen reservaciones 
+            $horaInicio = $request->hora_reserva_inicio;
+            $horaFinal = $request->hora_reserva_final;
+            
+            $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
             ->where(function($query) use ($horaInicio, $horaFinal) {
                 $query->where(function($q) use ($horaInicio, $horaFinal) {
                     $q->where('hora_reserva_inicio', '<', $horaFinal)
                     ->where('hora_reserva_final', '>', $horaInicio);
                 });
             })
-            ->where('id', '<>', $id) // Excluir la reservación actual
+            ->where('id', '<>', $request->id) // Excluir la reservación actual
             ->exists();
 
-        if ($overlap) {
-            $errors['hora_reserva'] = 'El rango de horas seleccionado ya esta reservado para esta fecha.';
-            $validator->errors()->add('general', collect($errors)->flatten());
-            throw new ValidationException($validator);
-        }
+            if ($overlap) {
+                $validator->errors()->add('hora_reservada', 'La hora seleccionada ya esta ocupada.');
+            }
+        });
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
