@@ -104,6 +104,7 @@ class SalaVideoconferenciaController extends Controller
             'hora_reserva_inicio' => 'required|date_format:H:i',
             'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
             'numero_microfonos' => 'required|integer|min:0',
+            'rpe' => 'required|exists:usuarios,clave',
         ]);
 
         // Agregar reglas de validación personalizadas usando after

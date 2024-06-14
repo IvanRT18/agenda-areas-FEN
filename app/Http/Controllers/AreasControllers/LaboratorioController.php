@@ -148,6 +148,7 @@ class LaboratorioController extends Controller
             'numero_equipos' => 'required|integer|min:0',
             'materia' => 'required|string',
             'actividad' => 'required|string',
+            'rpe' => 'required|exists:usuarios,clave', 
         ]);
 
         // Agregar reglas de validación personalizadas usando after
