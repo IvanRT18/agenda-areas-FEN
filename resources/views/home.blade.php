@@ -119,8 +119,8 @@
 
 
        {{-- Formulario Laboratorio de cómputo--}}
-       <form name="formLaboratorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/laboratorio')}}" id="formLaboratorio">
-           @csrf
+    <form name="formLaboratorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/laboratorio')}}" id="formLaboratorio">
+        @csrf
         <div class="flex flex-col col-xs-12 gap">
             {{-- <div class="flex flex-col">
                 <label for="ubicacion">Ubicación</label>
@@ -129,6 +129,15 @@
                     <option value="Adelante">Adelante</option>
                 </select>
             </div> --}}
+
+            <div>
+                <label for="numero_equipos">¿Cuantos equipos de cómputo usará?</label>
+                <div class="flex flex-row">
+                    <input id="numero_equipos" type="number" name="numero_equipos" min="1" max="40" required class="w-100"/>
+                    <a class="btn btn-primary" id="boton_numero_computadoras">Seleccionar equipos</a>
+                </div>
+                <span id="ubicacionCarga" class="hidden"> <p>Determinando ubicación...</p></span>
+            </div>
 
             <div class="flex flex-col">
                 <label for="fecha_reservada">Fecha para reservar:</label>
@@ -151,13 +160,6 @@
                     {{-- <input type="time" id="hora_reserva_final" name="hora_reserva_final" min="07:00" max="20:00" class="w-100" required> --}}
                     <input type="text" id="hora_reserva_final" name="hora_reserva_final" class="w-100" required/>
                     {{-- <span class="validity"></span> --}}
-                </div>
-            </div>
-
-            <div>
-                <label for="numero_equipos">¿Cuantos equipos de cómputo usará?</label>
-                <div class="flex flex-col">
-                    <input id="numero_equipos" type="number" name="numero_equipos" min="1" max="40" required/>
                 </div>
             </div>
             
@@ -189,7 +191,7 @@
 
             <input type="submit" name="AgendarButton" value="Agendar" id="AgendarButton" class="btn btn-primary">
         </div>
-        </form>
+    </form>
 
     {{-- Formulario auditorio --}}
     <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/auditorio')}}" id="formAuditorio">
@@ -361,4 +363,5 @@
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
 <script src="js/index.js"></script>
+{{-- <script src="js/laboratorio_index.js"></script> --}}
 </html>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class LaboratorioTable extends DataTableComponent
 {
@@ -34,6 +35,17 @@ class LaboratorioTable extends DataTableComponent
                         $query->whereDate('fecha_reservada', $value);
                     }
                 }),
+            SelectFilter::make('Ubicación')
+            ->options([
+                '' => 'Todos',
+                'Adelante' => 'Adelante',
+                'Atrás' => 'Atrás',
+            ])
+            ->filter(function($query, $value) {
+                if ($value) {
+                    $query->where('ubicacion', $value);
+                }
+            }),
         ];
     }
 

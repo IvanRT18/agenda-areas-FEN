@@ -46,7 +46,7 @@ class LaboratorioController extends Controller
             $horaFinal = $request->hora_reserva_final;
             
             $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
-            ->where(function($query) use ($horaInicio, $horaFinal) {
+            ->where('ubicacion', $request->numero_equipos > 30  ? 'Adelante' : 'Atrás')->where(function($query) use ($horaInicio, $horaFinal) {
                 $query->where(function($q) use ($horaInicio, $horaFinal) {
                     $q->where('hora_reserva_inicio', '<', $horaFinal)
                     ->where('hora_reserva_final', '>', $horaInicio);
