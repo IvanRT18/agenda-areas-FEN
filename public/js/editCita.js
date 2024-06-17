@@ -30,8 +30,10 @@ $(function() {
     let pathSegments = window.location.pathname.split('/');
     let area = pathSegments[pathSegments.length - 2]; // Obtiene la penúltima parte de la URL para saber en que área estamos
     let endpoint = '';
+    let ubicacionPrev = $('#ubicacion').val() === 'Adelante' ? 'adelante' : 'atras'; 
+    
 
-    endpoint =  '/horas-reservadas/' + area + "/" + $('#ubicacion') + "/" + $('#editFechaReservada').val();
+    endpoint =  '/horas-reservadas/' + area + "/" + ubicacionPrev + "/" + $('#editFechaReservada').val();
 
     getDisabledDays(endpoint);
     changeDay();
