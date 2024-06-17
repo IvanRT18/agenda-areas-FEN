@@ -363,5 +363,4 @@
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
 <script src="js/index.js"></script>
-{{-- <script src="js/laboratorio_index.js"></script> --}}
 </html>

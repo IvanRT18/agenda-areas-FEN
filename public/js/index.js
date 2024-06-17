@@ -39,11 +39,11 @@ $(function () {
     });
 
     //Determina la ubicacion en las reservaciones del auditorio
-    $('#ubicacion').on('change', function () {
-        let endpoint = "";
-        $("#ubicacion").val() === "Adelante" ? endpoint = '/horas-reservadas/laboratorio/adelante' : "/horas-reservadas/laboratorio/atras";
-        handleDayChange("#fecha_reservada", "#hora_reserva_inicio", "#hora_reserva_final", "#pantallaCarga", endpoint);
-    });
+    // $('#ubicacion').on('change', function () {
+    //     let endpoint = "";
+    //     $("#ubicacion").val() === "Adelante" ? endpoint = '/horas-reservadas/laboratorio/adelante' : "/horas-reservadas/laboratorio/atras";
+    //     handleDayChange("#fecha_reservada", "#hora_reserva_inicio", "#hora_reserva_final", "#pantallaCarga", endpoint);
+    // });
 
     //Muestra el formulario correspondiente dependiendo de lo que se eligio y oculta los otros formularios
     $("#radioContainer").on("click", function (event) {
@@ -54,6 +54,7 @@ $(function () {
             $(`#form${targetId.replace("radio", "")}`).removeClass("hidden");
 
             if (targetId === 'radioLaboratorio') {
+                let oldComputadoras = $('#numero_equipos').val(); 
                 let endpoint = '';
                 $('#fecha_reservada').prop('disabled', true);
                 $('#usa_proyector').prop('disabled', true);
@@ -63,37 +64,41 @@ $(function () {
                 $('#nombre_curso').prop('disabled', true);
 
                 $('#boton_numero_computadoras').on('click', function(){
-                    console.log($('#numero_equipos').val());
-                    $('#fecha_reservada').val('');
-                    $('#hora_reserva_inicio').val('');
-                    $('#hora_reserva_final').val('');
-                    $('#ubicacionCarga').removeClass("hidden");
-                    $('#fecha_reservada').prop('disabled', true);
-                    $('#hora_reserva_inicio').prop('disabled', true);
-                    $('#hora_reserva_final').prop('disabled', true);
-                    $('#usa_proyector').prop('disabled', true);
-                    $('#req_adicionales').prop('disabled', true);
-                    $('#materia').prop('disabled', true);
-                    $('#actividad').prop('disabled', true);
-                    $('#nombre_curso').prop('disabled', true);
-    
+                    if ($('#numero_equipos').val() !== oldComputadoras) {
+                        oldComputadoras = $('#numero_equipos').val();
+                        console.log($('#numero_equipos').val());
+                        $('#fecha_reservada').val('');
+                        $('#hora_reserva_inicio').val('');
+                        $('#hora_reserva_final').val('');
+                        $('#ubicacionCarga').removeClass("hidden");
+                        $('#fecha_reservada').prop('disabled', true);
+                        $('#hora_reserva_inicio').prop('disabled', true);
+                        $('#hora_reserva_final').prop('disabled', true);
+                        $('#usa_proyector').prop('disabled', true);
+                        $('#req_adicionales').prop('disabled', true);
+                        $('#materia').prop('disabled', true);
+                        $('#actividad').prop('disabled', true);
+                        $('#nombre_curso').prop('disabled', true);
+        
 
-                     // Espera de 1 segundo antes de habilitar los inputs
-                    setTimeout(function() {
-                        $('#fecha_reservada').prop('disabled', false);
-                        $('#usa_proyector').prop('disabled', false);
-                        $('#req_adicionales').prop('disabled', false);
-                        $('#materia').prop('disabled', false);
-                        $('#actividad').prop('disabled', false);
-                        $('#nombre_curso').prop('disabled', false);
-                        $('#ubicacionCarga').addClass("hidden");
-                        endpoint = $("#numero_equipos").val() > 30 ? '/horas-reservadas/laboratorio/adelante/' : "/horas-reservadas/laboratorio/atras/";
-                        console.log(endpoint);
+                        // Espera de 1 segundo antes de habilitar los inputs
+                        setTimeout(function() {
+                            console.log('timeout');
+                            $('#fecha_reservada').prop('disabled', false);
+                            $('#usa_proyector').prop('disabled', false);
+                            $('#req_adicionales').prop('disabled', false);
+                            $('#materia').prop('disabled', false);
+                            $('#actividad').prop('disabled', false);
+                            $('#nombre_curso').prop('disabled', false);
+                            $('#ubicacionCarga').addClass("hidden");
+                            endpoint = $("#numero_equipos").val() > 30 ? '/horas-reservadas/laboratorio/adelante/' : "/horas-reservadas/laboratorio/atras/";
+                            console.log(endpoint);
 
-                        $('#fecha_reservada').on('click', function(){
-                            handleDayChange("#fecha_reservada", "#hora_reserva_inicio", "#hora_reserva_final", "#pantallaCarga", endpoint);
-                        });
-                    }, 1000); // 1000 milisegundos = 1 segundo
+                            $('#fecha_reservada').on('click', function(){
+                                handleDayChange("#fecha_reservada", "#hora_reserva_inicio", "#hora_reserva_final", "#pantallaCarga", endpoint);
+                            });
+                        }, 1000); // 1000 milisegundos = 1 segundo
+                    }
                 });
             }
         }

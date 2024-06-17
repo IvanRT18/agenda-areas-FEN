@@ -22,15 +22,22 @@
             </div>
             <div class="form-group mb-3">
                 <label for="">RPE</label>
-                <input type="text" name="rpe" value="{{$reservacion->rpe}}" class="form-control">
+                <input type="text" name="rpe" id="rpe" value="{{$reservacion->rpe}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">Nombre Completo</label>
-                <input type="text" name="nombre_completo" disabled value="{{App\Models\Usuario::obtenerNombreCompletoPorClave($reservacion->rpe)}}" class="form-control">
+                <input type="text" name="nombre_completo" id="nombre_completo" disabled value="{{App\Models\Usuario::obtenerNombreCompletoPorClave($reservacion->rpe)}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">Fecha reservada</label>
-                <input id="editFechaReservada" type="date" name="fecha_reservada" value="{{$reservacion->fecha_reservada}}" class="form-control">
+                <input id="editFechaReservada" type="date" name="fecha_reservada" id="fecha_reservada" value="{{$reservacion->fecha_reservada}}" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="ubicacion">Ubicación</label>
+                <select class="form-select" aria-label="ubicacion reservacion laboratorio" name="ubicacion" id="ubicacion">
+                    <option value="Adelante" {{ $reservacion->ubicacion == 'Adelante' ? 'selected' : '' }} >Adelante</option>
+                    <option value="Atrás" {{ $reservacion->ubicacion == 'Atrás' ? 'selected' : '' }}>Atrás</option>
+                </select>
             </div>
             <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
             <div class="form-group mb-3">
@@ -43,34 +50,27 @@
             </div>
             <div class="form-group mb-3">
                 <label for="">Número de equipos</label>
-                <input type="text" name="numero_equipos" value="{{$reservacion->numero_equipos}}" class="form-control">
+                <input type="text" name="numero_equipos" id="numero_equipos" value="{{$reservacion->numero_equipos}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">¿Usa el proyector del laboratorio?</label>
-                <input type="text" name="usa_proyector" value="{{$reservacion->usa_proyector}}" class="form-control">
+                <input type="text" name="usa_proyector" id="usa_proyector" value="{{$reservacion->usa_proyector}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">Requerimientos adicionales</label>
-                <textarea type="text" name="req_adicionales" class="form-control">{{$reservacion->req_adicionales}}</textarea>
+                <textarea type="text" name="req_adicionales" id="req_adicionales" class="form-control">{{$reservacion->req_adicionales}}</textarea>
             </div>
             <div class="form-group mb-3">
                 <label for="">Materia</label>
-                <input type="text" name="materia" value="{{$reservacion->materia}}" class="form-control">
+                <input type="text" name="materia" id="materia" value="{{$reservacion->materia}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">Actividad</label>
-                <input type="text" name="actividad" value="{{$reservacion->actividad}}" class="form-control">
+                <input type="text" name="actividad" id="actividad" value="{{$reservacion->actividad}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">Nombre del Curso</label>
-                <input type="text" name="nombre_curso" value="{{$reservacion->nombre_curso}}" class="form-control">
-            </div>
-            <div class="form-group mb-3">
-                <label for="ubicacion">Ubicación</label>
-                <select class="form-select" aria-label="ubicacion reservacion laboratorio" name="ubicacion">
-                    <option value="Adelante" {{ $reservacion->ubicacion == 'Adelante' ? 'selected' : '' }} >Adelante</option>
-                    <option value="Atrás" {{ $reservacion->ubicacion == 'Atrás' ? 'selected' : '' }}>Atrás</option>
-                </select>
+                <input type="text" name="nombre_curso" id="nombre_curso" value="{{$reservacion->nombre_curso}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary">Actualizar reservación</button>
