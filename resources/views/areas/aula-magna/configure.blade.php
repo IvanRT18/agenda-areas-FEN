@@ -15,7 +15,7 @@
             @method('PUT')
             <div class="form-group mb-3">
                 <label for="">Número microfonos</label>
-                <input type="text" name="numero_microfonos" value="{{$configuracion->numero_microfonos}}" class="form-control">
+                <input type="text" name="numero_microfonos" value="{{$configuracion->numero_microfonos ?? 0}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary">Actualizar configuración</button>

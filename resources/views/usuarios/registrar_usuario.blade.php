@@ -77,7 +77,7 @@
         <div class="card mt-3">
             <div class="card-header">
                 <h4>Registrar usuario
-                    <a href="{{ url('administrador') }}" class="btn btn-danger float-end">Regresar</a>
+                    <a href="{{ url('administrador/usuarios') }}" class="btn btn-danger float-end">Regresar</a>
                 </h4>
             </div>
             <div class="card-body">
