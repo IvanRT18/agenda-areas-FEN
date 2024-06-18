@@ -31,6 +31,7 @@
             <div class="form-group mb-3">
                 <label for="">Fecha reservada</label>
                 <input id="editFechaReservada" type="date" name="fecha_reservada" id="fecha_reservada" value="{{$reservacion->fecha_reservada}}" class="form-control">
+                <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
             </div>
             <div class="form-group mb-3">
                 <label for="ubicacion">Ubicación</label>
@@ -39,7 +40,10 @@
                     <option value="Atrás" {{ $reservacion->ubicacion == 'Atrás' ? 'selected' : '' }}>Atrás</option>
                 </select>
             </div>
-            <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
+            <div class="form-group mb-3">
+                <label for="numero_equipos">Número de equipos</label>
+                <input type="text" name="numero_equipos" id="numero_equipos" value="{{$reservacion->numero_equipos}}" class="form-control">
+            </div>
             <div class="form-group mb-3">
                 <label for="">Hora de inicio de reservación</label>
                 <input type="text" name="hora_reserva_inicio" id="hora_reserva_inicio" value="{{$reservacion->hora_reserva_inicio}}" class="form-control">
@@ -47,10 +51,6 @@
             <div class="form-group mb-3">
                 <label for="">Hora de finalización de reservación</label>
                 <input type="text" name="hora_reserva_final" id="hora_reserva_final" value="{{$reservacion->hora_reserva_final}}" class="form-control">
-            </div>
-            <div class="form-group mb-3">
-                <label for="">Número de equipos</label>
-                <input type="text" name="numero_equipos" id="numero_equipos" value="{{$reservacion->numero_equipos}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <label for="">¿Usa el proyector del laboratorio?</label>

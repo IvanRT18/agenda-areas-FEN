@@ -152,7 +152,7 @@ class LaboratorioController extends Controller
         ]);
 
         // Agregar reglas de validación personalizadas usando after
-        $validator->after(function ($validator) use ($request) {
+        $validator->after(function ($validator) use ($request, $id) {
             $fechaReservada = $request->fecha_reservada;
 
             // Verificar si la fecha seleccionada está deshabilitada
@@ -164,18 +164,40 @@ class LaboratorioController extends Controller
             $horaInicio = $request->hora_reserva_inicio;
             $horaFinal = $request->hora_reserva_final;
             
+            //Verificación de citas
             $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
-            ->where(function($query) use ($horaInicio, $horaFinal) {
+            ->where('ubicacion', $request->ubicacion)->where(function($query) use ($horaInicio, $horaFinal) {
                 $query->where(function($q) use ($horaInicio, $horaFinal) {
                     $q->where('hora_reserva_inicio', '<', $horaFinal)
                     ->where('hora_reserva_final', '>', $horaInicio);
                 });
             })
             ->where('id', '<>', $request->id) // Excluir la reservación actual
-            ->exists();
+            ->first();
+            
+            // $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
+            // ->where(function($query) use ($horaInicio, $horaFinal) {
+            //     $query->where(function($q) use ($horaInicio, $horaFinal) {
+            //         $q->where('hora_reserva_inicio', '<', $horaFinal)
+            //         ->where('hora_reserva_final', '>', $horaInicio);
+            //     });
+            // })
+            // ->where('id', '<>', $request->id) // Excluir la reservación actual
+            // ->exists();
 
             if ($overlap) {
-                $validator->errors()->add('hora_reservada', 'La hora seleccionada ya esta ocupada.');
+                //Solo en caso de que haya una cita reservada a esa hora
+                $usuario = $overlap->usuario;
+                $mensajeError = "La hora seleccionada ya está ocupada por la reservación:<br>"
+                          . "ID: {$usuario->id},<br>"
+                          . "Nombre: {$usuario->getNombreCompleto()},<br>"
+                          . "RPE: {$usuario->clave},<br>"
+                          . "Fecha: {$overlap->fecha_reservada},<br>"
+                          . "Ubicación: {$overlap->ubicacion},<br>"
+                          . "Número de equipos: {$overlap->numero_equipos},<br>"
+                          . "Hora de Inicio: {$overlap->hora_reserva_inicio},<br>"
+                          . "Hora Final: {$overlap->hora_reserva_final}.";
+                $validator->errors()->add('hora_reservada', $mensajeError);
             }
         });
 
