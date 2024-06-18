@@ -36,9 +36,7 @@ Route::group(['middleware'=>['auth']], function(){
     Route::get('administrador', [LaboratorioController::class, 'showAll']);
     
     //Ruta de la pagina de inicio
-    Route::get('inicio', function(){
-        return view('home');
-    })->name('inicio');
+    Route::get('inicio', [LaboratorioController::class, 'index'])->name('inicio');
     
     //Rutas para ver las horas reservadas
     Route::prefix('horas-reservadas')->group(function () {

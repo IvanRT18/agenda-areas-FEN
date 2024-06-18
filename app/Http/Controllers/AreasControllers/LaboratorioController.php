@@ -9,7 +9,10 @@ use Illuminate\View\View;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AreaReservadaMail;
+use App\Models\AreasModels\AuditorioConfiguracion;
+use App\Models\AreasModels\AulaMagnaConfiguracion;
 use App\Models\AreasModels\LaboratorioConfiguracion;
+use App\Models\AreasModels\SalaVideoconferenciasConfiguracion;
 use App\Models\DiaDeshabilitado;
 use App\Models\Usuario;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +22,25 @@ class LaboratorioController extends Controller
 {
     public function index()
     {
-        return view('home');
+        // Obtener la configuración de todas las áreas
+        $laboratorioConfig = LaboratorioConfiguracion::first();
+        $auditorioConfig = AuditorioConfiguracion::first();
+        $aulaMagnaConfig = AulaMagnaConfiguracion::first();
+        $salaVideoconferenciasConfig = SalaVideoconferenciasConfiguracion::first();
+
+        // Asignar valores, usando 0 como predeterminado si no hay configuraciones
+        $numeroEquiposLaboratorio = $laboratorioConfig ? $laboratorioConfig->numero_computadoras : 0;
+        $numeroMicrofonosAuditorio = $auditorioConfig ? $auditorioConfig->numero_microfonos : 0;
+        $numeroMicrofonosAulaMagna = $aulaMagnaConfig ? $aulaMagnaConfig->numero_microfonos : 0;
+        $numeroMicrofonosSalaVideoconferencias = $salaVideoconferenciasConfig ? $salaVideoconferenciasConfig->numero_microfonos : 0;
+
+        // Pasar los valores a la vista
+        return view('home', compact(
+            'numeroEquiposLaboratorio',
+            'numeroMicrofonosAuditorio',
+            'numeroMicrofonosAulaMagna',
+            'numeroMicrofonosSalaVideoconferencias'
+        ));
     }
 
     public function store(Request $request)
@@ -29,8 +50,13 @@ class LaboratorioController extends Controller
             'fecha_reservada' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
             'hora_reserva_inicio' => 'required|date_format:H:i',
             'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
-            'numero_equipos' => 'required|integer|min:0|max:40',
+            'numero_equipos' => 'required|integer|min:1|max:40',
         ]);
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
 
         // Agregar reglas de validación personalizadas usando after
         $validator->after(function ($validator) use ($request) {
@@ -152,7 +178,7 @@ class LaboratorioController extends Controller
         ]);
 
         // Agregar reglas de validación personalizadas usando after
-        $validator->after(function ($validator) use ($request) {
+        $validator->after(function ($validator) use ($request, $id) {
             $fechaReservada = $request->fecha_reservada;
 
             // Verificar si la fecha seleccionada está deshabilitada
@@ -164,18 +190,40 @@ class LaboratorioController extends Controller
             $horaInicio = $request->hora_reserva_inicio;
             $horaFinal = $request->hora_reserva_final;
             
+            //Verificación de citas
             $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
-            ->where(function($query) use ($horaInicio, $horaFinal) {
+            ->where('ubicacion', $request->ubicacion)->where(function($query) use ($horaInicio, $horaFinal) {
                 $query->where(function($q) use ($horaInicio, $horaFinal) {
                     $q->where('hora_reserva_inicio', '<', $horaFinal)
                     ->where('hora_reserva_final', '>', $horaInicio);
                 });
             })
             ->where('id', '<>', $request->id) // Excluir la reservación actual
-            ->exists();
+            ->first();
+            
+            // $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
+            // ->where(function($query) use ($horaInicio, $horaFinal) {
+            //     $query->where(function($q) use ($horaInicio, $horaFinal) {
+            //         $q->where('hora_reserva_inicio', '<', $horaFinal)
+            //         ->where('hora_reserva_final', '>', $horaInicio);
+            //     });
+            // })
+            // ->where('id', '<>', $request->id) // Excluir la reservación actual
+            // ->exists();
 
             if ($overlap) {
-                $validator->errors()->add('hora_reservada', 'La hora seleccionada ya esta ocupada.');
+                //Solo en caso de que haya una cita reservada a esa hora
+                $usuario = $overlap->usuario;
+                $mensajeError = "La hora seleccionada ya está ocupada por la reservación:<br>"
+                          . "ID: {$usuario->id},<br>"
+                          . "Nombre: {$usuario->getNombreCompleto()},<br>"
+                          . "RPE: {$usuario->clave},<br>"
+                          . "Fecha: {$overlap->fecha_reservada},<br>"
+                          . "Ubicación: {$overlap->ubicacion},<br>"
+                          . "Número de equipos: {$overlap->numero_equipos},<br>"
+                          . "Hora de Inicio: {$overlap->hora_reserva_inicio},<br>"
+                          . "Hora Final: {$overlap->hora_reserva_final}.";
+                $validator->errors()->add('hora_reservada', $mensajeError);
             }
         });
 

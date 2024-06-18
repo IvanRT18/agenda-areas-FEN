@@ -12,6 +12,6 @@ class LaboratorioConfiguracion extends Model
     protected $table = 'laboratorio_configuracion';
 
     protected $fillable = [
-        'numero_microfonos'
+        'numero_computadoras'
     ];
 }

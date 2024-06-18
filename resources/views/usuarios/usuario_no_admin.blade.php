@@ -1,8 +1,8 @@
-@extends('layouts.editar_reservacion_layout')
+@extends('layouts.no_acceso_layout')
 
-@section('title', 'Editar usuario')
+@section('title', 'Usuario no administrador')
 
-@section('form-update')
+@section('content')
     <div style="margin-top: 2rem">
         <h1>Este usuario no es administrador.</h1>
         <p style="margin-top: 1rem">

@@ -31,39 +31,44 @@ $(function() {
     let area = pathSegments[pathSegments.length - 2]; // Obtiene la penúltima parte de la URL para saber en que área estamos
     let endpoint = '';
     let ubicacionPrev = $('#ubicacion').val() === 'Adelante' ? 'adelante' : 'atras'; 
-    
-
     endpoint =  '/horas-reservadas/' + area + "/" + ubicacionPrev + "/" + $('#editFechaReservada').val();
 
-    getDisabledDays(endpoint);
+    getDisabledHours(endpoint);
     changeDay();
 
     $('#ubicacion').on('change', function () {
-        $('#fecha_reservada').prop('disabled', false);
-        $('#hora_reserva_inicio').prop('disabled', false);
-        $('#hora_reserva_final').prop('disabled', false);
-
         $('#hora_reserva_inicio').val("");
         $('#hora_reserva_final').val("");
 
+        $('#fecha_reservada').prop('disabled', true);
+        $('#hora_reserva_inicio').prop('disabled', true);
+        $('#hora_reserva_final').prop('disabled', true);
+
         if ($('#ubicacion').val() === 'Adelante') {
             endpoint =  '/horas-reservadas/' + area + "/adelante/" + $('#editFechaReservada').val();
-            getDisabledDays(endpoint);
             changeDay();
+            getDisabledHours(endpoint);
         }
         else{
             endpoint =  '/horas-reservadas/' + area + "/atras/" + $('#editFechaReservada').val();
             console.log(endpoint);
-            getDisabledDays(endpoint);
             changeDay();
+            getDisabledHours(endpoint);
         }
     })
 
     // Realizar la llamada AJAX
-    function getDisabledDays(endpoint) {
+    function getDisabledHours(endpoint) {
+        //Desactiva momentaneamente los inputs mientras se hace la llamada AJAX
+        $('#fecha_reservada').prop('disabled', true);
+        $('#hora_reserva_inicio').prop('disabled', true);
+        $('#hora_reserva_final').prop('disabled', true);
+        $("#pantallaCarga").removeClass("hidden");
+
+
+
         let disabledHoras = [];
         $.get(endpoint, function (data) {
-    
             //Obtiene las horas reservadas de ese día
             data.forEach((hora) => {
                 // Se agrega cada rango de hora reservada al arreglo (excepto el rango de horas que se van a editar)
@@ -73,7 +78,8 @@ $(function() {
             });
     
             horasReservadas = [...disabledHoras];
-            console.log(horasReservadas);
+            console.log('horas reservadas');
+            console.log(endpoint);
     
             let finalDisablesHours = obtenRangosDeshabilitados(); //Obtiene las horas para el segundo input
     
@@ -146,12 +152,23 @@ $(function() {
                     disableTimeRanges: finalDisablesHours,
                 });
             });
+            
+
+            //Activa los inputs mientras se hace la llamada AJAX
+            $('#fecha_reservada').prop('disabled', false);
+            $('#hora_reserva_inicio').prop('disabled', false);
+            $('#hora_reserva_final').prop('disabled', false);
+            $("#pantallaCarga").addClass("hidden");
+
         });
     }
 
     //Si el usuario cambia a otro día, se hace el fetch de las hora reservadas de ese día, y la misma configuracion de los inputs
    function changeDay() {
-    $('#editFechaReservada').on('change', function () {
+       $('#editFechaReservada').on('change', function () {
+        let ubicacionPrev = $('#ubicacion').val() === 'Adelante' ? 'adelante' : 'atras'; 
+        endpoint =  '/horas-reservadas/' + area + "/" + ubicacionPrev + "/" + $('#editFechaReservada').val();
+        console.log(endpoint);
         console.log('se cambio el dia');
         //Mensaje de carga
         $("#pantallaCarga").removeClass("hidden");
@@ -161,7 +178,7 @@ $(function() {
 
         $('#hora_reserva_inicio').val("");
         $('#hora_reserva_final').val("");
-        endpoint =  '/horas-reservadas/' + area + "/" + $('#editFechaReservada').val();
+        // endpoint =  '/horas-reservadas/' + area + "/" + $('#editFechaReservada').val();
         // Realizar la llamada AJAX
         $.get(endpoint, function (data) {
             let disabledHoras = [];
