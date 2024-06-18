@@ -42,15 +42,15 @@
             </div>
             <div class="form-group mb-3">
                 <label for="numero_equipos">Número de equipos</label>
-                <input type="text" name="numero_equipos" id="numero_equipos" value="{{$reservacion->numero_equipos}}" class="form-control">
+                <input type="text" name="numero_equipos" id="numero_equipos" value="{{$reservacion->numero_equipos}}" class="form-control" required>
             </div>
             <div class="form-group mb-3">
                 <label for="">Hora de inicio de reservación</label>
-                <input type="text" name="hora_reserva_inicio" id="hora_reserva_inicio" value="{{$reservacion->hora_reserva_inicio}}" class="form-control">
+                <input type="text" name="hora_reserva_inicio" id="hora_reserva_inicio" value="{{$reservacion->hora_reserva_inicio}}" class="form-control" required>
             </div>
             <div class="form-group mb-3">
                 <label for="">Hora de finalización de reservación</label>
-                <input type="text" name="hora_reserva_final" id="hora_reserva_final" value="{{$reservacion->hora_reserva_final}}" class="form-control">
+                <input type="text" name="hora_reserva_final" id="hora_reserva_final" value="{{$reservacion->hora_reserva_final}}" class="form-control" required>
             </div>
             <div class="form-group mb-3">
                 <label for="">¿Usa el proyector del laboratorio?</label>

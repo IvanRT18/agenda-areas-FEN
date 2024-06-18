@@ -75,20 +75,6 @@
             </tr></tbody></table>
         </div>
 
-        {{-- Alerta --}}
-        <div class="container">
-            @if (session('status'))
-                <div class="flex flex-row justify-arnd alert alert-success">
-                    <h6 class="">{{ session('status') }}</h6>
-                    <button id="close-btn">X</button>
-                </div>
-            @endif
-            <div id="livewire-alert" style="display: none;" class="flex flex-row justify-arnd alert alert-success">
-                <h6>Reservación eliminada con éxito</h6>
-                <button id="close-btn-livewire">X</button>
-            </div>
-        </div>
-
         {{-- Navbar  --}}
         <nav class="navbar navbar-expand-lg navbar-dark fs-6" style="background-color: #1B3257;">
             <div class="container-fluid">
@@ -153,6 +139,20 @@
               </div>
             </div>
           </nav>
+
+        {{-- Alerta --}}
+        <div class="container">
+          @if (session('status'))
+              <div class="flex flex-row justify-arnd alert alert-success">
+                  <h6 class="">{{ session('status') }}</h6>
+                  <button id="close-btn">X</button>
+              </div>
+          @endif
+          <div id="livewire-alert" style="display: none;" class="flex flex-row justify-arnd alert alert-success">
+              <h6>Reservación eliminada con éxito</h6>
+              <button id="close-btn-livewire">X</button>
+          </div>
+      </div>
 
         {{-- Modal 2 --}}
         <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">

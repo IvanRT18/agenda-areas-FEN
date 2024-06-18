@@ -80,11 +80,11 @@
 
 
         <div style="
-        display: flex;
-        justify-content: space-between;
-        margin-top: 3rem;
-    ">
-    
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;"
+        >
+
             {{-- Muestra el nombre del usuario --}}
             <h1>
                 @if ($usuario && $usuario->getNombreCompleto())
@@ -105,7 +105,6 @@
                 <input type="submit" value="Cerrar Sesión" class="btn btn-primary">
             </form>
         </div>
-        
 
         {{-- Radios de areas para reservar --}}
         <div class="flex flex-col contenido gap align-center">
@@ -133,7 +132,7 @@
             <div>
                 <label for="numero_equipos">¿Cuantos equipos de cómputo usará?</label>
                 <div class="flex flex-row">
-                    <input id="numero_equipos" type="number" name="numero_equipos" min="1" max="40" required class="w-100"/>
+                    <input id="numero_equipos" type="number" name="numero_equipos" min="1" max="{{$numeroEquiposLaboratorio}}" required class="w-100"/>
                     <a class="btn btn-primary" id="boton_numero_computadoras">Seleccionar equipos</a>
                 </div>
                 <span id="ubicacionCarga" class="hidden"> <p>Determinando ubicación...</p></span>
@@ -226,7 +225,7 @@
                 <label for="numero_microfonos_auditorio">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos" min="0" max="2">
+                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos" min="0" max="{{$numeroMicrofonosAuditorio}}">
             </div>
     
             <div>
@@ -277,7 +276,7 @@
                 <label for="numero_microfonos_magna">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_magna" id="numero_microfonos_magna" min="0" max="2">
+                <input type="number" name="numero_microfonos_magna" id="numero_microfonos_magna" min="0" max="{{$numeroMicrofonosAulaMagna}}">
             </div>
     
             <div>
@@ -328,7 +327,7 @@
                 <label for="numero_microfonos_sala_video">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_sala_video" id="numero_microfonos_sala_video" min="0" max="2">
+                <input type="number" name="numero_microfonos_sala_video" id="numero_microfonos_sala_video" min="0" max="{{$numeroMicrofonosAulaMagna}}">
             </div>
     
             <div>
