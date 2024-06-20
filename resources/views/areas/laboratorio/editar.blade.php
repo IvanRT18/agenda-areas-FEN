@@ -65,8 +65,13 @@
                 <input type="text" name="materia" id="materia" value="{{$reservacion->materia}}" class="form-control">
             </div>
             <div class="form-group mb-3">
-                <label for="">Actividad</label>
-                <input type="text" name="actividad" id="actividad" value="{{$reservacion->actividad}}" class="form-control">
+                <label for="actividad">Actividad</label>
+                <select class="form-select" aria-label="Seleccion de actividad" name="actividad" id="actividad" required>
+                    <option value="Clase" {{ $reservacion->actividad == 'Clase' ? 'selected' : '' }}>Clase</option>
+                    <option value="Examen" {{ $reservacion->actividad == 'Examen' ? 'selected' : '' }}>Examen</option>
+                    <option value="Curso" {{ $reservacion->actividad == 'Curso' ? 'selected' : '' }}>Curso</option>
+                    <option value="Otro" {{ $reservacion->actividad == 'Otro' ? 'selected' : '' }}>Otro</option>
+                </select>
             </div>
             <div class="form-group mb-3">
                 <label for="">Nombre del Curso</label>

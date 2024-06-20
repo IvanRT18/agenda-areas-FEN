@@ -178,9 +178,19 @@
                 <input type="text" name="materia" id="materia" required>
             </div>
 
-            <div class="flex flex-col">
+            {{-- <div class="flex flex-col">
                 <label for="actividad">Actividad a realizar (clase/curso/examen/otro)</label>
                 <input type="text" name="actividad" id="actividad" required>
+            </div> --}}
+
+            <div class="flex flex-col">
+                <label for="actividad">Actividad a realizar (clase/curso/examen/otro)</label>
+                <select class="form-select" aria-label="Seleccion de actividad" name="actividad" id="actividad" required>
+                    <option value="Clase">Clase</option>
+                    <option value="Examen" >Examen</option>
+                    <option value="Curso">Curso</option>
+                    <option value="Otro">Otro</option>
+                </select>
             </div>
 
             <div class="flex flex-col">

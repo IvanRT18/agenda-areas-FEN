@@ -20,18 +20,20 @@ $(function() {
     $('#hora_reserva_final').timepicker({
         'step' : 30,
         timeFormat: 'H:i',
-    }); 
-
-    // $('#fecha_reservada').prop('disabled', true);
-    // $('#hora_reserva_inicio').prop('disabled', true);
-    // $('#hora_reserva_final').prop('disabled', true);
+    });
 
     // Obtener el área específica de la URL
     let pathSegments = window.location.pathname.split('/');
     let area = pathSegments[pathSegments.length - 2]; // Obtiene la penúltima parte de la URL para saber en que área estamos
     let endpoint = '';
-    let ubicacionPrev = $('#ubicacion').val() === 'Adelante' ? 'adelante' : 'atras'; 
-    endpoint =  '/horas-reservadas/' + area + "/" + ubicacionPrev + "/" + $('#editFechaReservada').val();
+    
+    if (area === 'laboratorio') {
+        let ubicacionPrev = $('#ubicacion').val() === 'Adelante' ? 'adelante' : 'atras'; 
+        endpoint =  '/horas-reservadas/' + area + "/" + ubicacionPrev + "/" + $('#editFechaReservada').val();
+    }
+    else{
+        endpoint =  '/horas-reservadas/' + area + "/" + $('#editFechaReservada').val();
+    }
 
     getDisabledHours(endpoint);
     changeDay();
@@ -64,8 +66,6 @@ $(function() {
         $('#hora_reserva_inicio').prop('disabled', true);
         $('#hora_reserva_final').prop('disabled', true);
         $("#pantallaCarga").removeClass("hidden");
-
-
 
         let disabledHoras = [];
         $.get(endpoint, function (data) {
@@ -153,21 +153,28 @@ $(function() {
                 });
             });
             
-
             //Activa los inputs mientras se hace la llamada AJAX
             $('#fecha_reservada').prop('disabled', false);
             $('#hora_reserva_inicio').prop('disabled', false);
             $('#hora_reserva_final').prop('disabled', false);
             $("#pantallaCarga").addClass("hidden");
-
         });
     }
 
     //Si el usuario cambia a otro día, se hace el fetch de las hora reservadas de ese día, y la misma configuracion de los inputs
    function changeDay() {
        $('#editFechaReservada').on('change', function () {
-        let ubicacionPrev = $('#ubicacion').val() === 'Adelante' ? 'adelante' : 'atras'; 
-        endpoint =  '/horas-reservadas/' + area + "/" + ubicacionPrev + "/" + $('#editFechaReservada').val();
+        // let ubicacionPrev = $('#ubicacion').val() === 'Adelante' ? 'adelante' : 'atras'; 
+        // endpoint =  '/horas-reservadas/' + area + "/" + ubicacionPrev + "/" + $('#editFechaReservada').val();
+
+        if (area === 'laboratorio') {
+            let ubicacionPrev = $('#ubicacion').val() === 'Adelante' ? 'adelante' : 'atras'; 
+            endpoint =  '/horas-reservadas/' + area + "/" + ubicacionPrev + "/" + $('#editFechaReservada').val();
+        }
+        else{
+            endpoint =  '/horas-reservadas/' + area + "/" + $('#editFechaReservada').val();
+        }
+
         console.log(endpoint);
         console.log('se cambio el dia');
         //Mensaje de carga
@@ -249,7 +256,6 @@ $(function() {
                 horasPastTemp.push(obtenerSiguienteMediaHora($('#hora_reserva_inicio').val())); //Agrega la hora seleccionada para que no se pueda usar como hora final
                 //Añade el rango de horas al arreglo total de horas deshabilitadas
                 finalDisablesHours.push(firstAndLast(horasPastTemp));
-
 
                 //Deshabilita las horas siguientes de una hora reservada
                 horasReservadas.forEach(horaPair => {
