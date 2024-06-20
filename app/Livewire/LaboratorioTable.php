@@ -10,10 +10,18 @@ use Illuminate\Support\Facades\Session;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class LaboratorioTable extends DataTableComponent
 {
+    public $area;
+
     protected $model = LaboratorioModel::class;
+
+    public function mount()
+    {
+        $this->area = Request::segment(3);
+    }
 
     public function configure(): void
     {
@@ -34,6 +42,30 @@ class LaboratorioTable extends DataTableComponent
                         $query->whereDate('fecha_reservada', $value);
                     }
                 }),
+            SelectFilter::make('Ubicación')
+            ->options([
+                '' => 'Todos',
+                'Adelante' => 'Adelante',
+                'Atrás' => 'Atrás',
+            ])
+            ->filter(function($query, $value) {
+                if ($value) {
+                    $query->where('ubicacion', $value);
+                }
+            }),
+            SelectFilter::make('Actividad')
+            ->options([
+                '' => 'Todos',
+                'Clase' => 'Clase',
+                'Examen' => 'Examen',
+                'Curso' => 'Curso',
+                'Otro' => 'Otro',
+            ])
+            ->filter(function($query, $value) {
+                if ($value) {
+                    $query->where('actividad', $value);
+                }
+            }),
         ];
     }
 
@@ -57,8 +89,6 @@ class LaboratorioTable extends DataTableComponent
 
     public function columns(): array
     {
-        $area = Request::segment(3);
-
         return [
             Column::make("ID", "id")
                 ->sortable(),
@@ -93,13 +123,13 @@ class LaboratorioTable extends DataTableComponent
                 ->sortable()->searchable(),
             Column::make("Ubicación", "ubicacion")
                 ->sortable(),
-            Column::make('Acciones')->label(function($row) use ($area) {
-                if ($area === null) {
-                    $area = 'laboratorio';
+            Column::make('Acciones')->label(function($row) {
+                if ($this->area === null) {
+                    $this->area = 'laboratorio';
                 }
                 return view('livewire.areas-actions-buttons', [
                     'usuarioId' => $row->id,
-                    'area' => $area,
+                    'area' => $this->area,
                 ]);
             })->html(),
         ];

@@ -73,7 +73,7 @@
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Editar reservaciones
+                      Ver reservaciones
                     </a>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/auditorio') }}">Auditorio</a></li>
@@ -127,7 +127,7 @@
                 @endif
 
                 {{-- Alerta de errores --}}
-                @if ($errors->any())
+                {{-- @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
                             @foreach ($errors->all() as $error)
@@ -135,7 +135,19 @@
                             @endforeach
                         </ul>
                     </div>
+                @endif --}}
+
+                
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{!! $error !!}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @endif
+
     
                 @yield('form-update')
             </div>

@@ -28,23 +28,12 @@ $(function () {
         .forEach(selector => disableHourInputs(selector));
 
     //Cuando se selecciona un dia del calendario
-    handleDayChange("#fecha_reservada", "#hora_reserva_inicio", "#hora_reserva_final", "#pantallaCarga", "/horas-reservadas/laboratorio/");
+    handleDayChange("#fecha_reservada", "#hora_reserva_inicio", "#hora_reserva_final", "#pantallaCarga", '');
     handleDayChange("#fecha_reservada_auditorio", "#hora_reserva_inicio_auditorio", "#hora_reserva_final_auditorio", "#pantallaCargaAuditorio", "/horas-reservadas/auditorio/");
     handleDayChange("#fecha_reservada_magna", "#hora_reserva_inicio_magna", "#hora_reserva_final_magna", "#pantallaCargaMagna", "/horas-reservadas/aula-magna/");
     handleDayChange("#fecha_reservada_sala_video", "#hora_reserva_inicio_sala_video", "#hora_reserva_final_sala_video", "#pantallaCargaSalaVideo", "/horas-reservadas/sala-videoconferencias/");
 
-    //Determina la ubicacion en las reservaciones del auditorio
-    $('#usa_proyector').on('click', function () {
-        $("#ubicacion").val($(this).is(":checked") ? "Adelante" : "Atrás");
-    });
-
-    //Determina la ubicacion en las reservaciones del auditorio
-    $('#ubicacion').on('change', function () {
-        let endpoint = "";
-        $("#ubicacion").val() === "Adelante" ? endpoint = '/horas-reservadas/laboratorio/adelante' : "/horas-reservadas/laboratorio/atras";
-        handleDayChange("#fecha_reservada", "#hora_reserva_inicio", "#hora_reserva_final", "#pantallaCarga", endpoint);
-    });
-
+    let oldComputadoras = 0;
     //Muestra el formulario correspondiente dependiendo de lo que se eligio y oculta los otros formularios
     $("#radioContainer").on("click", function (event) {
         hideAllForms();
@@ -52,13 +41,54 @@ $(function () {
         let targetId = target.type === "radio" ? target.id : target.htmlFor;
         if (targetId) {
             $(`#form${targetId.replace("radio", "")}`).removeClass("hidden");
+
+            if (targetId === 'radioLaboratorio') {
+                oldComputadoras = $('#numero_equipos').val(); 
+                $('#fecha_reservada').prop('disabled', true);
+                $('#usa_proyector').prop('disabled', true);
+                $('#req_adicionales').prop('disabled', true);
+                $('#materia').prop('disabled', true);
+                $('#actividad').prop('disabled', true);
+                $('#nombre_curso').prop('disabled', true);
+            }
         }
     });
 
-    function hideAllForms() {
-        $(".formulario").addClass("hidden");
-    }
+    $('#boton_numero_computadoras').on('click', function(){
+        if ($('#numero_equipos').val() !== oldComputadoras) {
+            oldComputadoras = $('#numero_equipos').val();
+            $('#fecha_reservada').val('');
+            $('#hora_reserva_inicio').val('');
+            $('#hora_reserva_final').val('');
+            $('#ubicacionCarga').removeClass("hidden");
+            $('#fecha_reservada').prop('disabled', true);
+            $('#hora_reserva_inicio').prop('disabled', true);
+            $('#hora_reserva_final').prop('disabled', true);
+            $('#usa_proyector').prop('disabled', true);
+            $('#req_adicionales').prop('disabled', true);
+            $('#materia').prop('disabled', true);
+            $('#actividad').prop('disabled', true);
+            $('#nombre_curso').prop('disabled', true);
+
+
+            // Espera de 1 segundo antes de habilitar los inputs
+            setTimeout(function() {
+                console.log('timeout');
+                $('#fecha_reservada').prop('disabled', false);
+                $('#usa_proyector').prop('disabled', false);
+                $('#req_adicionales').prop('disabled', false);
+                $('#materia').prop('disabled', false);
+                $('#actividad').prop('disabled', false);
+                $('#nombre_curso').prop('disabled', false);
+                $('#ubicacionCarga').addClass("hidden");
+            }, 1000); // 1000 milisegundos = 1 segundo
+        }
+    });
 });
+
+function hideAllForms() {
+    $(".formulario").addClass("hidden");
+}
 
 // Deshabilitar inputs de horas
 function disableHourInputs(selectorPrefix) {
@@ -118,7 +148,15 @@ function handleDayChange(diaReservaSelector, horaInicioSelector, horaFinalSelect
         $(horaFinalSelector).val("");
         $(cargaSelector).removeClass("hidden");
 
+        //Si es el laboratorio
+        if (diaReservaSelector.slice(1).toString() === 'fecha_reservada') {
+            url = $("#numero_equipos").val() > 30 ? '/horas-reservadas/laboratorio/adelante/' : "/horas-reservadas/laboratorio/atras/";
+        }
+        console.log(url);
+
         $.get(url + fechaSeleccionada, function (data) {
+            console.log(url + fechaSeleccionada);
+            console.log(data);
             let disabledHoras = [];
             let disabledHorasString = [];
             let horasFinalesSeleccionable = [];
@@ -159,6 +197,7 @@ function handleDayChange(diaReservaSelector, horaInicioSelector, horaFinalSelect
             $(horaInicioSelector).prop("disabled", false);
 
             $(horaInicioSelector).on("change", function () {
+                //Hora anteriores a la hora de inicio
                 $(horaFinalSelector).val("");
                 let horaSelDate = stringToDate($(horaInicioSelector).val());
                 let postDisabledHours = "";
@@ -169,18 +208,34 @@ function handleDayChange(diaReservaSelector, horaInicioSelector, horaFinalSelect
                 let indiceHora = obtenerIndiceHora($(horaInicioSelector).val(), horasAgendablesArray);
                 pastHours2.push(siguienteHora(indiceHora));
                 let horasDisables2 = firstAndLast(pastHours2);
-                let finalDisablesHours = obtenRangosDeshabilitados(disabledHorasString);
+
+                //Horas despues de encontrar una reservacion
+                let orderedDisabledHoras = ordenarHoras(disabledHorasString);
+                let finalDisablesHours = obtenRangosDeshabilitados(orderedDisabledHoras);
 
                 //Deshabilita las horas posteriores a una cita ya reservada
-                disabledHorasString.forEach((rango) => {
-                    if (stringToDate(rango[0]) > horaSelDate) {
-                        tempDisHours = datesObjectsToString(
-                            disablePostHoursString(rango[0])
-                        );
-                        tempDisHours.push("22:00");
-                        postDisabledHours = firstAndLast(tempDisHours);
-                    }
-                });
+                // orderedDisabledHoras.forEach((rango) => {
+                //     if (stringToDate(rango[0]) > horaSelDate) {
+                //         tempDisHours = datesObjectsToString(
+                //             disablePostHoursString(rango[0])
+                //         );
+                //         tempDisHours.push("22:00");
+                //         postDisabledHours = firstAndLast(tempDisHours);
+                //     }
+                // });
+
+                let rangoReservasDisaled = siguienteHora(obtenerIndiceHora(nextHoraAgendada($(horaInicioSelector).val(), orderedDisabledHoras), horasAgendablesArray));
+                if (rangoReservasDisaled) {
+                    tempDisHours = datesObjectsToString(
+                        disablePostHoursString(rangoReservasDisaled)
+                    );
+                    tempDisHours.push("22:00");
+                    postDisabledHours = firstAndLast(tempDisHours);
+                }
+                else
+                    tempDisHours = [];
+
+                console.log(tempDisHours);
 
                 finalDisablesHours.push(postDisabledHours);
                 finalDisablesHours.push(horasDisables2);
@@ -244,6 +299,17 @@ function disablePostHoursString($horaInicial) {
     return tempArray;
 }
 
+function nextHoraAgendada(horaBase, arreglo) {
+    let [horaBaseI] = horaBase.split(':').map(Number);
+    for (let i = 0; i < arreglo.length; i++) {
+        let [horaIterable] = arreglo[i][0].split(':').map(Number);
+            if (horaIterable > horaBaseI) {
+                return arreglo[i][0];
+            }   
+    }
+    return -1;
+}
+
 function firstAndLast(array) {
     return [array[0], array[array.length - 1]];
 }
@@ -253,11 +319,16 @@ function obtenerIndiceHora(hora, horasAgendablesArray) {
 }
 
 function siguienteHora(indiceHora) {
-    return horasAgendablesArray[indiceHora + 1] || horasAgendablesArray[0];
+    if (indiceHora !== -1) {
+        return horasAgendablesArray[indiceHora + 1] || horasAgendablesArray[0];
+    }
+    else{
+        return null;
+    }
 }
 
-function obtenRangosDeshabilitados(disabledHorasString) {
-    return disabledHorasString.map(rango => {
+function obtenRangosDeshabilitados(arreglo) {
+    return arreglo.map(rango => {
         let rangos = obtenerRangoHoras(rango[0], rango[1], horasAgendablesArray);
         if (rangos.length === 2) {
             return [rangos[1], siguienteHora(horasAgendablesArray.indexOf(rangos[1]))];
@@ -285,4 +356,17 @@ function cerrarModal() {
 
 function obtenerAñoFooter() {
     $("#lbAño").text(new Date().getFullYear());
+}
+
+function ordenarHoras(horas) {
+    return horas.sort((a, b) => {
+        let [horaA, minutoA] = a[0].split(':').map(Number);
+        let [horaB, minutoB] = b[0].split(':').map(Number);
+        
+        if (horaA !== horaB) {
+            return horaA - horaB; // Comparar horas
+        } else {
+            return minutoA - minutoB; // Comparar minutos si las horas son iguales
+        }
+    });
 }

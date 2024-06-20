@@ -10,12 +10,12 @@
         </h4>
     </div>
     <div class="card-body">
-        <form action="{{ url('administrador/actualizar-area/') }}" method="POST">
+        <form action="{{ url('administrador/actualizar-area/laboratorio') }}" method="POST">
             @csrf
             @method('PUT')
             <div class="form-group mb-3">
                 <label for="">Número de computadoras</label>
-                <input type="text" name="microfonos" value="" class="form-control">
+                <input type="text" name="numero_computadoras" value="{{$configuracion->numero_computadoras ?? 0}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary">Actualizar reservación</button>

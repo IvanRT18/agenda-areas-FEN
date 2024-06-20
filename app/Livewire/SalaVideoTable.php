@@ -13,7 +13,14 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 
 class SalaVideoTable extends DataTableComponent
 {
+    public $area;
+
     protected $model = SalaVideoConferenciaModel::class;
+
+    public function mount()
+    {
+        $this->area = Request::segment(3);
+    }
 
     public function configure(): void
     {
@@ -35,10 +42,21 @@ class SalaVideoTable extends DataTableComponent
         ];
     }
 
+    public function bulkActions(): array
+    {
+        return [
+            'deleteSelected' => 'Eliminar',
+        ];
+    }
+
+    public function deleteSelected()
+    {
+        SalaVideoConferenciaModel::whereIn('id', $this->selected)->delete();
+        $this->selected = [];
+    }
+
     public function columns(): array
     {
-        $area = Request::segment(3);
-
         return [
             Column::make("ID", "id")
                 ->sortable(),
@@ -67,10 +85,10 @@ class SalaVideoTable extends DataTableComponent
                 ->sortable(),
             BooleanColumn::make("Usa bocinas", "usa_bocinas")
                 ->sortable(),
-            Column::make('Acciones')->label(function($row) use ($area) {
+            Column::make('Acciones')->label(function($row) {
                 return view('livewire.areas-actions-buttons', [
                     'usuarioId' => $row->id,
-                    'area' => $area,
+                    'area' => $this->area,
                 ]);
             })->html(),
         ];
