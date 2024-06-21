@@ -15,9 +15,9 @@ const fullDiaActual = date.toISOString().slice(0, 10);
 const diaActual = diasArray[date.getDay()];
 $('#diaReservaLab').text(diaActual);
 
-// Determinar el endpoint dinámicamente según la página
-let endpoint = window.location.pathname.split('/').pop(); // Extrae el nombre de la página actual
-// Obtener las horas reservadas del servidor para el día actual
+// Determina el endpoint dinámicamente según la página
+let endpoint = window.location.pathname.split('/').pop(); // Extrae el nombre del área de la página actual
+// Obtiene las horas reservadas del área para el día actual
 $.get(`${endpoint}/${fullDiaActual}`, function (data) {
     disabledHoras = data.map(hora => {
         if (terminaEnTreinta(hora.hora_reserva_inicio) || terminaEnTreinta(hora.hora_reserva_final)) {
@@ -128,85 +128,127 @@ function obtenerHorasFinalesSeleccionables(disabledHoras, horasDate) {
 }
 
 // Función para dibujar las horas en el contenedor
-function dibujarHoras(horasArray, horasString, disabledHoras) {
+function dibujarHoras(horasArray, horasDisabledString, disabledHoras) {
     $('#horasContainer').empty(); // Limpiar el contenedor antes de dibujar las horas
     $('#horasContainerAtras').empty(); // Limpiar el contenedor antes de dibujar las horas
-    horasArray.forEach((hora, index) => {
-        const reservada = horasString.includes(hora); // Verificar si la hora está reservada
-        const claseHora = reservada ? 'bg-danger' : 'bg-success';
-        const horaFinal = index === horasArray.length - 1 ? '22:00' : horasArray[index + 1];
 
-        // Encontrar la reserva que incluye esta hora
-        let reserva;
-        if (endpoint === 'laboratorio') {
-            reserva = disabledHoras.find(r => {
-                const inicioRango = stringToDate(r.inicio);
-                const finRango = stringToDate(r.fin);
-                const horaDate = stringToDate(hora);
-                return horaDate >= inicioRango && horaDate < finRango;
-            });
+    console.log(ordenarArregloHoras(horasArray));
+    console.log(ordenarArregloHoras(horasDisabledString));
+    console.log(ordenarPorHoraInicio(disabledHoras));
 
-            const materia = reserva ? reserva.materia : '';
-            const actividad = reserva ? reserva.actividad : '';
+    horasArray = ordenarArregloHoras(horasArray);
+    horasDisabledString = ordenarArregloHoras(horasDisabledString);
+    disabledHoras = ordenarPorHoraInicio(disabledHoras);
 
-            let ubicacionLab = reserva ? reserva.ubicacion : '';
+    let reservacionesAdelante = disabledHoras.filter(reserva => reserva.ubicacion === 'Adelante');
+    let reservacionesAtras = disabledHoras.filter(reserva => reserva.ubicacion === 'Atrás');
 
+    reservacionesAdelante = completarHorario(reservacionesAdelante);
+    reservacionesAtras = completarHorario(reservacionesAtras);
 
-            if (ubicacionLab === 'Adelante') {
-                $('#horasContainer').append(
-                    `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                        <div>${hora} - ${horaFinal} hrs</div>
-                        <div class=''>
-                        ${reservada ? `<div>${actividad}</div>` : ''}
-                        ${reservada ? `<div>${materia}</div>` : ''}
-                        <div/>
-                    </div>`
-                );
-                $('#horasContainerAtras').append(
-                    `<div class='bg-success p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                        <div>${hora} - ${horaFinal} hrs</div>
-                        <div class=''>
-                        <div/>
-                    </div>`
-                );
-            }
-            else
-            {
-                $('#horasContainer').append(
-                    `<div class='bg-success p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                        <div>${hora} - ${horaFinal} hrs</div>
-                        <div class=''>
-                        <div/>
-                    </div>`
-                );
-                $('#horasContainerAtras').append(
-                    `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                        <div>${hora} - ${horaFinal} hrs</div>
-                        <div class=''>
-                        ${reservada ? `<div>${actividad}</div>` : ''}
-                        ${reservada ? `<div>${materia}</div>` : ''}
-                        <div/>
-                    </div>`
-                );
-            }
-        }
-        else{
-            reserva = disabledHoras.find(r => {
-                const inicioRango = stringToDate(r[0]);
-                const finRango = stringToDate(r[1]);
-                const horaDate = stringToDate(hora);
-                return horaDate >= inicioRango && horaDate < finRango;
-            });
-
-            $('#horasContainer').append(
-                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                    <div>${hora} - ${horaFinal} hrs</div>
-                    <div class=''>
-                    <div/>
-                </div>`
-            );
-        }
+    reservacionesAdelante.forEach((horaIterable, index) => {
+        const claseHora = horaIterable.materia === 'Libre' ? 'bg-success' : 'bg-danger'; // Verificar si la hora está reservada
+        $('#horasContainer').append(
+            `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
+                <div class=''>
+                <div>${horaIterable.actividad}</div>
+                <div>${horaIterable.materia}
+                <div/>
+            </div>`
+        );
     });
+
+    reservacionesAtras.forEach((horaIterable, index) => {
+        const claseHora = horaIterable.materia === 'Libre' ? 'bg-success' : 'bg-danger'; // Verificar si la hora está reservada
+        $('#horasContainerAtras').append(
+            `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
+                <div class=''>
+                <div>${horaIterable.actividad}</div>
+                <div>${horaIterable.materia}
+                <div/>
+            </div>`
+        );
+    });
+
+
+    // horasArray.forEach((hora, index) => {
+    //     const reservada = horasDisabledString.includes(hora); // Verificar si la hora está reservada
+    //     const claseHora = reservada ? 'bg-danger' : 'bg-success';
+    //     const horaFinal = index === horasArray.length - 1 ? '22:00' : horasArray[index + 1];
+
+    //     // Encontrar la reservación que hay en esa hora
+    //     let reserva;
+    //     if (endpoint === 'laboratorio') {
+    //         reserva = disabledHoras.find(r => {
+    //             const inicioRango = stringToDate(r.inicio);
+    //             const finRango = stringToDate(r.fin);
+    //             const horaDate = stringToDate(hora);
+    //             return horaDate >= inicioRango && horaDate < finRango;
+    //         });
+
+    //         const materia = reserva ? reserva.materia : '';
+    //         const actividad = reserva ? reserva.actividad : '';
+
+    //         let ubicacionLab = reserva ? reserva.ubicacion : '';
+
+
+    //         if (ubicacionLab === 'Adelante') {
+    //             $('#horasContainer').append(
+    //                 `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+    //                     <div>${hora} - ${horaFinal} hrs</div>
+    //                     <div class=''>
+    //                     ${reservada ? `<div>${actividad}</div>` : ''}
+    //                     ${reservada ? `<div>${materia}</div>` : ''}
+    //                     <div/>
+    //                 </div>`
+    //             );
+    //             $('#horasContainerAtras').append(
+    //                 `<div class='bg-success p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+    //                     <div>${hora} - ${horaFinal} hrs</div>
+    //                     <div class=''>
+    //                     <div/>
+    //                 </div>`
+    //             );
+    //         }
+    //         else
+    //         {
+    //             $('#horasContainer').append(
+    //                 `<div class='bg-success p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+    //                     <div>${hora} - ${horaFinal} hrs</div>
+    //                     <div class=''>
+    //                     <div/>
+    //                 </div>`
+    //             );
+    //             $('#horasContainerAtras').append(
+    //                 `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+    //                     <div>${hora} - ${horaFinal} hrs</div>
+    //                     <div class=''>
+    //                     ${reservada ? `<div>${actividad}</div>` : ''}
+    //                     ${reservada ? `<div>${materia}</div>` : ''}
+    //                     <div/>
+    //                 </div>`
+    //             );
+    //         }
+    //     }
+    //     else{
+    //         reserva = disabledHoras.find(r => {
+    //             const inicioRango = stringToDate(r[0]);
+    //             const finRango = stringToDate(r[1]);
+    //             const horaDate = stringToDate(hora);
+    //             return horaDate >= inicioRango && horaDate < finRango;
+    //         });
+
+    //         $('#horasContainer').append(
+    //             `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+    //                 <div>${hora} - ${horaFinal} hrs</div>
+    //                 <div class=''>
+    //                 <div/>
+    //             </div>`
+    //         );
+    //     }
+    // });
 }
 
 // Función para redondear la hora actual a la hora más cercana con :00 minutos
@@ -332,3 +374,77 @@ function mostrarModal() {
     $('#alertaModalReservacion').modal('show');
     setTimeout(() => $('#alertaModalReservacion').modal('hide'), 10000);
 }
+
+function ordenarArregloHoras(horas) {
+    return horas.sort((a, b) => {
+        let [horaA, minutoA] = a[0].split(':').map(Number);
+        let [horaB, minutoB] = b[0].split(':').map(Number);
+        
+        if (horaA !== horaB) {
+            return horaA - horaB; // Comparar horas
+        } else {
+            return minutoA - minutoB; // Comparar minutos si las horas son iguales
+        }
+    });
+}
+
+function ordenarPorHoraInicio(arr) {
+    return arr.sort((a, b) => {
+        const [hoursA, minutesA] = a.inicio.split(':').map(Number);
+        const [hoursB, minutesB] = b.inicio.split(':').map(Number);
+
+        const dateA = new Date(0, 0, 0, hoursA, minutesA); // Crear objetos Date para comparar
+        const dateB = new Date(0, 0, 0, hoursB, minutesB);
+
+        return dateA - dateB;
+    });
+}
+
+function completarHorario(reservaciones) {
+    // Primero, ordenamos las reservaciones por la hora de inicio
+    reservaciones.sort((a, b) => {
+        const [hoursA, minutesA] = a.inicio.split(':').map(Number);
+        const [hoursB, minutesB] = b.inicio.split(':').map(Number);
+        return new Date(0, 0, 0, hoursA, minutesA) - new Date(0, 0, 0, hoursB, minutesB);
+    });
+
+    // Definimos el horario de apertura y cierre
+    const horaApertura = '07:00';
+    const horaCierre = '21:00';
+
+    // Arreglo para almacenar el resultado
+    const resultado = [];
+
+    // Inicializamos la hora de referencia con la hora de apertura
+    let horaReferencia = horaApertura;
+
+    reservaciones.forEach(reserva => {
+        if (horaReferencia < reserva.inicio) {
+            // Si hay un hueco entre la hora de referencia y la hora de inicio de la reserva actual
+            resultado.push({
+                inicio: horaReferencia,
+                fin: reserva.inicio,
+                materia: 'Libre',
+                actividad: '',
+                ubicacion: ''
+            });
+        }
+        // Añadimos la reserva actual al resultado
+        resultado.push(reserva);
+        // Actualizamos la hora de referencia con la hora de fin de la reserva actual
+        horaReferencia = reserva.fin;
+    });
+
+    // Si queda un hueco entre la última reserva y la hora de cierre
+    if (horaReferencia < horaCierre) {
+        resultado.push({
+            inicio: horaReferencia,
+            fin: horaCierre,
+            materia: 'Libre',
+            actividad: '',
+            ubicacion: ''
+        });
+    }
+
+    return resultado;
+  }
