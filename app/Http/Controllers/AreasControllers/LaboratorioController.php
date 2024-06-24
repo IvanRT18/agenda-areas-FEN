@@ -90,6 +90,8 @@ class LaboratorioController extends Controller
             throw new ValidationException($validator);
         }
 
+        $configuracion = LaboratorioConfiguracion::first();
+
         //Se guarda la reservacion si se valida que no hay confictos
         $usuario = Usuario::where('clave', session('user'))->first();
         $reservacion = new LaboratorioModel();
@@ -99,7 +101,7 @@ class LaboratorioController extends Controller
         $reservacion->hora_reserva_inicio = $request->hora_reserva_inicio;
         $reservacion->hora_reserva_final = $request->hora_reserva_final;
         $reservacion->usa_proyector = $request->usa_proyector == 'true';
-        $reservacion->ubicacion = $request->numero_equipos > 30 ? 'Adelante' : 'Atrás';
+        $reservacion->ubicacion = $request->numero_equipos > $configuracion->parametro_adelante ? 'Adelante' : 'Atrás';
         $reservacion->req_adicionales = $request->req_adicionales;
         $reservacion->materia = $request->materia;
         $reservacion->actividad = $request->actividad;
@@ -273,12 +275,14 @@ class LaboratorioController extends Controller
         {
             $configuracion =  LaboratorioConfiguracion::first();
             $configuracion->numero_computadoras = $request->input('numero_computadoras');
+            $configuracion->parametro_adelante = $request->input('parametro_adelante');
             $configuracion->update();
         }
         else
         {
             $configuracion = new LaboratorioConfiguracion();
             $configuracion->numero_computadoras = $request->input('numero_computadoras');
+            $configuracion->parametro_adelante = $request->input('parametro_adelante');
             $configuracion->save();
         }
         return redirect()->back()->with('status','Configuración actualizada correctamente');

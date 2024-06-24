@@ -122,7 +122,6 @@ function obtenerHorasFinalesSeleccionables(disabledHoras, horasDate) {
             horasFinalesSeleccionable.push(rangoHorasReservadas);
         });
     }
-
     
     return horasFinalesSeleccionable;
 }
@@ -132,123 +131,72 @@ function dibujarHoras(horasArray, horasDisabledString, disabledHoras) {
     $('#horasContainer').empty(); // Limpiar el contenedor antes de dibujar las horas
     $('#horasContainerAtras').empty(); // Limpiar el contenedor antes de dibujar las horas
 
-    console.log(ordenarArregloHoras(horasArray));
-    console.log(ordenarArregloHoras(horasDisabledString));
-    console.log(ordenarPorHoraInicio(disabledHoras));
-
+    //Ordena los arreglos
     horasArray = ordenarArregloHoras(horasArray);
     horasDisabledString = ordenarArregloHoras(horasDisabledString);
-    disabledHoras = ordenarPorHoraInicio(disabledHoras);
+    
+    if (endpoint === 'laboratorio') {
+        disabledHoras = ordenarPorHoraInicio(disabledHoras);
+        //Filtrado de horas según la ubicación
+        let reservacionesAdelante = disabledHoras.filter(reserva => reserva.ubicacion === 'Adelante'); 
+        let reservacionesAtras = disabledHoras.filter(reserva => reserva.ubicacion === 'Atrás');
 
-    let reservacionesAdelante = disabledHoras.filter(reserva => reserva.ubicacion === 'Adelante');
-    let reservacionesAtras = disabledHoras.filter(reserva => reserva.ubicacion === 'Atrás');
+        //Completa los huecos libres que hay en el horario
+        reservacionesAdelante = completarHorario(reservacionesAdelante);
+        reservacionesAtras = completarHorario(reservacionesAtras);
 
-    reservacionesAdelante = completarHorario(reservacionesAdelante);
-    reservacionesAtras = completarHorario(reservacionesAtras);
+        //Renderiza los bloques de adelante
+        reservacionesAdelante.forEach((horaIterable, index) => {
+            const claseHora = horaIterable.materia === 'Libre' ? 'bg-success' : 'bg-danger'; // Verificar si la hora está reservada
+            $('#horasContainer').append(
+                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                    <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
+                    <div class=''>
+                    <div>${horaIterable.actividad}</div>
+                    <div>${horaIterable.materia}
+                    <div/>
+                </div>`
+            );
+        });
 
-    reservacionesAdelante.forEach((horaIterable, index) => {
-        const claseHora = horaIterable.materia === 'Libre' ? 'bg-success' : 'bg-danger'; // Verificar si la hora está reservada
-        $('#horasContainer').append(
-            `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
-                <div class=''>
-                <div>${horaIterable.actividad}</div>
-                <div>${horaIterable.materia}
-                <div/>
-            </div>`
-        );
-    });
+        //Renderiza los bloques de atrás
+        reservacionesAtras.forEach((horaIterable, index) => {
+            const claseHora = horaIterable.materia === 'Libre' ? 'bg-success' : 'bg-danger'; // Verificar si la hora está reservada
+            $('#horasContainerAtras').append(
+                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                    <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
+                    <div class=''>
+                    <div>${horaIterable.actividad}</div>
+                    <div>${horaIterable.materia}
+                    <div/>
+                </div>`
+            );
+        });
+    }
+    else{
+        horasArray.forEach((hora, index) => {
+            const reservada = horasDisabledString.includes(hora); // Verificar si la hora está reservada
+            const claseHora = reservada ? 'bg-danger' : 'bg-success';
+            const horaFinal = index === horasArray.length - 1 ? '22:00' : horasArray[index + 1];
 
-    reservacionesAtras.forEach((horaIterable, index) => {
-        const claseHora = horaIterable.materia === 'Libre' ? 'bg-success' : 'bg-danger'; // Verificar si la hora está reservada
-        $('#horasContainerAtras').append(
-            `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-                <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
-                <div class=''>
-                <div>${horaIterable.actividad}</div>
-                <div>${horaIterable.materia}
-                <div/>
-            </div>`
-        );
-    });
+            // Encontrar la reservación que hay en esa hora
+            let reserva;
+            reserva = disabledHoras.find(r => {
+                const inicioRango = stringToDate(r[0]);
+                const finRango = stringToDate(r[1]);
+                const horaDate = stringToDate(hora);
+                return horaDate >= inicioRango && horaDate < finRango;
+            });
 
-
-    // horasArray.forEach((hora, index) => {
-    //     const reservada = horasDisabledString.includes(hora); // Verificar si la hora está reservada
-    //     const claseHora = reservada ? 'bg-danger' : 'bg-success';
-    //     const horaFinal = index === horasArray.length - 1 ? '22:00' : horasArray[index + 1];
-
-    //     // Encontrar la reservación que hay en esa hora
-    //     let reserva;
-    //     if (endpoint === 'laboratorio') {
-    //         reserva = disabledHoras.find(r => {
-    //             const inicioRango = stringToDate(r.inicio);
-    //             const finRango = stringToDate(r.fin);
-    //             const horaDate = stringToDate(hora);
-    //             return horaDate >= inicioRango && horaDate < finRango;
-    //         });
-
-    //         const materia = reserva ? reserva.materia : '';
-    //         const actividad = reserva ? reserva.actividad : '';
-
-    //         let ubicacionLab = reserva ? reserva.ubicacion : '';
-
-
-    //         if (ubicacionLab === 'Adelante') {
-    //             $('#horasContainer').append(
-    //                 `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-    //                     <div>${hora} - ${horaFinal} hrs</div>
-    //                     <div class=''>
-    //                     ${reservada ? `<div>${actividad}</div>` : ''}
-    //                     ${reservada ? `<div>${materia}</div>` : ''}
-    //                     <div/>
-    //                 </div>`
-    //             );
-    //             $('#horasContainerAtras').append(
-    //                 `<div class='bg-success p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-    //                     <div>${hora} - ${horaFinal} hrs</div>
-    //                     <div class=''>
-    //                     <div/>
-    //                 </div>`
-    //             );
-    //         }
-    //         else
-    //         {
-    //             $('#horasContainer').append(
-    //                 `<div class='bg-success p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-    //                     <div>${hora} - ${horaFinal} hrs</div>
-    //                     <div class=''>
-    //                     <div/>
-    //                 </div>`
-    //             );
-    //             $('#horasContainerAtras').append(
-    //                 `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-    //                     <div>${hora} - ${horaFinal} hrs</div>
-    //                     <div class=''>
-    //                     ${reservada ? `<div>${actividad}</div>` : ''}
-    //                     ${reservada ? `<div>${materia}</div>` : ''}
-    //                     <div/>
-    //                 </div>`
-    //             );
-    //         }
-    //     }
-    //     else{
-    //         reserva = disabledHoras.find(r => {
-    //             const inicioRango = stringToDate(r[0]);
-    //             const finRango = stringToDate(r[1]);
-    //             const horaDate = stringToDate(hora);
-    //             return horaDate >= inicioRango && horaDate < finRango;
-    //         });
-
-    //         $('#horasContainer').append(
-    //             `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
-    //                 <div>${hora} - ${horaFinal} hrs</div>
-    //                 <div class=''>
-    //                 <div/>
-    //             </div>`
-    //         );
-    //     }
-    // });
+            $('#horasContainer').append(
+                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                    <div>${hora} - ${horaFinal} hrs</div>
+                    <div class=''>
+                    <div/>
+                </div>`
+            );
+        });
+    }
 }
 
 // Función para redondear la hora actual a la hora más cercana con :00 minutos
@@ -267,7 +215,7 @@ function filtrarHorasSegunHoraActual(horasArray) {
 // Función para inicializar el scroll automático
 function inicializarScroll() {
     const alturaVentana = window.innerHeight;
-    const alturaScroll = alturaVentana * 0.5; // 70% de la altura de la ventana
+    const alturaScroll = alturaVentana * 0.5; // 50% de la altura de la ventana
     $('#horasContainer').css({
         'overflow-y': 'hidden',
         'height': `${alturaScroll}px`
@@ -280,6 +228,7 @@ function inicializarScroll() {
 
     let intervalo = null;
     let intervalo2 = null;
+    let scrollsCompletados = 0; // Contador para coordinar el reinicio de ambos scrolls
 
     function iniciarScroll() {
         intervalo = setInterval(scrollDown, 50);
@@ -297,10 +246,8 @@ function inicializarScroll() {
 
         if (scrollTop >= alturaScroll - alturaContenedor) {
             clearInterval(intervalo);
-            setTimeout(() => {
-                $contenedor.scrollTop(0);
-                setTimeout(iniciarScroll, 1000); // Espera de 1 segundo antes de iniciar el scroll nuevamente
-            }, 1000); // Espera de 1 segundo al final antes de reiniciar el scroll
+            scrollsCompletados++;
+            checkScrollsCompletados();
         } else {
             $contenedor.scrollTop(scrollTop + 3);
         }
@@ -314,21 +261,32 @@ function inicializarScroll() {
 
         if (scrollTop >= alturaScroll - alturaContenedor) {
             clearInterval(intervalo2);
-            setTimeout(() => {
-                $contenedor.scrollTop(0);
-                setTimeout(iniciarScrollAtras, 1000); // Espera de 1 segundo antes de iniciar el scroll nuevamente
-            }, 1000); // Espera de 1 segundo al final antes de reiniciar el scroll
+            scrollsCompletados++;
+            checkScrollsCompletados();
         } else {
             $contenedor.scrollTop(scrollTop + 3);
         }
     }
 
-    // Espera inicial de 1 segundo antes de comenzar el scroll
-    setTimeout(iniciarScroll, 1000);
-    setTimeout(iniciarScrollAtras, 1000);
+    function checkScrollsCompletados() {
+        if (scrollsCompletados >= 2) {
+            // Reiniciar ambos scrolls al mismo tiempo
+            setTimeout(() => {
+                $('#horasContainer').scrollTop(0);
+                $('#horasContainerAtras').scrollTop(0);
+                setTimeout(() => {
+                    scrollsCompletados = 0; // Reiniciar el contador
+                    iniciarScroll();
+                    iniciarScrollAtras();
+                }, 1500); // Espera de 1 segundo y medio antes de reiniciar el scroll nuevamente
+            }, 1500); // Espera de 1 segundo y medio al final antes de reiniciar el scroll
+        }
+    }
+
+    // Espera inicial de 1 segundo y medio antes de comenzar el scroll
+    setTimeout(iniciarScroll, 1500);
+    setTimeout(iniciarScrollAtras, 1500);
 }
-
-
 
 // Función para verificar si hay una reservación próxima y mostrar un modal de alerta
 function verificarReservacionProxima() {

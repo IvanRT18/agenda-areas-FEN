@@ -12,7 +12,7 @@
 {{-- Horarios reservados del laboratorio --}}
 @section('content-reservaciones')
  <!-- Horas agendadas para el área de enfrente -->
-<div class="d-flex">
+<div class="d-flex gap-4">
    <!-- Horas agendadas para el área de adelante -->
   <div class="flex-grow-1">
     <h2>Adelante</h2>
