@@ -12,12 +12,18 @@
 {{-- Horarios reservados del laboratorio --}}
 @section('content-reservaciones')
  <!-- Horas agendadas para el área de enfrente -->
-<div class="d-flex">
+<div class="d-flex gap-4">
    <!-- Horas agendadas para el área de adelante -->
-  <div id="horasContainer" class="flex flex-fill" data-area="laboratorio"></div>
+  <div class="flex-grow-1">
+    <h2>Adelante</h2>
+    <div id="horasContainer" class="flex flex-fill" data-area="laboratorio"></div>
+  </div>
 
    <!-- Horas agendadas para el área de atras -->
- <div id="horasContainerAtras" class="flex flex-fill" data-area="laboratorio-atras"></div>
+  <div class="flex-grow-1">
+    <h2>Atrás</h2>
+    <div id="horasContainerAtras" class="flex flex-fill" data-area="laboratorio-atras"></div>
+  </div>
 </div>
 
   {{-- <div class="modal fade" id="alertaModalReservacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertaModalReservacionLabel" aria-hidden="true">

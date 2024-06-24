@@ -14,8 +14,12 @@
             @csrf
             @method('PUT')
             <div class="form-group mb-3">
-                <label for="">Número de computadoras</label>
+                <label for="numero_computadoras">Número de computadoras</label>
                 <input type="text" name="numero_computadoras" value="{{$configuracion->numero_computadoras ?? 0}}" class="form-control">
+            </div>
+            <div class="form-group mb-3">
+                <label for="">Cantidad mínima de computadoras para reservar adelante:</label>
+                <input type="text" name="parametro_adelante" value="{{$configuracion->parametro_adelante ?? 0}}" class="form-control">
             </div>
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary">Actualizar reservación</button>
