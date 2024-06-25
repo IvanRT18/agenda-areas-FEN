@@ -150,103 +150,178 @@ function handleDayChange(diaReservaSelector, horaInicioSelector, horaFinalSelect
 
         //Si es el laboratorio
         if (diaReservaSelector.slice(1).toString() === 'fecha_reservada') {
-            url = $("#numero_equipos").val() > 30 ? '/horas-reservadas/laboratorio/adelante/' : "/horas-reservadas/laboratorio/atras/";
-        }
-        console.log(url);
-
-        $.get(url + fechaSeleccionada, function (data) {
-            console.log(url + fechaSeleccionada);
-            console.log(data);
-            let disabledHoras = [];
-            let disabledHorasString = [];
-            let horasFinalesSeleccionable = [];
-            let rangoHorasReservadas = [];
-
-            data.forEach((hora) => {
-                disabledHoras.push([hora.hora_reserva_inicio, hora.hora_reserva_final]);
+            $.get('/parametro-adelante', function (data) {
+                let parametroAdelante = data.parametro_adelante;
+                url = $("#numero_equipos").val() >= parametroAdelante ? '/horas-reservadas/laboratorio/adelante/' : "/horas-reservadas/laboratorio/atras/";
+                $.get(url + fechaSeleccionada, function (data) {
+                    console.log(url + fechaSeleccionada);
+                    console.log(data);
+                    let disabledHoras = [];
+                    let disabledHorasString = [];
+                    let horasFinalesSeleccionable = [];
+                    let rangoHorasReservadas = [];
+        
+                    data.forEach((hora) => {
+                        disabledHoras.push([hora.hora_reserva_inicio, hora.hora_reserva_final]);
+                    });
+        
+                    disabledHoras.forEach((rango) => {
+                        disabledHorasString.push([rango[0], rango[1]]);
+                        const inicioRango = stringToDate(rango[0]);
+                        const finRango = stringToDate(rango[1]);
+        
+                        horasInicialesDate.forEach((horaD) => {
+                            if (horaD >= inicioRango && horaD <= finRango) {
+                                rangoHorasReservadas.push(horaD);
+                            }
+                        });
+        
+                        rangoHorasReservadas.shift();
+                        horasFinalesSeleccionable.push(rangoHorasReservadas);
+                        rangoHorasReservadas = [];
+                    });
+        
+                    datesToString(horasFinalesSeleccionable);
+        
+                    $(horaInicioSelector).timepicker({
+                        minTime: "7:00am",
+                        maxTime: "9:01pm",
+                        step: 30,
+                        timeFormat: "H:i",
+                        disableTimeRanges: disabledHoras,
+                    });
+        
+                    $(cargaSelector).addClass("hidden");
+                    $(diaReservaSelector).prop("disabled", false);
+                    $(horaInicioSelector).prop("disabled", false);
+        
+                    $(horaInicioSelector).on("change", function () {
+                        //Hora anteriores a la hora de inicio
+                        $(horaFinalSelector).val("");
+                        let horaSelDate = stringToDate($(horaInicioSelector).val());
+                        let postDisabledHours = "";
+                        let tempDisHours = "";
+                        let pastHours = disablePastHoursString($(horaInicioSelector).val());
+                        pastHours.push(horaSelDate);
+                        let pastHours2 = datesObjectsToString(pastHours);
+                        let indiceHora = obtenerIndiceHora($(horaInicioSelector).val(), horasAgendablesArray);
+                        pastHours2.push(siguienteHora(indiceHora));
+                        let horasDisables2 = firstAndLast(pastHours2);
+        
+                        //Horas despues de encontrar una reservacion
+                        let orderedDisabledHoras = ordenarHoras(disabledHorasString);
+                        let finalDisablesHours = obtenRangosDeshabilitados(orderedDisabledHoras);
+        
+                        let rangoReservasDisaled = siguienteHora(obtenerIndiceHora(nextHoraAgendada($(horaInicioSelector).val(), orderedDisabledHoras), horasAgendablesArray));
+                        if (rangoReservasDisaled) {
+                            tempDisHours = datesObjectsToString(
+                                disablePostHoursString(rangoReservasDisaled)
+                            );
+                            tempDisHours.push("22:00");
+                            postDisabledHours = firstAndLast(tempDisHours);
+                        }
+                        else
+                            tempDisHours = [];
+        
+                        console.log(tempDisHours);
+        
+                        finalDisablesHours.push(postDisabledHours);
+                        finalDisablesHours.push(horasDisables2);
+        
+                        configureTimepicker(horaFinalSelector, finalDisablesHours, $(horaInicioSelector).val());
+        
+                        if ($(horaInicioSelector).val()) {
+                            $(horaFinalSelector).prop("disabled", false);
+                        }
+                    });
+                });
             });
-
-            disabledHoras.forEach((rango) => {
-                disabledHorasString.push([rango[0], rango[1]]);
-                const inicioRango = stringToDate(rango[0]);
-                const finRango = stringToDate(rango[1]);
-
-                horasInicialesDate.forEach((horaD) => {
-                    if (horaD >= inicioRango && horaD <= finRango) {
-                        rangoHorasReservadas.push(horaD);
+        }
+        else
+        {
+            $.get(url + fechaSeleccionada, function (data) {
+                console.log(url + fechaSeleccionada);
+                console.log(data);
+                let disabledHoras = [];
+                let disabledHorasString = [];
+                let horasFinalesSeleccionable = [];
+                let rangoHorasReservadas = [];
+    
+                data.forEach((hora) => {
+                    disabledHoras.push([hora.hora_reserva_inicio, hora.hora_reserva_final]);
+                });
+    
+                disabledHoras.forEach((rango) => {
+                    disabledHorasString.push([rango[0], rango[1]]);
+                    const inicioRango = stringToDate(rango[0]);
+                    const finRango = stringToDate(rango[1]);
+    
+                    horasInicialesDate.forEach((horaD) => {
+                        if (horaD >= inicioRango && horaD <= finRango) {
+                            rangoHorasReservadas.push(horaD);
+                        }
+                    });
+    
+                    rangoHorasReservadas.shift();
+                    horasFinalesSeleccionable.push(rangoHorasReservadas);
+                    rangoHorasReservadas = [];
+                });
+    
+                datesToString(horasFinalesSeleccionable);
+    
+                $(horaInicioSelector).timepicker({
+                    minTime: "7:00am",
+                    maxTime: "9:01pm",
+                    step: 30,
+                    timeFormat: "H:i",
+                    disableTimeRanges: disabledHoras,
+                });
+    
+                $(cargaSelector).addClass("hidden");
+                $(diaReservaSelector).prop("disabled", false);
+                $(horaInicioSelector).prop("disabled", false);
+    
+                $(horaInicioSelector).on("change", function () {
+                    //Hora anteriores a la hora de inicio
+                    $(horaFinalSelector).val("");
+                    let horaSelDate = stringToDate($(horaInicioSelector).val());
+                    let postDisabledHours = "";
+                    let tempDisHours = "";
+                    let pastHours = disablePastHoursString($(horaInicioSelector).val());
+                    pastHours.push(horaSelDate);
+                    let pastHours2 = datesObjectsToString(pastHours);
+                    let indiceHora = obtenerIndiceHora($(horaInicioSelector).val(), horasAgendablesArray);
+                    pastHours2.push(siguienteHora(indiceHora));
+                    let horasDisables2 = firstAndLast(pastHours2);
+    
+                    //Horas despues de encontrar una reservacion
+                    let orderedDisabledHoras = ordenarHoras(disabledHorasString);
+                    let finalDisablesHours = obtenRangosDeshabilitados(orderedDisabledHoras);
+    
+                    let rangoReservasDisaled = siguienteHora(obtenerIndiceHora(nextHoraAgendada($(horaInicioSelector).val(), orderedDisabledHoras), horasAgendablesArray));
+                    if (rangoReservasDisaled) {
+                        tempDisHours = datesObjectsToString(
+                            disablePostHoursString(rangoReservasDisaled)
+                        );
+                        tempDisHours.push("22:00");
+                        postDisabledHours = firstAndLast(tempDisHours);
+                    }
+                    else
+                        tempDisHours = [];
+    
+                    console.log(tempDisHours);
+    
+                    finalDisablesHours.push(postDisabledHours);
+                    finalDisablesHours.push(horasDisables2);
+    
+                    configureTimepicker(horaFinalSelector, finalDisablesHours, $(horaInicioSelector).val());
+    
+                    if ($(horaInicioSelector).val()) {
+                        $(horaFinalSelector).prop("disabled", false);
                     }
                 });
-
-                rangoHorasReservadas.shift();
-                horasFinalesSeleccionable.push(rangoHorasReservadas);
-                rangoHorasReservadas = [];
             });
-
-            datesToString(horasFinalesSeleccionable);
-
-            $(horaInicioSelector).timepicker({
-                minTime: "7:00am",
-                maxTime: "9:01pm",
-                step: 30,
-                timeFormat: "H:i",
-                disableTimeRanges: disabledHoras,
-            });
-
-            $(cargaSelector).addClass("hidden");
-            $(diaReservaSelector).prop("disabled", false);
-            $(horaInicioSelector).prop("disabled", false);
-
-            $(horaInicioSelector).on("change", function () {
-                //Hora anteriores a la hora de inicio
-                $(horaFinalSelector).val("");
-                let horaSelDate = stringToDate($(horaInicioSelector).val());
-                let postDisabledHours = "";
-                let tempDisHours = "";
-                let pastHours = disablePastHoursString($(horaInicioSelector).val());
-                pastHours.push(horaSelDate);
-                let pastHours2 = datesObjectsToString(pastHours);
-                let indiceHora = obtenerIndiceHora($(horaInicioSelector).val(), horasAgendablesArray);
-                pastHours2.push(siguienteHora(indiceHora));
-                let horasDisables2 = firstAndLast(pastHours2);
-
-                //Horas despues de encontrar una reservacion
-                let orderedDisabledHoras = ordenarHoras(disabledHorasString);
-                let finalDisablesHours = obtenRangosDeshabilitados(orderedDisabledHoras);
-
-                //Deshabilita las horas posteriores a una cita ya reservada
-                // orderedDisabledHoras.forEach((rango) => {
-                //     if (stringToDate(rango[0]) > horaSelDate) {
-                //         tempDisHours = datesObjectsToString(
-                //             disablePostHoursString(rango[0])
-                //         );
-                //         tempDisHours.push("22:00");
-                //         postDisabledHours = firstAndLast(tempDisHours);
-                //     }
-                // });
-
-                let rangoReservasDisaled = siguienteHora(obtenerIndiceHora(nextHoraAgendada($(horaInicioSelector).val(), orderedDisabledHoras), horasAgendablesArray));
-                if (rangoReservasDisaled) {
-                    tempDisHours = datesObjectsToString(
-                        disablePostHoursString(rangoReservasDisaled)
-                    );
-                    tempDisHours.push("22:00");
-                    postDisabledHours = firstAndLast(tempDisHours);
-                }
-                else
-                    tempDisHours = [];
-
-                console.log(tempDisHours);
-
-                finalDisablesHours.push(postDisabledHours);
-                finalDisablesHours.push(horasDisables2);
-
-                configureTimepicker(horaFinalSelector, finalDisablesHours, $(horaInicioSelector).val());
-
-                if ($(horaInicioSelector).val()) {
-                    $(horaFinalSelector).prop("disabled", false);
-                }
-            });
-        });
+        }
     });
 }
 

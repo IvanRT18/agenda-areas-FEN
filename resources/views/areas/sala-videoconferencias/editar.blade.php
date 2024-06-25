@@ -3,7 +3,7 @@
 @section('title', 'Editar reservación - Sala videoconferencias')
 
 @section('form-update')
-<div class="card">
+<div class="card mt-3">
     <div class="card-header">
         <h4>Editar reservación - Sala videoconferencias
             <a href="/administrador/reservaciones/sala-videoconferencias" class="btn btn-danger float-end">Regresar</a>

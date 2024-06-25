@@ -4,7 +4,7 @@
 
 @section('form-update')
 
-<div class="card">
+<div class="card mt-3">
     <div class="card-header">
         <h4>Editar reservación - Laboratorio
             <a href="{{ url('administrador') }}" class="btn btn-danger float-end">Regresar</a>
