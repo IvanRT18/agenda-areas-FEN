@@ -31,7 +31,7 @@
 
     /* Estilo para modal con fondo rojo */
     .modal-rojo .modal-content {
-        background-color: #FFAF45; /* Rojo */
+        background-color: #dc3545; /* Rojo */
         color: white; /* Texto blanco para mejor contraste */
     }
     </style>
