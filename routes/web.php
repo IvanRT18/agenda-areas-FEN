@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuariosController;
 use App\Login\login_client;
 use App\Mail\AreaReservadaMail;
+use App\Models\AreasModels\LaboratorioConfiguracion;
 use App\Models\DiaDeshabilitado;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -163,6 +164,11 @@ Route::group(['middleware'=>['auth']], function(){
             Route::get('laboratorio', [LaboratorioController::class, 'configure']);
             Route::get('sala-videoconferencias', [SalaVideoconferenciaController::class, 'configure']);
         });
+    });
+
+    Route::get('/parametro-adelante', function () {
+        $config = LaboratorioConfiguracion::first();
+        return response()->json(['parametro_adelante' => $config->parametro_adelante]);
     });
 });
 

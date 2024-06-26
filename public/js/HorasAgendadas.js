@@ -152,8 +152,8 @@ function dibujarHoras(horasArray, horasDisabledString, disabledHoras) {
                 `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
                     <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
                     <div class=''>
-                    <div>${horaIterable.actividad}</div>
-                    <div>${horaIterable.materia}
+                    <div>${limitarTexto(horaIterable.actividad, 25)}</div>
+                    <div>${limitarTexto(horaIterable.materia, 25)}
                     <div/>
                 </div>`
             );
@@ -166,8 +166,8 @@ function dibujarHoras(horasArray, horasDisabledString, disabledHoras) {
                 `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
                     <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
                     <div class=''>
-                    <div>${horaIterable.actividad}</div>
-                    <div>${horaIterable.materia}
+                    <div>${limitarTexto(horaIterable.actividad, 25)}</div>
+                    <div>${limitarTexto(horaIterable.materia, 25)}
                     <div/>
                 </div>`
             );
@@ -301,7 +301,7 @@ function verificarReservacionProxima() {
             inicioRango = stringToDate(rango[0]);
         }
         if (horaAlerta.getHours() === inicioRango.getHours() && horaAlerta.getMinutes() === inicioRango.getMinutes()) {
-            mostrarModal();
+            mostrarModal(rango);
         }
     });
 }
@@ -328,7 +328,11 @@ function terminaEnTreinta(cadenaHora) {
 }
 
 // Función para mostrar un modal de alerta
-function mostrarModal() {
+function mostrarModal(clase) {
+    $('#siguienteReservacion').text(limitarTexto(clase.materia, 15));
+    $('#actividad').text(limitarTexto(clase.actividad, 15));
+    $('#ubicacion').text(limitarTexto(clase.ubicacion, 15));
+    $('#horaAgendada').text(clase.inicio + " - " + clase.fin + " hrs");
     $('#alertaModalReservacion').modal('show');
     setTimeout(() => $('#alertaModalReservacion').modal('hide'), 10000);
 }
@@ -406,3 +410,8 @@ function completarHorario(reservaciones) {
 
     return resultado;
   }
+
+// Función auxiliar para limitar el texto a n caracteres
+function limitarTexto(texto, limite) {
+    return texto.length > limite ? texto.substring(0, limite) + '...' : texto;
+}

@@ -80,7 +80,7 @@
                       <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/auditorio') }}">Auditorio</a></li>
                       <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/aula-magna') }}">Aula Magna</a></li>
                       <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/laboratorio') }}">Laboratorio</a></li>
-                      <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/sala-videoconferencias') }}">Sala de videoconferencias</a></li>
                     </ul>
                   </li>
                   <li class="nav-item dropdown">
@@ -91,7 +91,7 @@
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/auditorio') }}">Auditorio</a></li>
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/aula-magna') }}">Aula Magna</a></li>
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/laboratorio') }}">Laboratorio</a></li>
-                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
+                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/sala-videoconferencias') }}">Sala de videoconferencias</a></li>
                     </ul>
                   </li>
                   <li class="nav-item dropdown">

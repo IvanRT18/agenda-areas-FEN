@@ -3,7 +3,7 @@
 @section('title', 'Configurar área - Laboratorio')
 
 @section('table')
-<div class="card">
+<div class="card mt-3">
     <div class="card-header">
         <h4>Configuración del laboratorio
             <a href="/administrador/reservaciones/laboratorio" class="btn btn-danger float-end">Regresar</a>

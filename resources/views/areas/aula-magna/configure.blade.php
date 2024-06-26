@@ -3,9 +3,9 @@
 @section('title', 'Configurar área - Auditorio')
 
 @section('table')
-<div class="card">
+<div class="card mt-3">
     <div class="card-header">
-        <h4>Configuración del auditorio
+        <h4>Configuración del aula magna
             <a href="/administrador/reservaciones/auditorio" class="btn btn-danger float-end">Regresar</a>
         </h4>
     </div>

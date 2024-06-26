@@ -3,7 +3,7 @@
 @section('title', 'Configurar área - Sala videoconferencias')
 
 @section('table')
-<div class="card">
+<div class="card mt-3">
     <div class="card-header">
         <h4>Configuración de sala videoconferencias
             <a href="/administrador/reservaciones/auditorio" class="btn btn-danger float-end">Regresar</a>
