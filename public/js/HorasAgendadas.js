@@ -152,8 +152,8 @@ function dibujarHoras(horasArray, horasDisabledString, disabledHoras) {
                 `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
                     <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
                     <div class=''>
-                    <div>${limitarTexto(horaIterable.actividad, 25)}</div>
-                    <div>${limitarTexto(horaIterable.materia, 25)}
+                        <div>${limitarTexto(horaIterable.actividad, 25)}</div>
+                        <div>${limitarTexto(horaIterable.materia, 25)}
                     <div/>
                 </div>`
             );
@@ -166,8 +166,8 @@ function dibujarHoras(horasArray, horasDisabledString, disabledHoras) {
                 `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
                     <div>${horaIterable.inicio} - ${horaIterable.fin} hrs</div>
                     <div class=''>
-                    <div>${limitarTexto(horaIterable.actividad, 25)}</div>
-                    <div>${limitarTexto(horaIterable.materia, 25)}
+                        <div>${limitarTexto(horaIterable.actividad, 25)}</div>
+                        <div>${limitarTexto(horaIterable.materia, 25)}
                     <div/>
                 </div>`
             );

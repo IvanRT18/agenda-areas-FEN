@@ -26,7 +26,7 @@ class AulaMagnaController extends Controller
             'fecha_reservada_magna' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
             'hora_reserva_inicio_magna' => 'required|date_format:H:i',
             'hora_reserva_final_magna' => 'required|date_format:H:i|after:hora_reserva_inicio',
-            'numero_microfonos_magna' => 'required|integer|min:0|max:2',
+            'numero_microfonos_magna' => 'required|integer|min:1|max:2',
         ]);
 
         // Agregar reglas de validación personalizadas usando after

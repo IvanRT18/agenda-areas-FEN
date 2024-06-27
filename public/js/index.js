@@ -152,7 +152,8 @@ function handleDayChange(diaReservaSelector, horaInicioSelector, horaFinalSelect
         if (diaReservaSelector.slice(1).toString() === 'fecha_reservada') {
             $.get('/parametro-adelante', function (data) {
                 let parametroAdelante = data.parametro_adelante;
-                url = $("#numero_equipos").val() >= parametroAdelante ? '/horas-reservadas/laboratorio/adelante/' : "/horas-reservadas/laboratorio/atras/";
+                url = parseInt($("#numero_equipos").val()) >= parseInt(parametroAdelante) ? '/horas-reservadas/laboratorio/adelante/' : "/horas-reservadas/laboratorio/atras/";
+                console.log(url);
                 $.get(url + fechaSeleccionada, function (data) {
                     console.log(url + fechaSeleccionada);
                     console.log(data);
