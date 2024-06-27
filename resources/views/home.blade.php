@@ -235,7 +235,7 @@
                 <label for="numero_microfonos_auditorio">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos" min="0" max="{{$numeroMicrofonosAuditorio}}">
+                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos" min="1" max="{{$numeroMicrofonosAuditorio}}" required>
             </div>
     
             <div>
@@ -286,7 +286,7 @@
                 <label for="numero_microfonos_magna">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_magna" id="numero_microfonos_magna" min="0" max="{{$numeroMicrofonosAulaMagna}}">
+                <input type="number" name="numero_microfonos_magna" id="numero_microfonos_magna" min="1" max="{{$numeroMicrofonosAulaMagna}}">
             </div>
     
             <div>
@@ -337,7 +337,7 @@
                 <label for="numero_microfonos_sala_video">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_sala_video" id="numero_microfonos_sala_video" min="0" max="{{$numeroMicrofonosAulaMagna}}">
+                <input type="number" name="numero_microfonos_sala_video" id="numero_microfonos_sala_video" min="1" max="{{$numeroMicrofonosAulaMagna}}">
             </div>
     
             <div>

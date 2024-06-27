@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UsuariosController extends Controller
 {
@@ -13,7 +15,23 @@ class UsuariosController extends Controller
     }
 
     //Registra un nuevo usuario a la base de datos
-    public function store(Request $request){
+    public function store(Request $request)
+    {
+        // Validación de datos de entrada
+        $validator = Validator::make($request->all(), [
+            'clave' => 'required|integer',
+            'apellido_paterno' => 'required|string|max:30',
+            'apellido_materno' => 'required|string|max:30',
+            'nombres' => 'required|string|max:30',
+            'tipo' => 'required|string',
+            'correo' => 'required|email',
+        ]);
+
+         // Si hay errores, lanzar una excepción de validación
+         if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
         // Validar si el correo ya está registrado
         $existingUser = Usuario::where('correo', $request->correo)->first();
         // Validar si la clave ya está registrada
