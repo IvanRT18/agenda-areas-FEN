@@ -3,7 +3,7 @@
 @section('title', 'Editar reservación - Aula magna')
 
 @section('form-update')
-<div class="card">
+<div class="card mt-3">
     <div class="card-header">
         <h4>Editar reservación - Aula magna
             <a href="/administrador/reservaciones/aula-magna" class="btn btn-danger float-end">Regresar</a>

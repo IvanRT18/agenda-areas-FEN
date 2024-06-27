@@ -79,7 +79,7 @@
                       <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/auditorio') }}">Auditorio</a></li>
                       <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/aula-magna') }}">Aula Magna</a></li>
                       <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/laboratorio') }}">Laboratorio</a></li>
-                      <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/reservaciones/sala-videoconferencias') }}">Sala de videoconferencias</a></li>
                     </ul>
                   </li>
                   <li class="nav-item dropdown">
@@ -90,7 +90,7 @@
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/auditorio') }}">Auditorio</a></li>
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/aula-magna') }}">Aula Magna</a></li>
                       <li><a class="dropdown-item" href="{{ url('horas-reservadas/laboratorio') }}">Laboratorio</a></li>
-                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
+                      <li><a class="dropdown-item" href="{{ url('horas-reservadas/sala-videoconferencias') }}">Sala de videoconferencias</a></li>
                     </ul>
                   </li>
                   <li class="nav-item dropdown">
@@ -101,7 +101,7 @@
                       <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/auditorio') }}">Auditorio</a></li>
                       <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/aula-magna') }}">Aula Magna</a></li>
                       <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/laboratorio') }}">Laboratorio</a></li>
-                      <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/sala-videoconferencia') }}">Sala de videoconferencias</a></li>
+                      <li><a class="dropdown-item" href="{{ url('administrador/configurar-area/sala-videoconferencias') }}">Sala de videoconferencias</a></li>
                     </ul>
                   </li>
                   <li class="nav-item">
@@ -152,16 +152,24 @@
                 @yield('form-update')
             </div>
         </div>
+        <div id="Creditos" style="margin-top: 100px">          
+          <h4>Universidad Autónoma de San Luis Potosí</h4>
+          Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
+          San Luis Potosí, S.L.P. México                <br>
+          Tel.  (444) 826 2300<br>
+          ©<span id="lbAño"></span> © Todos los derechos reservados.           
+        </div>
     </div>
-
-
-    {{-- <div class="container">
-        
-    </div> --}}
-    
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
 <script src="{{asset('js/editCita.js')}}"></script>
+<script>
+  // Obtener el año actual
+  var añoActual = new Date().getFullYear(); 
+
+  // Actualizar el contenido del span con el año actual
+  $("#lbAño").text(añoActual);
+</script>
 </html>

@@ -12,6 +12,7 @@ class LaboratorioConfiguracion extends Model
     protected $table = 'laboratorio_configuracion';
 
     protected $fillable = [
-        'numero_computadoras'
+        'numero_computadoras',
+        'parametro_adelante',
     ];
 }

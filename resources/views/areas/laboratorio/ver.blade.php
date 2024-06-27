@@ -12,12 +12,18 @@
 {{-- Horarios reservados del laboratorio --}}
 @section('content-reservaciones')
  <!-- Horas agendadas para el área de enfrente -->
-<div class="d-flex">
+<div class="d-flex gap-4">
    <!-- Horas agendadas para el área de adelante -->
-  <div id="horasContainer" class="flex flex-fill" data-area="laboratorio"></div>
+  <div class="col-6">
+    <h2>Adelante</h2>
+    <div id="horasContainer" class="flex flex-fill" data-area="laboratorio"></div>
+  </div>
 
    <!-- Horas agendadas para el área de atras -->
- <div id="horasContainerAtras" class="flex flex-fill" data-area="laboratorio-atras"></div>
+  <div class="col-6">
+    <h2>Atrás</h2>
+    <div id="horasContainerAtras" class="flex flex-fill" data-area="laboratorio-atras"></div>
+  </div>
 </div>
 
   {{-- <div class="modal fade" id="alertaModalReservacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="alertaModalReservacionLabel" aria-hidden="true">
@@ -43,7 +49,17 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-white fs-1">
-                Una reservación está a punto de comenzar en 10 minutos.
+              <p>En 10 minutos inicia:</p>
+              <div class="d-flex justify-content-between">
+                  <div>
+                      <p id="siguienteReservacion">Nutrición I</p>
+                      <p id="actividad">Clase</p>
+                      <p id="ubicacion">Adelante</p>
+                  </div>
+                  <div class="d-flex flex-row"> 
+                      <p id="horaAgendada">09:00</p>
+                  </div>
+              </div>
             </div>
         </div>
     </div>

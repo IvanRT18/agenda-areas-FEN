@@ -64,7 +64,7 @@ class UsuariosTable extends DataTableComponent
             Column::make("Nombres", "nombres")
                 ->sortable()->searchable(),
             Column::make("Tipo", "tipo")
-                ->sortable()->searchable(),
+                ->sortable(),
             Column::make("Correo", "correo")
                 ->sortable()->searchable(),
             Column::make('Acciones')
