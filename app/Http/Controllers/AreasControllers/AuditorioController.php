@@ -31,6 +31,11 @@ class AuditorioController extends Controller
             'numero_microfonos_auditorio' => 'required|integer|min:1|max:2',
         ]);
 
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+
         // Agregar reglas de validación personalizadas usando after
         $validator->after(function ($validator) use ($request) {
             $fechaReservada = $request->fecha_reservada_auditorio;
@@ -57,7 +62,6 @@ class AuditorioController extends Controller
                 $validator->errors()->add('hora_reservada', 'La hora seleccionada ya esta ocupada.');
             }
         });
-
 
         // Si hay errores, lanzar una excepción de validación
         if ($validator->fails()) {

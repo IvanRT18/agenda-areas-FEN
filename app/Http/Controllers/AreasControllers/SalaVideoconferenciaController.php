@@ -14,8 +14,6 @@ class SalaVideoconferenciaController extends Controller
 {
     public function store(Request $request)
     {
-        $errors = [];
-
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
             'fecha_reservada_sala_video' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
@@ -23,6 +21,11 @@ class SalaVideoconferenciaController extends Controller
             'hora_reserva_final_sala_video' => 'required|date_format:H:i|after:hora_reserva_inicio',
             'numero_microfonos_sala_video' => 'required|integer|min:1|max:2',
         ]);
+
+        // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
 
         // Agregar reglas de validación personalizadas usando after
         $validator->after(function ($validator) use ($request) {
