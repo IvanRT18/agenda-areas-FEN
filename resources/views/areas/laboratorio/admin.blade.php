@@ -8,6 +8,3 @@
         <livewire:LaboratorioTable theme="bootstrap-5" />
     </div>
 @endsection
-
-
-

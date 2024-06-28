@@ -123,7 +123,7 @@ function initializeFlatpickr(selector) {
     });
 }
 
-// Configura timepicker para el input de hora final
+// Configura timepicker para los inputs de hora
 function configureTimepicker(selector, finalDisablesHours, durationTime) {
     $(selector).timepicker({
         minTime: "7:00am",

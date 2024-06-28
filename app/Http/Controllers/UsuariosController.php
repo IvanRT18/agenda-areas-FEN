@@ -111,4 +111,8 @@ class UsuariosController extends Controller
             return view('usuarios.usuario_no_admin');
         }
     }
+
+    public function noDocente(){
+        return view('usuarios.usuario_no_docente');
+    }
 }
