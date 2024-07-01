@@ -19,7 +19,7 @@ class UsuariosController extends Controller
     {
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
-            'clave' => 'required|integer',
+            'clave' => 'required|integer|digits_between:1,9',
             'apellido_paterno' => 'required|string|max:30',
             'apellido_materno' => 'required|string|max:30',
             'nombres' => 'required|string|max:30',
@@ -76,6 +76,21 @@ class UsuariosController extends Controller
     //Actualiza usuario
     public function update(Request $request, $id)
     {
+         // Validación de datos de entrada
+         $validator = Validator::make($request->all(), [
+            'clave' => 'required|integer|digits_between:1,9',
+            'apellido_paterno' => 'required|string|max:30',
+            'apellido_materno' => 'required|string|max:30',
+            'nombres' => 'required|string|max:30',
+            'tipo' => 'required|string',
+            'correo' => 'required|email',
+        ]);
+
+         // Si hay errores, lanzar una excepción de validación
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+        
         $usuario = Usuario::find($id);
         $usuario->clave = $request->input('clave');
         $usuario->apellido_materno = $request->input('apellido_materno');

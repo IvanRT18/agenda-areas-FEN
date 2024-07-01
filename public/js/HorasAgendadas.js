@@ -294,7 +294,7 @@ function verificarReservacionProxima() {
     disabledHoras.forEach(rango => {
         let inicioRango;
         if (endpoint === 'laboratorio') {
-            inicioRango = stringToDate(rango.inicio);   
+            inicioRango = stringToDate(rango.inicio);
         }
         else
         {
