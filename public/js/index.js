@@ -39,11 +39,12 @@ $(function () {
         hideAllForms();
         let target = event.target;
         let targetId = target.type === "radio" ? target.id : target.htmlFor;
+        resetForm(targetId);
         if (targetId) {
             $(`#form${targetId.replace("radio", "")}`).removeClass("hidden");
-
+            
             if (targetId === 'radioLaboratorio') {
-                oldComputadoras = $('#numero_equipos').val(); 
+                // oldComputadoras = $('#numero_equipos').val(); 
                 $('#fecha_reservada').prop('disabled', true);
                 $('#usa_proyector').prop('disabled', true);
                 $('#req_adicionales').prop('disabled', true);
@@ -88,6 +89,15 @@ $(function () {
 
 function hideAllForms() {
     $(".formulario").addClass("hidden");
+}
+
+function resetForm(targetId) {
+    $(`#form${targetId.replace("radio", "")}`).find('input[type=text], input[type=number], input[type=date], textarea').val('');
+    $(`#form${targetId.replace("radio", "")}`).find('input[type=checkbox]').prop('checked', false);
+    $(`#form${targetId.replace("radio", "")}`).find('select').prop('selectedIndex', 0);
+
+    ["#hora_reserva_inicio", "#hora_reserva_inicio_auditorio", "#hora_reserva_inicio_magna", "#hora_reserva_inicio_sala_video"]
+        .forEach(selector => disableHourInputs(selector));
 }
 
 // Deshabilitar inputs de horas
