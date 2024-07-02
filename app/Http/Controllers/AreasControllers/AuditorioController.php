@@ -23,12 +23,22 @@ class AuditorioController extends Controller
 
     public function store(Request $request)
     {
+        // Obtener la fecha de hoy y la fecha límite (15 días después de hoy)
+        $today = now();
+        $maxDate = now()->addDays(15);
+        $auditorioConfig = AuditorioConfiguracion::first();
+
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
-            'fecha_reservada_auditorio' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'fecha_reservada_auditorio' => [
+                'required',
+                'date',
+                'after:' . $today->format('Y-m-d'),
+                'before_or_equal:' . $maxDate->format('Y-m-d'),
+            ],
             'hora_reserva_inicio_auditorio' => 'required|date_format:H:i',
             'hora_reserva_final_auditorio' => 'required|date_format:H:i|after:hora_reserva_inicio_auditorio',
-            'numero_microfonos_auditorio' => 'required|integer|min:1|max:2',
+            'numero_microfonos_auditorio' => 'required|integer|min:1|max:' . $auditorioConfig->numero_microfonos,
         ]);
 
         // Si hay errores, lanzar una excepción de validación
