@@ -30,14 +30,21 @@ class LoginController extends Controller
         else {
             session()->put('user', $request->input('usuario'));
             session()->put('type', $request->input('tipo'));
-            $usuario = Usuario::where('clave', session('user'))->first();
-            if ($usuario) {
-                Auth::loginUsingId($usuario->clave);
-                return redirect(RouteServiceProvider::INICIO);
-            }
-            else{
-                return redirect(route('no-access'));
-            }
+            // dd(session('type'));
+            //Si no es alumno, accede a la página
+            // if (session('type') !== 'ALUMNOS_Alumno') {
+                $usuario = Usuario::where('clave', session('user'))->first();
+                if ($usuario) {
+                    Auth::loginUsingId($usuario->clave);
+                    return redirect(RouteServiceProvider::INICIO);
+                }
+                else{
+                    return redirect(route('no-access'));
+                }
+            // }
+            // else{
+            //     return redirect(route('no-docente'));
+            // }
         }
     }
 }

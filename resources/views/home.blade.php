@@ -121,14 +121,6 @@
     <form name="formLaboratorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/laboratorio')}}" id="formLaboratorio">
         @csrf
         <div class="flex flex-col col-xs-12 gap">
-            {{-- <div class="flex flex-col">
-                <label for="ubicacion">Ubicación</label>
-                <select class="form-select" aria-label="Ubicación de reservación laboratorio" name="ubicacion" id="ubicacion">
-                    <option value="Atrás">Atrás</option>
-                    <option value="Adelante">Adelante</option>
-                </select>
-            </div> --}}
-
             <div>
                 <label for="numero_equipos">¿Cuantos equipos de cómputo usará?</label>
                 <div class="flex flex-row">
@@ -147,18 +139,14 @@
             <div class="flex flex-col">
                 <label for="hora_reserva_inicio">Hora para reservar:</label>
                 <div class="col-12">
-                    {{-- <input type="time" id="hora_reserva_inicio" name="hora_reserva_inicio" min="07:00" max="20:00" class="w-100" required> --}}
                     <input type="text" id="hora_reserva_inicio" name="hora_reserva_inicio" class="w-100" required/>
-                    {{-- <span class="validity"></span> --}}
                 </div>
             </div>
 
             <div class="flex flex-col">
                 <label for="hora_reserva_final">A</label>
                 <div class="col-12">
-                    {{-- <input type="time" id="hora_reserva_final" name="hora_reserva_final" min="07:00" max="20:00" class="w-100" required> --}}
                     <input type="text" id="hora_reserva_final" name="hora_reserva_final" class="w-100" required/>
-                    {{-- <span class="validity"></span> --}}
                 </div>
             </div>
             
@@ -177,11 +165,6 @@
                 <label for="materia">Materia</label>
                 <input type="text" name="materia" id="materia" required>
             </div>
-
-            {{-- <div class="flex flex-col">
-                <label for="actividad">Actividad a realizar (clase/curso/examen/otro)</label>
-                <input type="text" name="actividad" id="actividad" required>
-            </div> --}}
 
             <div class="flex flex-col">
                 <label for="actividad">Actividad a realizar (clase/curso/examen/otro)</label>
@@ -286,7 +269,7 @@
                 <label for="numero_microfonos_magna">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_magna" id="numero_microfonos_magna" min="1" max="{{$numeroMicrofonosAulaMagna}}">
+                <input type="number" name="numero_microfonos_magna" id="numero_microfonos_magna" min="1" max="{{$numeroMicrofonosAulaMagna}}" required>
             </div>
     
             <div>
@@ -337,7 +320,7 @@
                 <label for="numero_microfonos_sala_video">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_sala_video" id="numero_microfonos_sala_video" min="1" max="{{$numeroMicrofonosAulaMagna}}">
+                <input type="number" name="numero_microfonos_sala_video" id="numero_microfonos_sala_video" min="1" max="{{$numeroMicrofonosAulaMagna}}" required>
             </div>
     
             <div>

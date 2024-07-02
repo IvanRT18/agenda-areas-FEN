@@ -43,16 +43,25 @@
                 <input type="text" name="numero_microfonos" value="{{$reservacion->numero_microfonos}}" class="form-control">
             </div>
             <div class="form-group mb-3">
-                <label for="">¿Usará el proyector?</label>
-                <input type="text" name="usa_proyector" value="{{$reservacion->usa_proyector}}" class="form-control">
+                <label for="usa_proyector">¿Usará el proyector?</label>
+                <select class="form-select" aria-label="usa_proyector reservacion laboratorio" name="usa_proyector" id="usa_proyector">
+                    <option value="0" {{ $reservacion->usa_proyector == '0' ? 'selected' : '' }} >No</option>
+                    <option value="1" {{ $reservacion->usa_proyector == '1' ? 'selected' : '' }}>Sí</option>
+                </select>
             </div>
             <div class="form-group mb-3">
-                <label for="">¿Usará la computadora del auditorio?</label>
-                <input type="text" name="usa_computadora" value="{{$reservacion->usa_computadora}}" class="form-control">
+                <label for="usa_computadora">¿Usará la computadora del auditorio?</label>
+                <select class="form-select" aria-label="usa_computadora reservacion laboratorio" name="usa_computadora" id="usa_computadora">
+                    <option value="0" {{ $reservacion->usa_computadora == '0' ? 'selected' : '' }} >No</option>
+                    <option value="1" {{ $reservacion->usa_computadora == '1' ? 'selected' : '' }}>Sí</option>
+                </select>
             </div>
             <div class="form-group mb-3">
-                <label for="">¿Usará las bocinas?</label>
-                <input type="text" name="usa_bocinas" value="{{$reservacion->usa_bocinas}}" class="form-control">
+                <label for="usa_bocinas">¿Usará las bocinas?</label>
+                <select class="form-select" aria-label="usa_bocinas reservacion laboratorio" name="usa_bocinas" id="usa_bocinas">
+                    <option value="0" {{ $reservacion->usa_bocinas == '0' ? 'selected' : '' }} >No</option>
+                    <option value="1" {{ $reservacion->usa_bocinas == '1' ? 'selected' : '' }}>Sí</option>
+                </select>
             </div>
             <div class="form-group mb-3">
                 <button type="submit" class="btn btn-primary">Actualizar reservación</button>
