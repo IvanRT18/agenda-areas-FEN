@@ -53,8 +53,11 @@
                 <input type="text" name="hora_reserva_final" id="hora_reserva_final" value="{{$reservacion->hora_reserva_final}}" class="form-control" required>
             </div>
             <div class="form-group mb-3">
-                <label for="">¿Usa el proyector del laboratorio?</label>
-                <input type="text" name="usa_proyector" id="usa_proyector" value="{{$reservacion->usa_proyector}}" class="form-control">
+                <label for="usa_proyector">¿Usará el proyector?</label>
+                <select class="form-select" aria-label="usa_proyector reservacion laboratorio" name="usa_proyector" id="usa_proyector">
+                    <option value="0" {{ $reservacion->usa_proyector == '0' ? 'selected' : '' }} >No</option>
+                    <option value="1" {{ $reservacion->usa_proyector == '1' ? 'selected' : '' }}>Sí</option>
+                </select>
             </div>
             <div class="form-group mb-3">
                 <label for="">Requerimientos adicionales</label>

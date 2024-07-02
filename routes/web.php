@@ -194,3 +194,5 @@ Route::get('/horas-reservadas/{fecha}', [LaboratorioController::class, 'horasAge
 Route::get('usuario-no-registrado', [UsuariosController::class, 'isUserRegistered'])->name('no-access');
 
 Route::get('usuario-no-admin', [UsuariosController::class, 'isUserAdmin'])->name('no-admin');
+
+Route::get('usuario-no-docente', [UsuariosController::class, 'noDocente'])->name('no-docente');
