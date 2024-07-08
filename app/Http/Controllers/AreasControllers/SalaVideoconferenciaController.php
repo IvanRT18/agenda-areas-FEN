@@ -183,7 +183,7 @@ class SalaVideoconferenciaController extends Controller
 
     public function updateConfiguration(Request $request)
     {
-        if ( SalaVideoconferenciasConfiguracion::first()) 
+        if ( SalaVideoconferenciasConfiguracion::first())
         {
             $configuracion = SalaVideoconferenciasConfiguracion::first();
             $configuracion->numero_microfonos = $request->input('numero_microfonos');

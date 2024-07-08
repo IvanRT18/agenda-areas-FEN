@@ -73,3 +73,7 @@
 </div>
 
 @endsection
+
+@section('scripts')
+    <script src="{{asset('js/editCita.js')}}"></script>
+@endsection
