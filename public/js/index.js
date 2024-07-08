@@ -61,6 +61,11 @@ $(function () {
             $('#fecha_reservada').val('');
             $('#hora_reserva_inicio').val('');
             $('#hora_reserva_final').val('');
+            $('#req_adicionales').val('');
+            $('#materia').val('');
+            $('#actividad').val('');
+            $('#nombre_curso').val('');
+
             $('#ubicacionCarga').removeClass("hidden");
             $('#fecha_reservada').prop('disabled', true);
             $('#hora_reserva_inicio').prop('disabled', true);

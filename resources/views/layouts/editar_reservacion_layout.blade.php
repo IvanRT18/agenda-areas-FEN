@@ -164,7 +164,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="{{ asset('js/timepicker/jquery.timepicker.min.js') }}"></script>
 <script src="{{ asset('js/flatpickr/flatpickr.min.js') }}"></script>
-<script src="{{asset('js/editCita.js')}}"></script>
+@yield('scripts')
+
 <script>
   // Obtener el año actual
   var añoActual = new Date().getFullYear(); 
