@@ -55,7 +55,7 @@
                     </tr>
                     </tbody></table>
                 </td>
-            
+
             </tr></tbody></table>
         </div>
 
@@ -218,7 +218,7 @@
                 <label for="numero_microfonos_auditorio">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos" min="1" max="{{$numeroMicrofonosAuditorio}}" required>
+                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos_auditorio" min="1" max="{{$numeroMicrofonosAuditorio}}" required>
             </div>
     
             <div>
