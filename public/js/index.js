@@ -51,9 +51,20 @@ $(function () {
                 $('#materia').prop('disabled', true);
                 $('#actividad').prop('disabled', true);
                 $('#nombre_curso').prop('disabled', true);
+                $('#input_curso').addClass('hidden');
             }
         }
     });
+
+    $('#actividad').on('change', function () {
+        if ($('#actividad').val() === 'Curso' || $('#actividad').val() === 'Otro') {
+            $('#input_curso').removeClass('hidden');
+        }
+        else{
+            $('#input_curso').addClass('hidden');
+            $('#nombre_curso').val('');
+        }
+    })
 
     $('#boton_numero_computadoras').on('click', function(){
         if ($('#numero_equipos').val() !== oldComputadoras) {
@@ -75,6 +86,16 @@ $(function () {
             $('#materia').prop('disabled', true);
             $('#actividad').prop('disabled', true);
             $('#nombre_curso').prop('disabled', true);
+
+            $('#actividad').on('change', function () {
+                if ($('#actividad').val() === 'Curso' || $('#actividad').val() === 'Otro') {
+                    $('#input_curso').removeClass('hidden');
+                }
+                else{
+                    $('#input_curso').addClass('hidden');
+                    $('#nombre_curso').val('');
+                }
+            })
 
 
             // Espera de 1 segundo antes de habilitar los inputs

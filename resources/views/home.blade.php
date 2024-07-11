@@ -176,8 +176,8 @@
                 </select>
             </div>
 
-            <div class="flex flex-col">
-                <label for="nombre_curso">Nombre del curso a realizar (en caso de ser curso)</label>
+            <div class="flex flex-col" id="input_curso" class="hidden">
+                <label for="nombre_curso">Nombre del curso/actividad a realizar</label>
                 <input type="text" name="nombre_curso" id="nombre_curso">
             </div>
 
