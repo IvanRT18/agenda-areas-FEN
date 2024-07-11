@@ -21,12 +21,12 @@ class LoginController extends Controller
 {
     public function index(Request $request)
     {
-        // Si no existe sesión de Usuario
+        // Si no existe sesión de usuario activa
         if (!$request->has('usuario') && !$request->has('tipo')) {
-            $clienteLogin = new LoginClass();
+            $clienteLogin = new LoginClass(); //Se autentifica con el login de la universidad
             $clienteLogin->autentificar();
         }
-        // Si existe la Sesión de Usuario.
+        // Sí el usuario ya inicio sesión con el login de la universidad
         else {
             session()->put('user', $request->input('usuario'));
             session()->put('type', $request->input('tipo'));

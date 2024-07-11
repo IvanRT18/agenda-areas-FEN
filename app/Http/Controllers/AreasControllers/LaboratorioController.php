@@ -34,7 +34,7 @@ class LaboratorioController extends Controller
         $numeroMicrofonosAulaMagna = $aulaMagnaConfig ? $aulaMagnaConfig->numero_microfonos : 0;
         $numeroMicrofonosSalaVideoconferencias = $salaVideoconferenciasConfig ? $salaVideoconferenciasConfig->numero_microfonos : 0;
 
-        // Pasar los valores a la vista
+        // Pasa los valores de configuracon a la vista
         return view('home', compact(
             'numeroEquiposLaboratorio',
             'numeroMicrofonosAuditorio',
@@ -45,10 +45,10 @@ class LaboratorioController extends Controller
     
     public function store(Request $request)
     {
-        // Obtener la fecha de hoy y la fecha límite (15 días después de hoy)
+        // Obtiene la fecha de hoy y la fecha límite para reservar (15 días después de hoy)
         $today = now();
         $maxDate = now()->addDays(15);
-        $configuracion = LaboratorioConfiguracion::first();
+        $configuracion = LaboratorioConfiguracion::first(); //Obtiene la configuración guardada del laboratorio
 
         // Validación de datos de entrada
         $validator = Validator::make($request->all(), [
@@ -68,7 +68,7 @@ class LaboratorioController extends Controller
             throw new ValidationException($validator);
         }
         
-        // Agregar reglas de validación personalizadas usando after
+        //Verifica que no se traslape la reservación a guardar con otra ya existente
         $validator->after(function ($validator) use ($request) {
             $configuracion = LaboratorioConfiguracion::first();
             $fechaReservada = $request->fecha_reservada;
@@ -120,10 +120,10 @@ class LaboratorioController extends Controller
         return redirect()->back()->with('status', 'Se ha reservado el laboratorio correctamente');
     }
 
+    //Muestra todas las reservaciones del laboratorio (vista principal de administrador)
     public function showAll(Request $request)
     {
         $reservaciones = LaboratorioModel::all();
-
         return view('areas.laboratorio.admin', compact('reservaciones'));
     }
 
