@@ -30,7 +30,9 @@ use Illuminate\Support\Facades\Route;
 //Ruta que se ingresa al acceder a la direccion del servidor
 Route::get('/', [LoginController::class, 'index'])->name('index');
 
+//Rutas protegidas que se acceden al iniciar sesion
 Route::group(['middleware'=>['auth']], function(){
+    //Obtiene los dias deshabilitados
     Route::get('obtener-dias-deshabilitados', [DiaDeshabilitadoController::class, 'getAllDisabledDays']);
 
     //Ruta del administrador
@@ -88,16 +90,16 @@ Route::group(['middleware'=>['auth']], function(){
     Route::middleware('admin')->prefix('administrador')->group(function(){
         Route::get('/', [LaboratorioController::class, 'showAll']);
 
-        //Muestra las horas reservadas en una tabla con scroll automatico
+        //Muestra las horas reservadas en una tabla
         Route::prefix('reservaciones')->group(function(){
-            Route::get('/', [LaboratorioController::class, 'showAll']); //Por defecto, al entrar al panel de administrador carga las reservacion del laboratorio
+            Route::get('/', [LaboratorioController::class, 'showAll']); //Por defecto, al entrar al panel de administrador cargan las reservacion del laboratorio
             Route::get('auditorio/', [AuditorioController::class, 'showAll']);
             Route::get('aula-magna/', [AulaMagnaController::class, 'showAll']);
             Route::get('laboratorio/', [LaboratorioController::class, 'showAll']);
             Route::get('sala-videoconferencias/', [SalaVideoconferenciaController::class, 'showAll']);
         });
 
-        //Registro de usuarios
+        //CRUD de usuarios
         Route::prefix('usuarios')->group(function(){
             Route::get('/', [UsuariosController::class, 'showUsers']);
             Route::get('registrar', [UsuariosController::class, 'index']);
@@ -107,7 +109,7 @@ Route::group(['middleware'=>['auth']], function(){
             Route::get('eliminar/{id}', [UsuariosController::class, 'delete']);
         });
 
-        //Rutas para registrar reservaciones de áreas
+        //Rutas para guardar las reservaciones de las áreas
         Route::prefix('registra-reservacion')->group(function(){
             Route::post('auditorio', [AuditorioController::class, 'store']);
             Route::post('aula-magna', [AulaMagnaController::class, 'store']);
@@ -150,22 +152,23 @@ Route::group(['middleware'=>['auth']], function(){
         });
 
         //Rutas para configurar las áreas
-        Route::prefix('actualizar-area')->group(function(){
-            Route::put('auditorio', [AuditorioController::class, 'updateConfiguration']);
-            Route::put('aula-magna', [AulaMagnaController::class, 'updateConfiguration']);
-            Route::put('laboratorio', [LaboratorioController::class, 'updateConfiguration']);
-            Route::put('sala-videoconferencias', [SalaVideoconferenciaController::class, 'updateConfiguration']);
-        });
-
-        // //Rutas para configurar las áreas
         Route::prefix('configurar-area')->group(function(){
             Route::get('auditorio', [AuditorioController::class, 'configure']);
             Route::get('aula-magna', [AulaMagnaController::class, 'configure']);
             Route::get('laboratorio', [LaboratorioController::class, 'configure']);
             Route::get('sala-videoconferencias', [SalaVideoconferenciaController::class, 'configure']);
         });
+
+        //Rutas para actualizar configuracion de áreas
+        Route::prefix('actualizar-area')->group(function(){
+            Route::put('auditorio', [AuditorioController::class, 'updateConfiguration']);
+            Route::put('aula-magna', [AulaMagnaController::class, 'updateConfiguration']);
+            Route::put('laboratorio', [LaboratorioController::class, 'updateConfiguration']);
+            Route::put('sala-videoconferencias', [SalaVideoconferenciaController::class, 'updateConfiguration']);
+        });
     });
 
+    //Obtiene y regresa el numero de equipos que determina si la reservacion en el laboratorio va adelante o atrás
     Route::get('/parametro-adelante', function () {
         $config = LaboratorioConfiguracion::first();
         return response()->json(['parametro_adelante' => $config->parametro_adelante]);

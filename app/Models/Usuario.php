@@ -11,7 +11,7 @@ class Usuario extends Model implements Authenticatable
 {
     use HasFactory;
 
-    // Implementar los métodos de la interfaz Authenticatable
+    // Implementa los métodos de la interfaz Authenticatable
     public function getAuthIdentifierName()
     {
         return 'clave'; // O el campo que usas para identificar al usuario

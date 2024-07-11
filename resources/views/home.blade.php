@@ -55,7 +55,7 @@
                     </tr>
                     </tbody></table>
                 </td>
-            
+
             </tr></tbody></table>
         </div>
 
@@ -176,8 +176,8 @@
                 </select>
             </div>
 
-            <div class="flex flex-col">
-                <label for="nombre_curso">Nombre del curso a realizar (en caso de ser curso)</label>
+            <div class="flex flex-col" id="input_curso" class="hidden">
+                <label for="nombre_curso">Nombre del curso/actividad a realizar</label>
                 <input type="text" name="nombre_curso" id="nombre_curso">
             </div>
 
@@ -218,7 +218,7 @@
                 <label for="numero_microfonos_auditorio">
                     ¿Cuantos microfonos usará?
                 </label>
-                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos" min="1" max="{{$numeroMicrofonosAuditorio}}" required>
+                <input type="number" name="numero_microfonos_auditorio" id="numero_microfonos_auditorio" min="1" max="{{$numeroMicrofonosAuditorio}}" required>
             </div>
     
             <div>

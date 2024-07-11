@@ -189,7 +189,7 @@ function dibujarHoras(horasArray, horasDisabledString, disabledHoras) {
             });
 
             $('#horasContainer').append(
-                `<div class='${claseHora} p-3 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
+                `<div class='${claseHora} p-4 mb-4 rounded-2 text-white fs-3 fw-semibold d-flex flex-column' id='horaLab-${index}'>
                     <div>${hora} - ${horaFinal} hrs</div>
                     <div class=''>
                     <div/>
@@ -214,78 +214,114 @@ function filtrarHorasSegunHoraActual(horasArray) {
 
 // Función para inicializar el scroll automático
 function inicializarScroll() {
-    const alturaVentana = window.innerHeight;
-    const alturaScroll = alturaVentana * 0.5; // 50% de la altura de la ventana
-    $('#horasContainer').css({
-        'overflow-y': 'hidden',
-        'height': `${alturaScroll}px`
-    });
+    if (endpoint === 'laboratorio') {
+        const alturaVentana = window.innerHeight;
+        const alturaScroll = alturaVentana * 0.5; // 50% de la altura de la ventana
+        $('#horasContainer').css({
+            'overflow-y': 'hidden',
+            'height': `${alturaScroll}px`
+        });
 
-    $('#horasContainerAtras').css({
-        'overflow-y': 'hidden',
-        'height': `${alturaScroll}px`
-    });
+        $('#horasContainerAtras').css({
+            'overflow-y': 'hidden',
+            'height': `${alturaScroll}px`
+        });
 
-    let intervalo = null;
-    let intervalo2 = null;
-    let scrollsCompletados = 0; // Contador para coordinar el reinicio de ambos scrolls
+        let intervalo = null;
+        let intervalo2 = null;
+        let scrollsCompletados = 0; // Contador para coordinar el reinicio de ambos scrolls
 
-    function iniciarScroll() {
-        intervalo = setInterval(scrollDown, 50);
-    }
-
-    function iniciarScrollAtras() {
-        intervalo2 = setInterval(scrollDownAtras, 50);
-    }
-
-    function scrollDown() {
-        const $contenedor = $('#horasContainer');
-        const alturaContenedor = $contenedor.outerHeight();
-        const alturaScroll = $contenedor.prop('scrollHeight');
-        const scrollTop = $contenedor.scrollTop();
-
-        if (scrollTop >= alturaScroll - alturaContenedor) {
-            clearInterval(intervalo);
-            scrollsCompletados++;
-            checkScrollsCompletados();
-        } else {
-            $contenedor.scrollTop(scrollTop + 3);
+        function iniciarScroll() {
+            intervalo = setInterval(scrollDown, 50);
         }
-    }
 
-    function scrollDownAtras() {
-        const $contenedor = $('#horasContainerAtras');
-        const alturaContenedor = $contenedor.outerHeight();
-        const alturaScroll = $contenedor.prop('scrollHeight');
-        const scrollTop = $contenedor.scrollTop();
-
-        if (scrollTop >= alturaScroll - alturaContenedor) {
-            clearInterval(intervalo2);
-            scrollsCompletados++;
-            checkScrollsCompletados();
-        } else {
-            $contenedor.scrollTop(scrollTop + 3);
+        function iniciarScrollAtras() {
+            intervalo2 = setInterval(scrollDownAtras, 50);
         }
-    }
 
-    function checkScrollsCompletados() {
-        if (scrollsCompletados >= 2) {
-            // Reiniciar ambos scrolls al mismo tiempo
-            setTimeout(() => {
-                $('#horasContainer').scrollTop(0);
-                $('#horasContainerAtras').scrollTop(0);
+        function scrollDown() {
+            const $contenedor = $('#horasContainer');
+            const alturaContenedor = $contenedor.outerHeight();
+            const alturaScroll = $contenedor.prop('scrollHeight');
+            const scrollTop = $contenedor.scrollTop();
+
+            if (scrollTop >= alturaScroll - alturaContenedor) {
+                clearInterval(intervalo);
+                scrollsCompletados++;
+                checkScrollsCompletados();
+            } else {
+                $contenedor.scrollTop(scrollTop + 3);
+            }
+        }
+
+        function scrollDownAtras() {
+            const $contenedor = $('#horasContainerAtras');
+            const alturaContenedor = $contenedor.outerHeight();
+            const alturaScroll = $contenedor.prop('scrollHeight');
+            const scrollTop = $contenedor.scrollTop();
+
+            if (scrollTop >= alturaScroll - alturaContenedor) {
+                clearInterval(intervalo2);
+                scrollsCompletados++;
+                checkScrollsCompletados();
+            } else {
+                $contenedor.scrollTop(scrollTop + 3);
+            }
+        }
+
+        function checkScrollsCompletados() {
+            if (scrollsCompletados >= 2) {
+                // Reiniciar ambos scrolls al mismo tiempo
                 setTimeout(() => {
-                    scrollsCompletados = 0; // Reiniciar el contador
-                    iniciarScroll();
-                    iniciarScrollAtras();
-                }, 1500); // Espera de 1 segundo y medio antes de reiniciar el scroll nuevamente
-            }, 1500); // Espera de 1 segundo y medio al final antes de reiniciar el scroll
+                    $('#horasContainer').scrollTop(0);
+                    $('#horasContainerAtras').scrollTop(0);
+                    setTimeout(() => {
+                        scrollsCompletados = 0; // Reiniciar el contador
+                        iniciarScroll();
+                        iniciarScrollAtras();
+                    }, 1500); // Espera de 1 segundo y medio antes de reiniciar el scroll nuevamente
+                }, 1500); // Espera de 1 segundo y medio al final antes de reiniciar el scroll
+            }
         }
-    }
 
-    // Espera inicial de 1 segundo y medio antes de comenzar el scroll
-    setTimeout(iniciarScroll, 1500);
-    setTimeout(iniciarScrollAtras, 1500);
+        // Espera inicial de 1 segundo y medio antes de comenzar el scroll
+        setTimeout(iniciarScroll, 1500);
+        setTimeout(iniciarScrollAtras, 1500);
+    }
+    else{
+        const alturaVentana = window.innerHeight;
+        const alturaScroll = alturaVentana * 0.5; // 70% de la altura de la ventana
+        $('#horasContainer').css({
+            'overflow-y': 'hidden',
+            'height': `${alturaScroll}px`
+        });
+    
+        let intervalo = null;
+    
+        function iniciarScroll() {
+            intervalo = setInterval(scrollDown, 50);
+        }
+    
+        function scrollDown() {
+            const $contenedor = $('#horasContainer');
+            const alturaContenedor = $contenedor.outerHeight();
+            const alturaScroll = $contenedor.prop('scrollHeight');
+            const scrollTop = $contenedor.scrollTop();
+    
+            if (scrollTop >= alturaScroll - alturaContenedor) {
+                clearInterval(intervalo);
+                setTimeout(() => {
+                    $contenedor.scrollTop(0);
+                    setTimeout(iniciarScroll, 1000); // Espera de 1 segundo antes de iniciar el scroll nuevamente
+                }, 1000); // Espera de 1 segundo al final antes de reiniciar el scroll
+            } else {
+                $contenedor.scrollTop(scrollTop + 3);
+            }
+        }
+    
+        // Espera inicial de 1 segundo antes de comenzar el scroll
+        setTimeout(iniciarScroll, 1000);
+    }
 }
 
 // Función para verificar si hay una reservación próxima y mostrar un modal de alerta
