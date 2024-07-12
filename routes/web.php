@@ -56,9 +56,6 @@ Route::group(['middleware'=>['auth']], function(){
             Route::get('{fecha}', [LaboratorioController::class, 'horasAgendadas'])->name('reserva-por-fecha');
             Route::get('adelante/{fecha}', [LaboratorioController::class, 'horasAgendadasAdelante'])->name('reserva-por-fecha');
             Route::get('atras/{fecha}', [LaboratorioController::class, 'horasAgendadasAtras'])->name('reserva-por-fecha');
-
-            // Ruta para cuando saber solo las horas reservadas del día en laboratorio
-            // Route::get('disabled/{fecha}', [LaboratorioController::class, 'horasDisabled']);
         });
     
         Route::prefix('aula-magna')->group(function () {

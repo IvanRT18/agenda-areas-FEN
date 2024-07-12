@@ -127,9 +127,9 @@ class LaboratorioController extends Controller
         return view('areas.laboratorio.admin', compact('reservaciones'));
     }
 
-    public function showHorasDia(Request $request)
+    //Muestra las horas libres/reservadas del día actual en este área
+    public function showHorasDia()
     {
-        // $reservaciones = LaboratorioModel::where('fechaReservada', $fecha)->get();
         return view('areas.laboratorio.ver');
     }
 
@@ -162,19 +162,13 @@ class LaboratorioController extends Controller
         return response()->json($horasAgendadas);
     }
 
-    // Recibe una fecha (string) y devuelve las horas que se han agendado ese día (solo horas)
-    public function horasDisabled($fecha)
-    {
-        $disabledHours = LaboratorioModel::where('fecha_reservada', $fecha)->get();
-        return response()->json($disabledHours);
-    }
-
-    // Edita una cita
+    // Vista para editar
     public function edit($id){
         $reservacion = LaboratorioModel::find($id);
         return view('areas.laboratorio.editar', compact('reservacion'));
     }
 
+    //Actualiza una reservación
     public function update(Request $request, $id)
     {
         // Validación de datos de entrada
@@ -211,17 +205,7 @@ class LaboratorioController extends Controller
             })
             ->where('id', '<>', $request->id) // Excluir la reservación actual
             ->first();
-            
-            // $overlap = LaboratorioModel::where('fecha_reservada', $fechaReservada)
-            // ->where(function($query) use ($horaInicio, $horaFinal) {
-            //     $query->where(function($q) use ($horaInicio, $horaFinal) {
-            //         $q->where('hora_reserva_inicio', '<', $horaFinal)
-            //         ->where('hora_reserva_final', '>', $horaInicio);
-            //     });
-            // })
-            // ->where('id', '<>', $request->id) // Excluir la reservación actual
-            // ->exists();
-
+        
             if ($overlap) {
                 //Solo en caso de que haya una cita reservada a esa hora
                 $usuario = $overlap->usuario;
@@ -260,6 +244,7 @@ class LaboratorioController extends Controller
         return redirect()->back()->with('status', 'Reservación actualizada correctamente');
     }
 
+    //Elimina una reservación
     public function delete($id)
     {
         $reservacion = LaboratorioModel::find($id);
@@ -267,17 +252,14 @@ class LaboratorioController extends Controller
         return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
-    public function diasInhabiles()
-    {
-        return view('dias_deshabilitados');
-    }
-
+    //Vista de configuración del laboratorio
     public function configure()
     {
         $configuracion = LaboratorioConfiguracion::first();
         return view('areas.laboratorio.configure', compact('configuracion'));
     }
 
+    //Actualiza la configuración del laboratorio
     public function updateConfiguration(Request $request)
     {
          // Validación de datos de entrada
@@ -290,19 +272,19 @@ class LaboratorioController extends Controller
             throw new ValidationException($validator);
         }
 
-        if ( LaboratorioConfiguracion::first()) 
+        if ( LaboratorioConfiguracion::first()) //Si ya existe una configuracion
         {
-            $configuracion =  LaboratorioConfiguracion::first();
+            $configuracion = LaboratorioConfiguracion::first(); 
             $configuracion->numero_computadoras = $request->input('numero_computadoras');
             $configuracion->parametro_adelante = $request->input('parametro_adelante');
-            $configuracion->update();
+            $configuracion->update(); //La actualiza
         }
         else
         {
-            $configuracion = new LaboratorioConfiguracion();
+            $configuracion = new LaboratorioConfiguracion(); //Si no, la crea
             $configuracion->numero_computadoras = $request->input('numero_computadoras');
             $configuracion->parametro_adelante = $request->input('parametro_adelante');
-            $configuracion->save();
+            $configuracion->save(); 
         }
         return redirect()->back()->with('status','Configuración actualizada correctamente');
     }
