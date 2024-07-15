@@ -118,7 +118,7 @@ class SalaVideoconferenciaController extends Controller
             'hora_reserva_inicio' => 'required|date_format:H:i',
             'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
             'numero_microfonos' => 'required|integer|min:0',
-            'rpe' => 'required|exists:usuarios,clave',
+            'rpe' => 'required|integer|exists:usuarios,clave',
         ]);
 
         // Agregar reglas de validación personalizadas usando after
@@ -155,7 +155,6 @@ class SalaVideoconferenciaController extends Controller
         }
 
         $reservacion = SalaVideoConferenciaModel::find($id);
-        $reservacion->id = $request->input('id');
         $reservacion->rpe = $request->input('rpe');
         $reservacion->fecha_reservada = $request->input('fecha_reservada');
         $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');

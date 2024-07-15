@@ -120,12 +120,13 @@ class AuditorioController extends Controller
         return response()->json($horasAgendadas);
     }
 
-    // Edita una reservacion
+    // Vista de editar reservacion
     public function edit($id){
         $reservacion = AuditorioModel::find($id);
         return view('areas.auditorio.editar', compact('reservacion'));
     }
 
+    //Actualiza una reservación
     public function update(Request $request, $id)
     {
         // Validación de datos de entrada
@@ -133,8 +134,8 @@ class AuditorioController extends Controller
             'fecha_reservada' => 'required|date',
             'hora_reserva_inicio' => 'required|date_format:H:i',
             'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
-            'numero_microfonos' => 'required|integer|min:0|max:2',
-            'rpe' => 'required|exists:usuarios,clave', 
+            'numero_microfonos' => 'required|integer|min:0',
+            'rpe' => 'required|integer|exists:usuarios,clave', 
         ]);
 
         // Agregar reglas de validación personalizadas usando after
@@ -167,11 +168,10 @@ class AuditorioController extends Controller
 
         // Si hay errores, lanzar una excepción de validación
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $reservacion = AuditorioModel::find($id);
-        $reservacion->id = $request->input('id');
         $reservacion->rpe = $request->input('rpe');
         $reservacion->fecha_reservada = $request->input('fecha_reservada');
         $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
