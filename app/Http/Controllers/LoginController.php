@@ -32,7 +32,7 @@ class LoginController extends Controller
             session()->put('type', $request->input('tipo'));
             // dd(session('type'));
             //Si no es alumno, puede acceder a la página
-            if (session('type') !== 'ALUMNOS_Alumno') {
+            // if (session('type') !== 'ALUMNOS_Alumno') {
                 $usuario = Usuario::where('clave', session('user'))->first();
                 if ($usuario) {
                     Auth::loginUsingId($usuario->clave);
@@ -41,10 +41,10 @@ class LoginController extends Controller
                 else{
                     return redirect(route('no-access'));
                 }
-            }
-            else{
-                return redirect(route('no-docente'));
-            }
+            // }
+            // else{
+            //     return redirect(route('no-docente'));
+            // }
         }
     }
 }
