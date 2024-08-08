@@ -51,3 +51,11 @@
 </div>
 
 @endsection
+
+@section('scripts')
+    <script>
+        $('#close-btn').on('click', function () {
+            $(this).parent().remove();
+        });
+    </script>
+@endsection

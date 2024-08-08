@@ -27,13 +27,13 @@
             <table width="1170px" align="center" border="0">
             <tbody><tr>
                 <td width="293px" style="background-color:#1B3257" align="center">
-                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_uaslp_blanco.png">
+                    <img src="{{url('/img/logo_uaslp_blanco.png')}}">
                 </td>
                 <td width="292px" style="background-color:#1B3257" align="center">
-                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_fe_blanco.png" style="margin">
+                    <img src="{{url('/img/logo_fe_blanco.png')}}" style="margin">
                 </td>
                 <td width="585px" style="background-color:#1B3257">
-                    <img src="https://cuan.uaslp.mx/comunes/imagenes/banner_der.png" width="585px" height="150">
+                    <img src="{{url('/img/banner_der.png')}}" width="585px" height="150">
                 </td>
             </tr>
             <tr>
@@ -41,7 +41,7 @@
                     <table width="100%" style="margin-top:10px" align="center">
                     <tbody><tr>
                         <td style="height:32px; background-color:#1B3257" width="58.6%"><div style="color:#fff; margin-left:20px">Reservación de áreas comúnes</div></td>
-                        <td style="background-color:#FCC200;padding: 0px;"><img src="https://cuan.uaslp.mx/comunes/imagenes/amarillo_azul.png"></td>
+                        <td style="background-color:#FCC200; padding:0"><img src="{{url('/img/amarillo_azul.png')}}"></td>
                         <td align="right" style="background-color:#FCC200; font-size:16px">"HUMANISMI ET SCIENTIA" &nbsp;</td>
                     </tr>
                     </tbody></table>

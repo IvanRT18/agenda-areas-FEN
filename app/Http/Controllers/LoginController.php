@@ -31,7 +31,7 @@ class LoginController extends Controller
             session()->put('user', $request->input('usuario'));
             session()->put('type', $request->input('tipo'));
             // dd(session('type'));
-            //Si no es alumno, accede a la página
+            //Si no es alumno, puede acceder a la página
             // if (session('type') !== 'ALUMNOS_Alumno') {
                 $usuario = Usuario::where('clave', session('user'))->first();
                 if ($usuario) {

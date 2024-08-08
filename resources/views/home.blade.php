@@ -36,13 +36,13 @@
             <table width="1170px" align="center" border="0">
             <tbody><tr>
                 <td width="293px" style="background-color:#1B3257" align="center">
-                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_uaslp_blanco.png">
+                    <img src="{{url('/img/logo_uaslp_blanco.png')}}">
                 </td>
                 <td width="292px" style="background-color:#1B3257" align="center">
-                    <img src="https://cuan.uaslp.mx/comunes/imagenes/logo_fe_blanco.png" style="margin">
+                    <img src="{{url('/img/logo_fe_blanco.png')}}" style="margin">
                 </td>
                 <td width="585px" style="background-color:#1B3257">
-                    <img src="https://cuan.uaslp.mx/comunes/imagenes/banner_der.png" width="585px" height="150">
+                    <img src="{{url('/img/banner_der.png')}}" width="585px" height="150">
                 </td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@
                     <table width="100%" style="margin-top:10px" align="center">
                     <tbody><tr>
                         <td style="height:32px; background-color:#1B3257" width="58.6%"><div style="color:#fff; margin-left:20px">Reservación de áreas comúnes</div></td>
-                        <td style="background-color:#FCC200"><img src="https://cuan.uaslp.mx/comunes/imagenes/amarillo_azul.png"></td>
+                        <td style="background-color:#FCC200"><img src="{{url('/img/amarillo_azul.png')}}"></td>
                         <td align="right" style="background-color:#FCC200; font-size:16px">"HUMANISMI ET SCIENTIA" &nbsp;</td>
                     </tr>
                     </tbody></table>
@@ -118,7 +118,7 @@
 
 
        {{-- Formulario Laboratorio de cómputo--}}
-    <form name="formLaboratorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/laboratorio')}}" id="formLaboratorio">
+    <form name="formLaboratorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/laboratorio')}}" id="formLaboratorio">
         @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div>
@@ -186,7 +186,7 @@
     </form>
 
     {{-- Formulario auditorio --}}
-    <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/auditorio')}}" id="formAuditorio">
+    <form name="formAuditorio" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/auditorio')}}" id="formAuditorio">
         @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">
@@ -237,7 +237,7 @@
     </form>
 
     {{-- Formulario aula magna --}}
-    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/aula-magna')}}" id="formAulaMagna">
+    <form name="formAulaMagna" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/aula-magna')}}" id="formAulaMagna">
         @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">
@@ -288,7 +288,7 @@
     </form>
 
     {{-- Formulario sala de videoconferencia --}}
-    <form name="formSalaV" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('administrador/registra-reservacion/sala-videoconferencias')}}" id="formSalaV">
+    <form name="formSalaV" method="POST" class="formulario formulario-container col-md-6 mb-4 hidden" action="{{url('registra-reservacion/sala-videoconferencias')}}" id="formSalaV">
         @csrf
         <div class="flex flex-col col-xs-12 gap">
             <div class="flex flex-col">
@@ -347,7 +347,7 @@
             Álvaro Obregón #64, Col. Centro, C.P. 78000<br>
         San Luis Potosí, S.L.P. México                <br>
         Tel.  (444) 826 2300<br>
-        ©<span id="lbAño">2024</span> © Todos los derechos reservados.           
+        ©<span id="lbAño"></span> © Todos los derechos reservados.           
    </div>
 </body>
 
