@@ -18,7 +18,7 @@
 
             <div class="form-group mb-3">
                 <label for="">ID Cita</label>
-                <input type="text" name="id" value="{{$reservacion->id}}" class="form-control">
+                <input type="text" name="id" value="{{$reservacion->id}}" class="form-control" disabled>
             </div>
             <div class="form-group mb-3">
                 <label for="">RPE</label>
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group mb-3">
                 <label for="">Fecha reservada</label>
-                <input id="editFechaReservada" type="date" name="fecha_reservada" id="fecha_reservada" value="{{$reservacion->fecha_reservada}}" class="form-control">
+                <input id="editFechaReservada" type="date" name="fecha_reservada" id="fecha_reservada" value="{{$reservacion->fecha_reservada}}" class="form-control" style="background-color: white">
                 <span id="pantallaCarga" class="hidden"> <p>Cargando horas reservadas...</p></span>
             </div>
             <div class="form-group mb-3">

@@ -23,7 +23,7 @@ class AuditorioController extends Controller
 
     public function store(Request $request)
     {
-        // Obtener la fecha de hoy y la fecha límite (15 días después de hoy)
+        // Obtiene la fecha de hoy y la fecha límite (15 días después de hoy)
         $today = now();
         $maxDate = now()->addDays(15);
         $auditorioConfig = AuditorioConfiguracion::first();
@@ -91,7 +91,7 @@ class AuditorioController extends Controller
         $reservacion->usa_computadora = $request->has('usa_computadora_auditorio');
         $reservacion->usa_bocinas = $request->has('usa_bocinas_auditorio');
 
-        // Guardar la reserva
+        // Guardar la reservación
         $reservacion->save();
 
         // $correo = new AreaReservadaMail($reservacion->rpe, 'Iván', $reservacion->fecha_reservada, $reservacion->hora_reserva_inicio, $reservacion->hora_reserva_final);
@@ -100,16 +100,16 @@ class AuditorioController extends Controller
         return redirect()->back()->with('status', 'Se ha reservado el auditorio correctamente');
     }
 
+    //Muestra todas las reservaciónes agendadas para esta área (vista de administrador)
     public function showAll(Request $request)
     {
         $reservaciones = AuditorioModel::all();
-
         return view('areas.auditorio.admin', compact('reservaciones'));
     }
 
-    public function showHorasDia(Request $request)
+    //Muestra las horas libres/reservadas del día actual en este área
+    public function showHorasDia()
     {
-        // $reservaciones = AuditorioModel::where('fechaReservada', $fecha)->get();
         return view('areas.auditorio.ver');
     }
 
@@ -120,12 +120,13 @@ class AuditorioController extends Controller
         return response()->json($horasAgendadas);
     }
 
-    // Edita una reservacion
+    // Vista de editar reservacion
     public function edit($id){
         $reservacion = AuditorioModel::find($id);
         return view('areas.auditorio.editar', compact('reservacion'));
     }
 
+    //Actualiza una reservación
     public function update(Request $request, $id)
     {
         // Validación de datos de entrada
@@ -133,8 +134,8 @@ class AuditorioController extends Controller
             'fecha_reservada' => 'required|date',
             'hora_reserva_inicio' => 'required|date_format:H:i',
             'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
-            'numero_microfonos' => 'required|integer|min:0|max:2',
-            'rpe' => 'required|exists:usuarios,clave', 
+            'numero_microfonos' => 'required|integer|min:0',
+            'rpe' => 'required|integer|exists:usuarios,clave', 
         ]);
 
         // Agregar reglas de validación personalizadas usando after
@@ -167,11 +168,10 @@ class AuditorioController extends Controller
 
         // Si hay errores, lanzar una excepción de validación
         if ($validator->fails()) {
-            throw new ValidationException($validator);
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $reservacion = AuditorioModel::find($id);
-        $reservacion->id = $request->input('id');
         $reservacion->rpe = $request->input('rpe');
         $reservacion->fecha_reservada = $request->input('fecha_reservada');
         $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
@@ -184,6 +184,7 @@ class AuditorioController extends Controller
         return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
+    //Elimina una reservación
     public function delete($id)
     {
         $reservacion = AuditorioModel::find($id);
@@ -191,28 +192,25 @@ class AuditorioController extends Controller
         return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
-    public function diasInhabiles()
-    {
-        return view('dias_deshabilitados');
-    }
-
+    //Vista de configuración
     public function configure()
     {
         $configuracion = AuditorioConfiguracion::first();
         return view('areas.auditorio.configure', compact('configuracion'));
     }
 
+    //Actualiza la configuración
     public function updateConfiguration(Request $request)
     {
-        if ( AuditorioConfiguracion::first()) 
+        if ( AuditorioConfiguracion::first()) //Si ya existe una configuracion
         {
             $configuracion =  AuditorioConfiguracion::first();
             $configuracion->numero_microfonos = $request->input('numero_microfonos');
-            $configuracion->update();
+            $configuracion->update(); //La actualiza
         }
         else
         {
-            $configuracion = new AuditorioConfiguracion();
+            $configuracion = new AuditorioConfiguracion(); //Si no, la crea
             $configuracion->numero_microfonos = $request->input('numero_microfonos');
             $configuracion->save();
         }

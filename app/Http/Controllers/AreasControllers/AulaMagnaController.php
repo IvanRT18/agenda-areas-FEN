@@ -91,15 +91,16 @@ class AulaMagnaController extends Controller
         return redirect()->back()->with('status', 'Se ha reservado el aula magna correctamente');
     }
 
+    //Muestra todas las reservaciones del aula magna (vista principal de administrador)
     public function showAll(Request $request)
     {
         $reservaciones = AulaMagnaModel::all();
         return view('areas.aula-magna.admin', compact('reservaciones'));
     }
 
-    public function showHorasDia(Request $request)
+    //Muestra las horas libres/reservadas del día actual en este área
+    public function showHorasDia()
     {
-        // $reservaciones = LaboratorioModel::where('fechaReservada', $fecha)->get();
         return view('areas.aula-magna.ver');
     }
 
@@ -116,7 +117,8 @@ class AulaMagnaController extends Controller
         $reservacion = AulaMagnaModel::find($id);
         return view('areas.aula-magna.editar', compact('reservacion'));
     }
-
+    
+    //Actualiza una reservación
     public function update(Request $request, $id)
     {
         // Validación de datos de entrada
@@ -125,7 +127,7 @@ class AulaMagnaController extends Controller
             'hora_reserva_inicio' => 'required|date_format:H:i',
             'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
             'numero_microfonos' => 'required|integer|min:0|max:2',
-            'rpe' => 'required|exists:usuarios,clave', 
+            'rpe' => 'required|integer|exists:usuarios,clave', 
         ]);
 
         // Agregar reglas de validación personalizadas usando after
@@ -162,7 +164,7 @@ class AulaMagnaController extends Controller
         }
 
         $reservacion = AulaMagnaModel::find($id);
-        $reservacion->id = $request->input('id');
+        // $reservacion->id = $request->input('id');
         $reservacion->rpe = $request->input('rpe');
         $reservacion->fecha_reservada = $request->input('fecha_reservada');
         $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
@@ -175,6 +177,7 @@ class AulaMagnaController extends Controller
         return redirect()->back()->with('status','Reservación actualizada correctamente');
     }
 
+    //Elimina una reservación
     public function delete($id)
     {
         $reservacion = AulaMagnaModel::find($id);
@@ -182,17 +185,14 @@ class AulaMagnaController extends Controller
         return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
-    public function diasInhabiles()
-    {
-        return view('dias_deshabilitados');
-    }
-
+    //Vista de configuración del aula magna
     public function configure()
     {
         $configuracion = AulaMagnaConfiguracion::first();
         return view('areas.aula-magna.configure', compact('configuracion'));
     }
 
+    //Vista de configuración del aula magna
     public function updateConfiguration(Request $request)
     {
         if ( AulaMagnaConfiguracion::first()) 

@@ -83,13 +83,14 @@ class SalaVideoconferenciaController extends Controller
         return redirect()->back()->with('status', 'Se ha reservado la sala de videoconferencias correctamente');
     }
 
+    //Muestra todas las reservaciones del laboratorio (vista principal de administrador)
     public function showAll(Request $request)
     {
         $reservaciones = SalaVideoConferenciaModel::all();
         return view('areas.sala-videoconferencias.admin', compact('reservaciones'));
     }
 
-    //Muestra las horas reservadas del día
+    //Muestra las horas libres/reservadas del día actual en este área
     public function showHorasDia()
     {
         return view('areas.sala-videoconferencias.ver');
@@ -117,7 +118,7 @@ class SalaVideoconferenciaController extends Controller
             'hora_reserva_inicio' => 'required|date_format:H:i',
             'hora_reserva_final' => 'required|date_format:H:i|after:hora_reserva_inicio',
             'numero_microfonos' => 'required|integer|min:0',
-            'rpe' => 'required|exists:usuarios,clave',
+            'rpe' => 'required|integer|exists:usuarios,clave',
         ]);
 
         // Agregar reglas de validación personalizadas usando after
@@ -154,7 +155,6 @@ class SalaVideoconferenciaController extends Controller
         }
 
         $reservacion = SalaVideoConferenciaModel::find($id);
-        $reservacion->id = $request->input('id');
         $reservacion->rpe = $request->input('rpe');
         $reservacion->fecha_reservada = $request->input('fecha_reservada');
         $reservacion->hora_reserva_inicio = $request->input('hora_reserva_inicio');
@@ -175,23 +175,25 @@ class SalaVideoconferenciaController extends Controller
         return redirect()->back()->with('status', 'Reservación borrada correctamente');
     }
 
+    //Vista de configuración del laboratorio
     public function configure()
     {
         $configuracion = SalaVideoconferenciasConfiguracion::first();
         return view('areas.sala-videoconferencias.configure', compact('configuracion'));
     }
 
+    //Actualiza la configuración del laboratorio
     public function updateConfiguration(Request $request)
     {
-        if ( SalaVideoconferenciasConfiguracion::first())
+        if ( SalaVideoconferenciasConfiguracion::first()) //Si ya existe una configuracion
         {
             $configuracion = SalaVideoconferenciasConfiguracion::first();
             $configuracion->numero_microfonos = $request->input('numero_microfonos');
-            $configuracion->update();
+            $configuracion->update(); //La actualiza
         }
         else
         {
-            $configuracion = new SalaVideoconferenciasConfiguracion();
+            $configuracion = new SalaVideoconferenciasConfiguracion(); //Si no, la crea
             $configuracion->numero_microfonos = $request->input('numero_microfonos');
             $configuracion->save();
         }

@@ -40,6 +40,14 @@ Route::group(['middleware'=>['auth']], function(){
     
     //Ruta de la pagina de inicio
     Route::get('inicio', [LaboratorioController::class, 'index'])->name('inicio');
+
+    //Rutas para guardar las reservaciones de las áreas
+    Route::prefix('registra-reservacion')->group(function(){
+        Route::post('auditorio', [AuditorioController::class, 'store']);
+        Route::post('aula-magna', [AulaMagnaController::class, 'store']);
+        Route::post('laboratorio', [LaboratorioController::class, 'store']);
+        Route::post('sala-videoconferencias', [SalaVideoconferenciaController::class, 'store']);
+    });
     
     //Rutas para ver las horas reservadas
     Route::prefix('horas-reservadas')->group(function () {
@@ -56,9 +64,6 @@ Route::group(['middleware'=>['auth']], function(){
             Route::get('{fecha}', [LaboratorioController::class, 'horasAgendadas'])->name('reserva-por-fecha');
             Route::get('adelante/{fecha}', [LaboratorioController::class, 'horasAgendadasAdelante'])->name('reserva-por-fecha');
             Route::get('atras/{fecha}', [LaboratorioController::class, 'horasAgendadasAtras'])->name('reserva-por-fecha');
-
-            // Ruta para cuando saber solo las horas reservadas del día en laboratorio
-            // Route::get('disabled/{fecha}', [LaboratorioController::class, 'horasDisabled']);
         });
     
         Route::prefix('aula-magna')->group(function () {
@@ -107,14 +112,6 @@ Route::group(['middleware'=>['auth']], function(){
             Route::get('editar/{id}', [UsuariosController::class, 'edit']);
             Route::put('actualizar/{id}', [UsuariosController::class, 'update']);
             Route::get('eliminar/{id}', [UsuariosController::class, 'delete']);
-        });
-
-        //Rutas para guardar las reservaciones de las áreas
-        Route::prefix('registra-reservacion')->group(function(){
-            Route::post('auditorio', [AuditorioController::class, 'store']);
-            Route::post('aula-magna', [AulaMagnaController::class, 'store']);
-            Route::post('laboratorio', [LaboratorioController::class, 'store']);
-            Route::post('sala-videoconferencias', [SalaVideoconferenciaController::class, 'store']);
         });
 
         //Rutas para editar reservaciones de áreas

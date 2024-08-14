@@ -6,15 +6,17 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class UsuariosController extends Controller
 {
+    //Vista para registrar usuarios
     public function index(){
         return view('usuarios.registrar_usuario');
     }
 
-    //Registra un nuevo usuario a la base de datos
+    //Guarda un nuevo usuario a la base de datos
     public function store(Request $request)
     {
         // Validación de datos de entrada
@@ -61,13 +63,13 @@ class UsuariosController extends Controller
         return redirect()->back()->with('status', 'Se ha registrado al nuevo usuario correctamente');
     }
 
+    //Muestra a todos los usuarios registrados en el sistema
     public function showUsers(Request $request){
         $usuarios = Usuario::all();
         return view('usuarios.ver_usuarios', compact('usuarios'));
     }
-
     
-    // Muestra vista para editar usuario
+    // Vista para editar usuario
     public function edit($id){
         $usuarioEdit = Usuario::find($id);
         return view('usuarios.editar_usuario', compact('usuarioEdit'));
@@ -78,12 +80,21 @@ class UsuariosController extends Controller
     {
          // Validación de datos de entrada
          $validator = Validator::make($request->all(), [
-            'clave' => 'required|integer|digits_between:1,9',
-            'apellido_paterno' => 'required|string|max:30',
-            'apellido_materno' => 'required|string|max:30',
-            'nombres' => 'required|string|max:30',
-            'tipo' => 'required|string',
-            'correo' => 'required|email',
+            'clave' => [
+            'required',
+            'integer',
+            'digits_between:1,9',
+            Rule::unique('usuarios')->ignore($id),
+        ],
+        'apellido_paterno' => 'required|string|max:30',
+        'apellido_materno' => 'required|string|max:30',
+        'nombres' => 'required|string|max:30',
+        'tipo' => 'required|string',
+        'correo' => [
+            'required',
+            'email',
+            Rule::unique('usuarios')->ignore($id),
+        ],
         ]);
 
          // Si hay errores, lanzar una excepción de validación
@@ -102,6 +113,7 @@ class UsuariosController extends Controller
         return redirect()->back()->with('status','Usuario actualizado correctamente');
     }
 
+    //Elimina a un usuario
     public function delete($id)
     {
         $usuario = Usuario::find($id);
@@ -109,24 +121,27 @@ class UsuariosController extends Controller
         return redirect()->back()->with('status', 'Usuario borrado correctamente');
     }
 
+    //Valida que el usuario este registrado en el sistema
     public function isUserRegistered(){
         if (Auth::check()) {
             return redirect(route('inicio'));
         }
         else{
-            return view('usuarios.usuario_no_registrado');
+            return view('usuarios.usuario_no_registrado'); //El usuario es valido, pero no esta registrado dentro sistema
         }
     }
 
+    //Valida que el usuario sea un administrador
     public function isUserAdmin(){
         if (Auth::check() && auth()->user()->tipo === 'administrador') {
             return redirect(route('inicio'));
         }
         else{
-            return view('usuarios.usuario_no_admin');
+            return view('usuarios.usuario_no_admin'); //Vista de error
         }
     }
 
+    //Muestra vista de que el usuario que esta ingresando no es un docente
     public function noDocente(){
         return view('usuarios.usuario_no_docente');
     }
